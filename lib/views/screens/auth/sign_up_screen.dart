@@ -1,4 +1,4 @@
-import 'package:dhenu_dharma/api/sign_up_repository.dart'; // Import for SignUpRepository
+import 'package:dhenu_dharma/data/repositories/auth/sign_up_repository.dart'; // Import for SignUpRepository
 import 'package:dhenu_dharma/views/screens/auth/login_screen.dart';
 import 'package:dhenu_dharma/views/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
