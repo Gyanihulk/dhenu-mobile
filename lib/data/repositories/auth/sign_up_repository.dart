@@ -36,7 +36,7 @@ class SignUpRepository extends BaseRepository {
         baseURL: ApiConstants.baseUrl,
         queryParameters: queryParams,
         headers: {
-          ApiConstants.kContentType: ApiConstants.kApplictionJson,
+          ApiConstants.kAccept: ApiConstants.kApplictionJson,
         },
       );
 
@@ -77,6 +77,4 @@ class SignUpRepository extends BaseRepository {
       ));
     }
   }
-
-  
 }

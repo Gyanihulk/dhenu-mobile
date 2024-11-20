@@ -7,4 +7,5 @@ class ApiConstants {
 
   static const String kContentType = "Content-Type";
   static const String kApplictionJson = "application/json";
+  static const String kAccept = "Accept";
 }

@@ -12,6 +12,7 @@ import '../../../utils/constants/app_colors.dart';
 import '../../widgets/custom_input_field.dart';
 import '../../widgets/custom_navigator.dart';
 import '../../widgets/custom_text.dart';
+import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -22,9 +23,9 @@ class SignUpScreen extends StatefulWidget {
 
 class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
-  
+
   final _firstnameController = TextEditingController();
-    final _lastnameController = TextEditingController();
+  final _lastnameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
@@ -43,6 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
@@ -67,9 +69,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 child: Column(
                   children: [
-                    buildSignUp(),
-                    buildSocialSignUp(),
-                    buildAlreadyHaveAccount()
+                    buildSignUp(localization!),
+                    buildSocialSignUp(localization),
+                    buildAlreadyHaveAccount(localization)
                   ],
                 ),
               ),
@@ -80,7 +82,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Column buildSignUp() {
+  Column buildSignUp(AppLocalizations localization) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -89,7 +91,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           key: _formKey,
           child: Center(
             child: Text(
-              "Sign Up",
+              localization.translate('signup.title'), // Localized
               style: GoogleFonts.montserrat(
                 fontSize: 24.h,
                 color: Colors.black,
@@ -99,74 +101,76 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ),
         ),
         SizedBox(height: 20.h),
-        const CustomText(
-          "First Name",
+        CustomText(
+          localization.translate('signup.first_name'), // Localized
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
         CustomInputField(
-          hint: 'Enter your First Name',
+          hint: localization.translate('signup.enter_first_name'), // Localized
           controller: _firstnameController,
           inputType: TextInputType.name,
           prefixIcon: Icons.person,
         ),
         SizedBox(height: 8.h),
-        const CustomText(
-          "Last Name",
+        CustomText(
+          localization.translate('signup.last_name'), // Localized
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
         CustomInputField(
-          hint: 'Enter your Last Name',
+          hint: localization.translate('signup.enter_last_name'), // Localized
           controller: _lastnameController,
           inputType: TextInputType.name,
           prefixIcon: Icons.person,
         ),
         SizedBox(height: 8.h),
-        const CustomText(
-          "Phone Number",
+        CustomText(
+          localization.translate('signup.phone_number'), // Localized
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
         CustomInputField(
-          hint: 'Enter your phone number',
+          hint:
+              localization.translate('signup.enter_phone_number'), // Localized
           controller: _phoneController,
           inputType: TextInputType.phone,
           prefixIcon: Icons.phone_android,
         ),
         SizedBox(height: 8.h),
-        const CustomText(
-          "Email ID",
+        CustomText(
+          localization.translate('signup.email_id'), // Localized
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
         CustomInputField(
-          hint: 'Enter your Email ID',
+          hint: localization.translate('signup.enter_email_id'), // Localized
           controller: _emailController,
           inputType: TextInputType.emailAddress,
           prefixIcon: Icons.email,
         ),
         SizedBox(height: 8.h),
-        const CustomText(
-          "Password",
+        CustomText(
+          localization.translate('signup.password'), // Localized
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
         CustomInputField(
-          hint: 'Enter your password',
+          hint: localization.translate('signup.enter_password'), // Localized
           controller: _passwordController,
           inputType: TextInputType.text,
           prefixIcon: Icons.lock,
           obscureText: true,
         ),
         SizedBox(height: 8.h),
-        const CustomText(
-          "Confirm Password",
+        CustomText(
+          localization.translate('signup.confirm_password'), // Localized
           fontSize: 16,
           fontWeight: FontWeight.w500,
         ),
         CustomInputField(
-          hint: 'Enter confirm password',
+          hint: localization
+              .translate('signup.enter_confirm_password'), // Localized
           controller: _confirmPasswordController,
           inputType: TextInputType.text,
           prefixIcon: Icons.lock,
@@ -174,12 +178,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ),
         SizedBox(height: 30.h),
         CustomButton(
-          text: "Sign Up",
+          text: localization.translate('signup.sign_up_button'), // Localized
           onPressed: () async {
             if (_formKey.currentState!.validate()) {
               if (_passwordController.text != _confirmPasswordController.text) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Passwords do not match')),
+                  SnackBar(
+                      content: Text(localization.translate(
+                          'signup.passwords_do_not_match'))), // Localized
                 );
                 return;
               }
@@ -187,7 +193,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               final signUpRepository = SignUpRepository();
               final resource = await signUpRepository.signUp(
                 firstName: _firstnameController.text,
-                lastName: _lastnameController.text,  // Add a UI field for the last name if needed
+                lastName: _lastnameController.text,
                 email: _emailController.text,
                 phone: _phoneController.text,
                 password: _passwordController.text,
@@ -196,7 +202,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               if (resource.status == Status.SUCCESS) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Registration successful')),
+                  SnackBar(
+                      content: Text(localization.translate(
+                          'signup.registration_successful'))), // Localized
                 );
                 Navigator.pushReplacement(
                   context,
@@ -204,7 +212,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 );
               } else if (resource.status == Status.ERROR) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(resource.exception?.message ?? 'Registration failed')),
+                  SnackBar(
+                      content: Text(resource.exception?.message ??
+                          localization.translate(
+                              'signup.registration_failed'))), // Localized
                 );
               }
             }
@@ -214,7 +225,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Column buildSocialSignUp() {
+  Column buildSocialSignUp(AppLocalizations localization) {
     return Column(
       children: [
         SizedBox(height: 16.h),
@@ -227,8 +238,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               color: AppColors.secondaryGrey,
             ),
             SizedBox(width: 8.w),
-            const CustomText(
-              "OR",
+             CustomText(
+              localization.translate('signup.or'),
               color: AppColors.secondaryBlack,
               fontSize: 14,
               fontWeight: FontWeight.w500,
@@ -253,24 +264,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  Padding buildAlreadyHaveAccount() {
+  Padding buildAlreadyHaveAccount(AppLocalizations localization) {
     return Padding(
       padding: EdgeInsets.only(bottom: 20.h),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const CustomText(
-            "Already have an account?",
-            fontSize: 14,
-          ),
+          // CustomText(
+          //   localization.translate('signup.have_account'),
+          //   fontSize: 14,
+          // ),
           SizedBox(width: 4.w),
           GestureDetector(
             onTap: () {
               CustomNavigator(context: context, screen: const LoginScreen())
                   .pushReplacement();
             },
-            child: const CustomText(
-              "Sign in",
+            child: CustomText(
+              localization.translate('signup.have_account'),
               fontSize: 14,
               fontWeight: FontWeight.w500,
             ),

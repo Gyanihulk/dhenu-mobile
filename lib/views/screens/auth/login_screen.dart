@@ -1,10 +1,10 @@
-import 'dart:developer';
-
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
+import 'package:dhenu_dharma/utils/constants/app_assets.dart';
 import 'package:dhenu_dharma/view_models/auth/login/login_bloc.dart';
 import 'package:dhenu_dharma/views/screens/auth/sign_up_screen.dart';
 import 'package:dhenu_dharma/views/screens/initial/initial_screen.dart';
 import 'package:dhenu_dharma/views/widgets/custom_button.dart';
+import 'package:dhenu_dharma/views/widgets/custom_input_field.dart';
 import 'package:dhenu_dharma/views/widgets/custom_navigator.dart';
 import 'package:dhenu_dharma/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +12,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../../utils/constants/app_assets.dart';
-import '../../widgets/custom_input_field.dart';
-
+import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:dhenu_dharma/utils/providers/locale_provider.dart';
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -31,19 +30,17 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
+
     return Scaffold(
       body: BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
           if (state is LoginSuccess) {
-            // Correct class name
-            // Navigate to InitialScreen on successful login
             CustomNavigator(
               context: context,
               screen: const InitialScreen(pageIndex: 0),
             ).pushReplacement();
           } else if (state is LoginError) {
-            // Correct class name
-            // Show error message
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(state.message),
@@ -64,6 +61,39 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Image.asset(AssetsConstants.logoImg, height: 44.h),
                   ),
                 ),
+                DropdownButton<Locale>(
+                  value: Provider.of<LocaleProvider>(context, listen: false)
+                      .locale,
+                  onChanged: (Locale? locale) {
+                    if (locale != null) {
+                      Provider.of<LocaleProvider>(context, listen: false)
+                          .setLocale(locale);
+                    }
+                  },
+                  dropdownColor: Colors.black,
+                  style: const TextStyle(color: Colors.white),
+                  underline: Container(
+                    height: 1,
+                    color: Colors.white,
+                  ),
+                  items: const [
+                    DropdownMenuItem(
+                      value: Locale('en'),
+                      child: Text('English'),
+                    ),
+                    DropdownMenuItem(
+                      value: Locale('hi'),
+                      child: Text('हिंदी'),
+                    ),
+                  ],
+                  // onChanged: (Locale? locale) {
+                  //   if (locale != null) {
+                  //     setState(() {
+                  //       AppLocalizations.changeLocale(context, locale);
+                  //     });
+                  //   }
+                  // },
+                ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 16.h),
                   height: MediaQuery.of(context).size.height - 220.h,
@@ -77,9 +107,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        buildLogin(),
-                        buildSocialLogin(),
-                        buildDoNotHaveAccount()
+                        buildLogin(localization!),
+                        buildSocialLogin(localization),
+                        buildDoNotHaveAccount(localization),
                       ],
                     ),
                   ),
@@ -92,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Form buildLogin() {
+  Form buildLogin(AppLocalizations localization) {
     return Form(
       key: _formKey,
       autovalidateMode:
@@ -103,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
           SizedBox(height: 24.h),
           Center(
             child: Text(
-              "Login",
+              localization.translate('login.welcome'), // Changed to nested key
               style: GoogleFonts.montserrat(
                 fontSize: 24.h,
                 color: Colors.black,
@@ -112,13 +142,13 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           SizedBox(height: 24.h),
-          const CustomText(
-            "Phone Number / Email ID",
+          CustomText(
+            localization.translate('login.phone_or_email'), // Changed to nested key
             fontSize: 16,
             fontWeight: FontWeight.w500,
           ),
           CustomInputField(
-            hint: 'Enter your Phone Number or Email ID',
+            hint: localization.translate('login.enter_phone_or_email'), // Changed to nested key
             controller: usernameController,
             prefixIcon: Icons.email,
             onChangeText: (text) {
@@ -127,19 +157,19 @@ class _LoginScreenState extends State<LoginScreen> {
             },
             validator: (text) {
               if (text == null || text.trim().isEmpty) {
-                return "Username or email cannot be empty";
+                return localization.translate('login.username_empty'); // Changed to nested key
               }
               return null;
             },
           ),
           SizedBox(height: 8.h),
-          const CustomText(
-            "Password",
+          CustomText(
+            localization.translate('login.password'), // Changed to nested key
             fontSize: 16,
             fontWeight: FontWeight.w500,
           ),
           CustomInputField(
-            hint: 'Enter your password',
+            hint: localization.translate('login.enter_password'), // Changed to nested key
             controller: passwordController,
             prefixIcon: Icons.lock,
             obscureText: true,
@@ -148,14 +178,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   .add(ChangePasswordEvent(passwordController.text.trim()));
             },
             validator: (text) {
-              return passwordValidation(text);
+              return passwordValidation(text, localization);
             },
           ),
           SizedBox(height: 2.h),
-          const Align(
+          Align(
             alignment: Alignment.centerRight,
             child: CustomText(
-              "Forgot Password?",
+              localization.translate('login.forgot_password'), // Changed to nested key
               color: AppColors.secondaryGrey,
               fontSize: 14,
               fontWeight: FontWeight.w500,
@@ -163,7 +193,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           SizedBox(height: 20.h),
           CustomButton(
-            text: "Login",
+            text: localization.translate('login.login'), // Changed to nested key
             onPressed: () {
               login();
             },
@@ -173,23 +203,19 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  String? passwordValidation(String? text) {
+
+  String? passwordValidation(String? text, AppLocalizations localization) {
     if (text == null || text.trim().isEmpty) {
-      return "Password cannot be empty";
+      return localization.translate('password_empty');
     }
-
-    final password = text.trim();
-
-    if (password.length < 8) {
-      return "Password must be at least 8 characters long";
+    if (text.trim().length < 8) {
+      return localization.translate('password_length_error');
     }
-
     return null;
   }
 
   void login() {
     if (_formKey.currentState!.validate()) {
-      // Trigger the login event
       BlocProvider.of<LoginBloc>(context).add(
         LoginLoadEvent(
           username: usernameController.text.trim(),
@@ -203,7 +229,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Column buildSocialLogin() {
+  Column buildSocialLogin(AppLocalizations localization) {
     return Column(
       children: [
         SizedBox(height: 16.h),
@@ -216,8 +242,8 @@ class _LoginScreenState extends State<LoginScreen> {
               color: AppColors.secondaryGrey,
             ),
             SizedBox(width: 8.w),
-            const CustomText(
-              "OR",
+            CustomText(
+              localization.translate('login.or'),
               color: AppColors.secondaryBlack,
               fontSize: 14,
               fontWeight: FontWeight.w500,
@@ -241,25 +267,26 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  Row buildDoNotHaveAccount() {
+  Row buildDoNotHaveAccount(AppLocalizations localization) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const CustomText(
-          "Don't have an account?",
+        CustomText(
+          localization.translate('login.dont_have_account'),
           fontSize: 14,
         ),
         SizedBox(width: 4.w),
         GestureDetector(
-            onTap: () {
-              CustomNavigator(context: context, screen: const SignUpScreen())
-                  .pushReplacement();
-            },
-            child: const CustomText(
-              "Sign Up",
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            )),
+          onTap: () {
+            CustomNavigator(context: context, screen: const SignUpScreen())
+                .pushReplacement();
+          },
+          child: CustomText(
+            localization.translate('login.sign_up'),
+            fontSize: 14,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
       ],
     );
   }
