@@ -3,6 +3,11 @@ import 'dart:ui';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
 import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
+import 'package:dhenu_dharma/views/screens/donate/donate_screen.dart';
+import 'package:dhenu_dharma/views/screens/home/misson/mission_screen.dart';
+import 'package:dhenu_dharma/views/screens/home/receipts/receipts_screen.dart';
+import 'package:dhenu_dharma/views/screens/initial/initial_screen.dart';
+import 'package:dhenu_dharma/views/screens/profile/screens/documents/documents_screen.dart';
 import 'package:dhenu_dharma/views/widgets/custom_button.dart';
 import 'package:dhenu_dharma/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -80,7 +85,7 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         Padding(
           padding: EdgeInsets.only(top: 20.h, bottom: 8.h),
-          child:  CustomText(
+          child: CustomText(
             localization?.translate("main.provide_title") ?? "What we provide",
             fontSize: 20,
             fontWeight: FontWeight.w700,
@@ -157,9 +162,8 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         Padding(
           padding: EdgeInsets.only(top: 24.h, bottom: 20.h),
-          child:  CustomText(
-            localization?.translate("main.about_us_title") ??
-                "About Us",
+          child: CustomText(
+            localization?.translate("main.about_us_title") ?? "About Us",
             fontSize: 20,
             fontWeight: FontWeight.w700,
             color: const Color(0xff3d3d3d),
@@ -172,7 +176,8 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               width: 200.w,
               child: CustomText(
-                  localization?.translate("main.about_us_description") ?? "Description",
+                localization?.translate("main.about_us_description") ??
+                    "Description",
                 fontSize: 12.w,
                 fontWeight: FontWeight.w400,
               ),
@@ -193,7 +198,9 @@ class _HomeScreenState extends State<HomeScreen> {
         Center(
           child: SizedBox(
             width: 120.w,
-            child: CustomButton(text:  localization?.translate("main.know_more") ?? "Know More", onPressed: () {}),
+            child: CustomButton(
+                text: localization?.translate("main.know_more") ?? "Know More",
+                onPressed: () {}),
           ),
         )
       ],
@@ -206,7 +213,7 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         Padding(
           padding: EdgeInsets.only(top: 24.h, bottom: 6.h),
-          child:  CustomText(
+          child: CustomText(
             localization?.translate("main.image_gallery") ?? "Image Gallery",
             fontSize: 20,
             fontWeight: FontWeight.w700,
@@ -291,8 +298,10 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         SizedBox(height: 20.h),
         Center(
-            child:
-                CustomButton(width: 120.w, text:  localization?.translate("main.view_more") ?? "View More", onPressed: () {}))
+            child: CustomButton(
+                width: 120.w,
+                text: localization?.translate("main.view_more") ?? "View More",
+                onPressed: () {}))
       ],
     );
   }
@@ -303,8 +312,9 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         Padding(
           padding: EdgeInsets.only(top: 24.h, bottom: 6.h),
-          child:  CustomText(
-            localization?.translate("main.supporters_say_title") ?? "What our supporters say",
+          child: CustomText(
+            localization?.translate("main.supporters_say_title") ??
+                "What our supporters say",
             fontSize: 20,
             fontWeight: FontWeight.w700,
             color: const Color(0xff3d3d3d),
@@ -403,8 +413,9 @@ class _HomeScreenState extends State<HomeScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 20.h),
-         CustomText(
-          localization?.translate("main.real_time_metrics_title") ?? "Real Time Metrics",
+        CustomText(
+          localization?.translate("main.real_time_metrics_title") ??
+              "Real Time Metrics",
           fontSize: 20,
           fontWeight: FontWeight.w700,
           color: const Color(0xff3d3d3d),
@@ -415,10 +426,22 @@ class _HomeScreenState extends State<HomeScreen> {
             spacing: 8.w,
             runSpacing: 8.h,
             children: [
-              buildMetric(title: "₹ 11 cr", subtitle: localization?.translate("main.total_donation") ?? "Total Donation"),
-              buildMetric(title: "300", subtitle: localization?.translate("main.total_gowshala") ?? "Total Gowshala"),
-              buildMetric(title: "45,000", subtitle: localization?.translate("main.cows_helped") ?? "Cows Helped"),
-              buildMetric(title: "7000", subtitle: localization?.translate("main.people_connected") ?? "People Connected"),
+              buildMetric(
+                  title: "₹ 11 cr",
+                  subtitle: localization?.translate("main.total_donation") ??
+                      "Total Donation"),
+              buildMetric(
+                  title: "300",
+                  subtitle: localization?.translate("main.total_gowshala") ??
+                      "Total Gowshala"),
+              buildMetric(
+                  title: "45,000",
+                  subtitle: localization?.translate("main.cows_helped") ??
+                      "Cows Helped"),
+              buildMetric(
+                  title: "7000",
+                  subtitle: localization?.translate("main.people_connected") ??
+                      "People Connected"),
             ],
           ),
         )
@@ -602,37 +625,72 @@ class _HomeScreenState extends State<HomeScreen> {
         buildActionBox(
           title: localization?.translate("main.mission") ?? "Mission",
           img: AssetsConstants.missionImg,
+          onTap: () {
+            CustomNavigator(
+              context: context,
+              screen: const MissionScreen(),
+            ).pushReplacement();
+          },
         ),
         buildActionBox(
           title: localization?.translate("main.donate") ?? "Donate",
           img: AssetsConstants.donateImg,
+          onTap: () {
+            CustomNavigator(
+              context: context,
+              screen: const InitialScreen(pageIndex: 1),
+            ).pushReplacement();
+          },
         ),
         buildActionBox(
           title: localization?.translate("main.authentication") ??
               "Authentication",
           img: AssetsConstants.authenticationImg,
+          onTap: () {
+            CustomNavigator(
+              context: context,
+              screen: const DocumentsScreen(),
+            ).pushReplacement();
+          },
         ),
         buildActionBox(
           title: localization?.translate("main.receipts") ?? "Receipts",
           img: AssetsConstants.receiptsImg,
+          onTap: () {
+            CustomNavigator(
+              context: context,
+              screen: const ReceiptsScreen(),
+            ).pushReplacement();
+          },
         ),
       ],
     );
   }
 
-  Wrap buildActionBox({required String title, required String img}) {
+  Wrap buildActionBox({
+    required String title,
+    required String img,
+    required VoidCallback onTap,
+  }) {
     return Wrap(
       direction: Axis.vertical,
       crossAxisAlignment: WrapCrossAlignment.center,
       children: [
-        Image.asset(
-          img,
-          width: 60.h,
-        ),
-        CustomText(
-          title,
-          color: const Color(0xff3d3d3d),
-          fontWeight: FontWeight.w500,
+        GestureDetector(
+          onTap: onTap,
+          child: Column(
+            children: [
+              Image.asset(
+                img,
+                width: 60.h,
+              ),
+              CustomText(
+                title,
+                color: const Color(0xff3d3d3d),
+                fontWeight: FontWeight.w500,
+              ),
+            ],
+          ),
         ),
       ],
     );

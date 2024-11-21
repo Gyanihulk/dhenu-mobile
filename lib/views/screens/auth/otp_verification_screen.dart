@@ -2,6 +2,7 @@ import 'package:dhenu_dharma/api/base/resource.dart';
 import 'package:dhenu_dharma/data/repositories/auth/sign_up_repository.dart';
 import 'package:dhenu_dharma/utils/constants/app_assets.dart';
 import 'package:dhenu_dharma/views/screens/home/home_screen.dart';
+import 'package:dhenu_dharma/views/screens/initial/initial_screen.dart';
 import 'package:dhenu_dharma/views/screens/onboarding/onboarding_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -161,7 +162,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
         if (mounted) {
           Navigator.pushReplacement(
             context,
-            MaterialPageRoute(builder: (context) => const HomeScreen()),
+            MaterialPageRoute(builder: (context) => const InitialScreen(pageIndex: 0)),
           );
         }
       } else {

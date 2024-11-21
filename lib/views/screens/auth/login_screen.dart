@@ -1,6 +1,7 @@
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
 import 'package:dhenu_dharma/utils/constants/app_assets.dart';
 import 'package:dhenu_dharma/view_models/auth/login/login_bloc.dart';
+import 'package:dhenu_dharma/views/screens/auth/forget_password_screen.dart';
 import 'package:dhenu_dharma/views/screens/auth/otp_verification_screen.dart';
 import 'package:dhenu_dharma/views/screens/auth/sign_up_screen.dart';
 import 'package:dhenu_dharma/views/screens/initial/initial_screen.dart';
@@ -179,14 +180,23 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           SizedBox(height: 2.h),
           Align(
-            alignment: Alignment.centerRight,
-            child: CustomText(
-              localization.translate('login.forgot_password'), // Changed to nested key
-              color: AppColors.secondaryGrey,
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
+  alignment: Alignment.centerRight,
+  child: GestureDetector(
+    onTap: () {
+      CustomNavigator(
+        context: context,
+        screen: const ForgetPasswordScreen(),
+      ).push();
+    },
+    child: CustomText(
+      localization.translate('login.forgot_password'),
+      color: AppColors.secondaryGrey,
+      fontSize: 14,
+      fontWeight: FontWeight.w500,
+    ),
+  ),
+),
+
           SizedBox(height: 20.h),
           CustomButton(
             text: localization.translate('login.login'), // Changed to nested key

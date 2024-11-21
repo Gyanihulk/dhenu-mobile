@@ -51,40 +51,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-
-  Positioned buildProfileContent(
-      BuildContext context, UserModel? user, AppLocalizations localization) {
-    final localization = AppLocalizations.of(context)!;
-    return Positioned(
-      top: 150.h,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.h),
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: AppColors.secondaryWhite,
-          borderRadius: BorderRadius.only(
-            topRight: Radius.circular(70.w),
-          ),
-        ),
-        child: Column(
-          children: [
-            buildUserProfile(user, localization),
-            buildProfileItemList(localization),
-            const Spacer(),
-            buildSignOutButton(context, localization),
-          ],
+Positioned buildProfileContent(
+    BuildContext context, UserModel? user, AppLocalizations localization) {
+  return Positioned(
+    top: 150.h,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    child: Container(
+      padding: EdgeInsets.symmetric(horizontal: 16.h),
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: AppColors.secondaryWhite,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(70.w),
         ),
       ),
-    );
-  }
+      child: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(), // Smooth scrolling
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  buildUserProfile(user, localization),
+                  SizedBox(height: 20.h),
+                  buildProfileItemList(localization),
+                ],
+              ),
+            ),
+          ),
+          buildSignOutButton(context, localization),
+          SizedBox(height: 16.h), // Bottom spacing for padding
+        ],
+      ),
+    ),
+  );
+}
+
 
   Padding buildSignOutButton(
       BuildContext context, AppLocalizations localization) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 16.h),
+      padding: EdgeInsets.only(bottom: 4.h),
       child: CustomButton(
           text: localization.translate("profile.signOut"),
           onPressed: () {
@@ -121,10 +131,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Padding buildProfileItemList(AppLocalizations localization) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h)
-          .copyWith(top: 20.h),
+Padding buildProfileItemList(AppLocalizations localization) {
+  return Padding(
+    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h)
+        .copyWith(top: 20.h),
+    child: SingleChildScrollView(
       child: Column(
         children: [
           buildProfileListItem(
@@ -169,8 +180,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   GestureDetector buildProfileListItem(
       {required IconData icon, required String label, required screen}) {

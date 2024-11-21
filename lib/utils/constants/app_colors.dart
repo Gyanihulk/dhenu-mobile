@@ -6,4 +6,5 @@ class AppColors {
   static const Color secondaryBlack = Color(0xFF232122);
   static const Color secondaryGrey = Color(0xFF737373);
   static const Color secondaryWhite = Color(0xFFEAE5D8);
+  static const Color title = Color.fromRGBO(0, 0, 0, 1);
 }
