@@ -88,7 +88,31 @@ class AppLocalizations {
         "edit": "Edit",
         "phoneNumber": "9876543210",
         "userName": "Akansha Singh"
-      }
+      },
+      'main': {
+        'welcome': 'Welcome to our website',
+        'thank_you': 'Thank you for visiting!',
+        'this': 'This',
+        'mission': 'Mission',
+        'donate': 'Donate',
+        'authentication': 'Authentication',
+        'receipts': 'Receipts',
+        'supporters_say_title': 'What our supporters say',
+        'read_more': 'Read more',
+        'about_us_title': 'About Us',
+        'about_us_description':
+            'Dhenu Dharma, an NGO initiative, cares for sacred cows through numerous shelters. You can view nearby shelters, enjoy transparent donation experience with live feed and virtual meetings. Donations are tax-exempt up to 50% under 80G.',
+        'know_more': 'Know More',
+        'view_more': 'View More',
+        'real_time_metrics_title': 'Real Time Metrics',
+        'total_donation': 'Total Donation',
+        'total_gowshala': 'Total Gowshala',
+        'cows_helped': 'Cows Helped',
+        'people_connected': 'People Connected',
+         'image_gallery': 'Image Gallery',
+        'upcoming_donations_title': 'Upcoming Donations',
+        'provide_title':'What We Provide',
+      },
     },
     'hi': {
       'home': {
@@ -158,7 +182,30 @@ class AppLocalizations {
         "edit": "संपादित करें",
         "phoneNumber": "9876543210",
         "userName": "अकांशा सिंह"
-      }
+      },
+      'main': {
+        'welcome': 'आपका हमारी वेबसाइट पर स्वागत है',
+        'thank_you': 'आपके आने का धन्यवाद!',
+        'this': 'यह',
+        'mission': 'मिशन',
+        'donate': 'दान करें',
+        'authentication': 'प्रमाणीकरण',
+        'receipts': 'रसीदें',
+        'supporters_say_title': 'हमारे समर्थक क्या कहते हैं',
+        'read_more': 'और पढ़ें',
+        'about_us_title': 'हमारे बारे में',
+        'about_us_description':
+            'धेनु धर्म, एक एनजीओ पहल, पवित्र गायों की देखभाल करता है। आप पास के शेल्टर देख सकते हैं, लाइव फीड और वर्चुअल मीटिंग के साथ पारदर्शी दान का अनुभव कर सकते हैं। दान 80G के तहत 50% तक कर-मुक्त हैं।',
+        'know_more': 'और जानें',
+        'view_more': 'और देखें',
+        'real_time_metrics_title': 'रीयल टाइम मेट्रिक्स',
+        'total_donation': 'कुल दान',
+        'total_gowshala': 'कुल गौशाला',
+        'cows_helped': 'सहायता प्राप्त गायें',
+        'people_connected': 'लोग जुड़े',
+        'upcoming_donations_title': 'आगामी दान',
+        'image_gallery':"छवि गैलरी",'provide_title':'हम क्या प्रदान करते हैं',
+      },
     },
   };
 

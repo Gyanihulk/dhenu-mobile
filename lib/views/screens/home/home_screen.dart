@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
+import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:dhenu_dharma/views/widgets/custom_button.dart';
 import 'package:dhenu_dharma/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
@@ -26,17 +27,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     return Scaffold(
       body: Stack(
         children: [
-          buildTopContainer(),
-          buildHomeContent(),
+          buildTopContainer(localization),
+          buildHomeContent(localization),
         ],
       ),
     );
   }
 
-  Positioned buildHomeContent() {
+  Positioned buildHomeContent(AppLocalizations? localization) {
     return Positioned(
       top: 232.h,
       left: 0,
@@ -57,13 +59,13 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                buildActionBoxList(),
-                buildUpcomingDonations(),
-                buildRealTimeMetrics(),
-                buildSupportersSay(),
-                buildImageGallery(),
-                buildAboutUs(),
-                buildWhatWeProvide(),
+                buildActionBoxList(localization),
+                buildUpcomingDonations(localization),
+                buildRealTimeMetrics(localization),
+                buildSupportersSay(localization),
+                buildImageGallery(localization),
+                buildAboutUs(localization),
+                buildWhatWeProvide(localization),
               ],
             ),
           ),
@@ -72,17 +74,17 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Column buildWhatWeProvide() {
+  Column buildWhatWeProvide(AppLocalizations? localization) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.only(top: 20.h, bottom: 8.h),
-          child: const CustomText(
-            "What we provide",
+          child:  CustomText(
+            localization?.translate("main.provide_title") ?? "What we provide",
             fontSize: 20,
             fontWeight: FontWeight.w700,
-            color: Color(0xff3d3d3d),
+            color: const Color(0xff3d3d3d),
           ),
         ),
         SingleChildScrollView(
@@ -149,17 +151,18 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Column buildAboutUs() {
+  Column buildAboutUs(AppLocalizations? localization) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.only(top: 24.h, bottom: 20.h),
-          child: const CustomText(
-            "About Us",
+          child:  CustomText(
+            localization?.translate("main.about_us_title") ??
+                "About Us",
             fontSize: 20,
             fontWeight: FontWeight.w700,
-            color: Color(0xff3d3d3d),
+            color: const Color(0xff3d3d3d),
           ),
         ),
         Image.asset(AssetsConstants.aboutUsImg),
@@ -169,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               width: 200.w,
               child: CustomText(
-                "Dhenu Dharma, an NGO initiative, cares for sacred cows through numerous shelters. You can view nearby shelters, enjoy transparent donation experience with live feed and virtual meetings. Donations are tax-exempt up to 50% under 80G",
+                  localization?.translate("main.about_us_description") ?? "Description",
                 fontSize: 12.w,
                 fontWeight: FontWeight.w400,
               ),
@@ -190,24 +193,24 @@ class _HomeScreenState extends State<HomeScreen> {
         Center(
           child: SizedBox(
             width: 120.w,
-            child: CustomButton(text: "Know More", onPressed: () {}),
+            child: CustomButton(text:  localization?.translate("main.know_more") ?? "Know More", onPressed: () {}),
           ),
         )
       ],
     );
   }
 
-  Column buildImageGallery() {
+  Column buildImageGallery(AppLocalizations? localization) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.only(top: 24.h, bottom: 6.h),
-          child: const CustomText(
-            "Image Gallery",
+          child:  CustomText(
+            localization?.translate("main.image_gallery") ?? "Image Gallery",
             fontSize: 20,
             fontWeight: FontWeight.w700,
-            color: Color(0xff3d3d3d),
+            color: const Color(0xff3d3d3d),
           ),
         ),
         Row(
@@ -289,22 +292,22 @@ class _HomeScreenState extends State<HomeScreen> {
         SizedBox(height: 20.h),
         Center(
             child:
-                CustomButton(width: 120.w, text: "View More", onPressed: () {}))
+                CustomButton(width: 120.w, text:  localization?.translate("main.view_more") ?? "View More", onPressed: () {}))
       ],
     );
   }
 
-  Column buildSupportersSay() {
+  Column buildSupportersSay(AppLocalizations? localization) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: EdgeInsets.only(top: 24.h, bottom: 6.h),
-          child: const CustomText(
-            "What our supporters say",
+          child:  CustomText(
+            localization?.translate("main.supporters_say_title") ?? "What our supporters say",
             fontSize: 20,
             fontWeight: FontWeight.w700,
-            color: Color(0xff3d3d3d),
+            color: const Color(0xff3d3d3d),
           ),
         ),
         SingleChildScrollView(
@@ -395,16 +398,16 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Column buildRealTimeMetrics() {
+  Column buildRealTimeMetrics(AppLocalizations? localization) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 20.h),
-        const CustomText(
-          "Real Time Metrics",
+         CustomText(
+          localization?.translate("main.real_time_metrics_title") ?? "Real Time Metrics",
           fontSize: 20,
           fontWeight: FontWeight.w700,
-          color: Color(0xff3d3d3d),
+          color: const Color(0xff3d3d3d),
         ),
         SizedBox(height: 8.h),
         Center(
@@ -412,10 +415,10 @@ class _HomeScreenState extends State<HomeScreen> {
             spacing: 8.w,
             runSpacing: 8.h,
             children: [
-              buildMetric(title: "₹ 11 cr", subtitle: "Total Donation"),
-              buildMetric(title: "300", subtitle: "Total Gowshala"),
-              buildMetric(title: "45,000", subtitle: "Cows Helped"),
-              buildMetric(title: "7000", subtitle: "People Connected"),
+              buildMetric(title: "₹ 11 cr", subtitle: localization?.translate("main.total_donation") ?? "Total Donation"),
+              buildMetric(title: "300", subtitle: localization?.translate("main.total_gowshala") ?? "Total Gowshala"),
+              buildMetric(title: "45,000", subtitle: localization?.translate("main.cows_helped") ?? "Cows Helped"),
+              buildMetric(title: "7000", subtitle: localization?.translate("main.people_connected") ?? "People Connected"),
             ],
           ),
         )
@@ -452,16 +455,17 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Column buildUpcomingDonations() {
+  Column buildUpcomingDonations(AppLocalizations? localization) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 20.h),
-        const CustomText(
-          "Upcoming Donations",
+        CustomText(
+          localization?.translate("main.upcoming_donations_title") ??
+              "Upcoming donations",
           fontSize: 20,
           fontWeight: FontWeight.w700,
-          color: Color(0xff3d3d3d),
+          color: const Color(0xff3d3d3d),
         ),
         SizedBox(height: 8.h),
         CarouselSlider.builder(
@@ -591,15 +595,27 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Row buildActionBoxList() {
+  Row buildActionBoxList(AppLocalizations? localization) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        buildActionBox(title: "Mission", img: AssetsConstants.missionImg),
-        buildActionBox(title: "Donate", img: AssetsConstants.donateImg),
         buildActionBox(
-            title: "Authentication", img: AssetsConstants.authenticationImg),
-        buildActionBox(title: "Receipts", img: AssetsConstants.receiptsImg),
+          title: localization?.translate("main.mission") ?? "Mission",
+          img: AssetsConstants.missionImg,
+        ),
+        buildActionBox(
+          title: localization?.translate("main.donate") ?? "Donate",
+          img: AssetsConstants.donateImg,
+        ),
+        buildActionBox(
+          title: localization?.translate("main.authentication") ??
+              "Authentication",
+          img: AssetsConstants.authenticationImg,
+        ),
+        buildActionBox(
+          title: localization?.translate("main.receipts") ?? "Receipts",
+          img: AssetsConstants.receiptsImg,
+        ),
       ],
     );
   }
@@ -617,12 +633,12 @@ class _HomeScreenState extends State<HomeScreen> {
           title,
           color: const Color(0xff3d3d3d),
           fontWeight: FontWeight.w500,
-        )
+        ),
       ],
     );
   }
 
-  Positioned buildTopContainer() {
+  Positioned buildTopContainer(AppLocalizations? localization) {
     return Positioned(
       top: 0,
       left: 0,
