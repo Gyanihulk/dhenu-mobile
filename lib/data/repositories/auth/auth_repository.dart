@@ -4,6 +4,7 @@ import 'package:dhenu_dharma/api/base/resource.dart';
 import 'package:dhenu_dharma/api/base/base_repository.dart';
 import 'package:dhenu_dharma/api/exceptions/exceptions.dart';
 import 'package:dhenu_dharma/data/models/user_model.dart';
+import 'package:dhenu_dharma/data/models/login_response.dart';
 import 'package:dhenu_dharma/utils/constants/api_constants.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:dhenu_dharma/service/token_storage_service.dart';
@@ -24,7 +25,7 @@ class AuthRepository extends BaseRepository {
           Uri.parse(ApiConstants.baseUrl + ApiConstants.loginEndpoint)
               .replace(queryParameters: queryParams)
               .toString();
-      print('Login URL: $fullUrl');
+      
 
       final response = await requestHttps(
         RequestType.POST,
@@ -36,20 +37,23 @@ class AuthRepository extends BaseRepository {
         },
       );
 
-      print('Response Status Code: ${response.statusCode}');
+      // print('Response Status Code: ${response.statusCode}');
       print('Response Body: ${response.body}');
 
       if (response.statusCode == 200) {
-        final responseData = jsonDecode(response.body);
-        final authToken = responseData['data']['auth_token'] as String?;
-        if (authToken != null) {
-          await TokenStorageService.storeAuthToken(authToken);
-          
-        } else {
-          throw Exception("Auth token is null");
+         // Parse the response using LoginResponse
+        final loginResponse = loginResponseFromJson(response.body);
+
+        // Check for auth token
+        if (loginResponse.data?.authToken == null) {
+          throw Exception("Auth token is null or missing");
         }
-        return UserModel.fromJson(
-            responseData); 
+
+        // Store the auth token
+        await TokenStorageService.storeAuthToken(loginResponse.data!.authToken!);
+
+        // Return the UserModel
+        return loginResponse.data; 
       } else {
         throw Exception('Login failed with status: ${response.statusCode}');
       }

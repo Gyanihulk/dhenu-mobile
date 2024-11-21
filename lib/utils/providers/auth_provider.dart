@@ -30,8 +30,7 @@ class AuthProvider with ChangeNotifier {
     _authToken = token;
     _user = user;
     _isAuthenticated = true;
-    print('+++++++++++++++> SAving this info in provider ${token} ');
-    print(user.toJson());
+    print('+++++++++++++++> SAving this info in provider ${user.toJson()} ');
     await AppPreferences.instance.saveToken(token);
     await AppPreferences.instance.saveUserInfo(jsonEncode(user.toJson()));
     await AppPreferences.instance.setAuthenticated(true);

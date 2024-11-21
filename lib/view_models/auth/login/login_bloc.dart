@@ -45,7 +45,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           username: username!,
           password: password!,
         );
-
+print('USer in bloc: ${user}');
         if (user != null) {
           print("user from bloc");
           print(user);

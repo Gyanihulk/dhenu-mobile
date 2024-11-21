@@ -33,9 +33,6 @@ class BaseRepository {
       Map<String, String> queryParameters = const {},
       Map<String, String> headers = const {}}) async {
     String uri = baseURL + endpoint + getQueryParameters(queryParameters);
-    final fullUrl = Uri.parse(baseURL + endpoint).replace(queryParameters: queryParameters);
-    print('Making HTTP Request to: $uri');
-    print('Headers: $headers');
     // print('Body: $body');
     Uri validUri = Uri.parse(uri);
     http.Response response;
