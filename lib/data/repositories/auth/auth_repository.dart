@@ -44,6 +44,7 @@ class AuthRepository extends BaseRepository {
         final authToken = responseData['data']['auth_token'] as String?;
         if (authToken != null) {
           await TokenStorageService.storeAuthToken(authToken);
+          
         } else {
           throw Exception("Auth token is null");
         }

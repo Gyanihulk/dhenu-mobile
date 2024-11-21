@@ -1,18 +1,21 @@
 import 'package:dhenu_dharma/data/repositories/auth/sign_up_repository.dart'; // Import for SignUpRepository
 import 'package:dhenu_dharma/views/screens/auth/login_screen.dart';
+import 'package:dhenu_dharma/views/screens/auth/otp_verification_screen.dart';
+import 'package:dhenu_dharma/views/screens/onboarding/onboarding_screen.dart';
 import 'package:dhenu_dharma/views/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:dhenu_dharma/api/base/resource.dart';
+import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 
 import '../../../utils/constants/app_assets.dart';
 import '../../../utils/constants/app_colors.dart';
 import '../../widgets/custom_input_field.dart';
 import '../../widgets/custom_navigator.dart';
 import '../../widgets/custom_text.dart';
-import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
+
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -199,18 +202,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 password: _passwordController.text,
                 passwordConfirmation: _confirmPasswordController.text,
               );
-
+              print(resource);
               if (resource.status == Status.SUCCESS) {
+                if (!mounted) return;
+                print("Navigating to OnboardingScreen...");
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                       content: Text(localization.translate(
                           'signup.registration_successful'))), // Localized
                 );
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => const LoginScreen()),
-                );
+                 String phoneOrEmail = _emailController.text.isNotEmpty ? _emailController.text : _phoneController.text;
+                CustomNavigator(
+                  context: context,
+                  screen: OtpVerificationScreen(phoneOrEmail: phoneOrEmail),
+                ).pushReplacement();
               } else if (resource.status == Status.ERROR) {
+                if (!mounted) return;
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                       content: Text(resource.exception?.message ??
@@ -238,7 +245,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               color: AppColors.secondaryGrey,
             ),
             SizedBox(width: 8.w),
-             CustomText(
+            CustomText(
               localization.translate('signup.or'),
               color: AppColors.secondaryBlack,
               fontSize: 14,

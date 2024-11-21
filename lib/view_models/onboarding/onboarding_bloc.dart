@@ -15,7 +15,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   OnboardingBloc(this.userRepository) : super(OnboardingInitial()) {
     on<OnboardingEvent>((event, emit) {
       if (event is OnboardingCompleteEvent) {
-        userRepository.saveOnboardingStatus();
+        // userRepository.saveOnboardingStatus();
         CustomNavigator(context: event.context, screen: const LoginScreen())
             .pushReplacement();
       }

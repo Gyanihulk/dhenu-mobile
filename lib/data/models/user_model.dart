@@ -9,30 +9,6 @@ UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 String userModelToJson(UserModel data) => json.encode(data.toJson());
 
 class UserModel {
-  bool? status;
-  String? message;
-  Data? data;
-
-  UserModel({
-    this.status,
-    this.message,
-    this.data,
-  });
-
-  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        status: json["status"],
-        message: json["message"],
-        data: json["data"] == null ? null : Data.fromJson(json["data"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "status": status,
-        "message": message,
-        "data": data?.toJson(),
-      };
-}
-
-class Data {
   int? id;
   String? firstName;
   String? lastName;
@@ -51,7 +27,7 @@ class Data {
   String? tokenType;
   int? tokenExpiresIn;
 
-  Data({
+  UserModel({
     this.id,
     this.firstName,
     this.lastName,
@@ -71,7 +47,7 @@ class Data {
     this.tokenExpiresIn,
   });
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
         id: json["id"],
         firstName: json["first_name"],
         lastName: json["last_name"],

@@ -39,6 +39,8 @@ class BaseRepository {
     // print('Body: $body');
     Uri validUri = Uri.parse(uri);
     http.Response response;
+    // Generate and print the cURL command
+  printCurlCommand(type, validUri, headers, request);
     switch (type) {
       case RequestType.GET:
         response = await httpClient.get(validUri, headers: headers);
@@ -65,6 +67,17 @@ class BaseRepository {
     }
     return response;
   }
+void printCurlCommand(RequestType type, Uri uri, Map<String, String> headers, dynamic body) {
+  StringBuffer curlCmd = StringBuffer("curl -X ${type.toString().split('.').last}");
+  headers.forEach((key, value) {
+    curlCmd.write(' -H "$key: $value"');
+  });
+  if (body != null && (type == RequestType.POST || type == RequestType.PUT || type == RequestType.PATCH)) {
+    curlCmd.write(" -d '${jsonEncode(body)}'");
+  }
+  curlCmd.write(" '${uri.toString()}'");
+  print("cURL Command: $curlCmd");
+}
 
   Future<http.Response> sendFile(
       String baseURL,

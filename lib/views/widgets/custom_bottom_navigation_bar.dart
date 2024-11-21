@@ -3,7 +3,7 @@ import 'package:dhenu_dharma/views/screens/initial/initial_screen.dart';
 import 'package:dhenu_dharma/views/widgets/custom_navigator.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
+import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 class CustomBottomNavigationBar extends StatefulWidget {
   int pageIndex;
   CustomBottomNavigationBar({super.key, required this.pageIndex});
@@ -32,17 +32,18 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
 
   @override
   Widget build(BuildContext context) {
+     final localization = AppLocalizations.of(context);
     return BottomNavigationBar(
       backgroundColor: const Color(0XFFEAE5D8),
       currentIndex: currentPageIndex,
       onTap: _onItemTapped,
-      items: const [
+      items:  [
         BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.house), label: "Home"),
+            icon: const FaIcon(FontAwesomeIcons.house), label: localization?.translate('navigation.home')),
         BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.handHoldingHeart), label: "Donate"),
+            icon: const FaIcon(FontAwesomeIcons.handHoldingHeart), label: localization?.translate('navigation.donate')),
         BottomNavigationBarItem(
-            icon: FaIcon(FontAwesomeIcons.user), label: "Profile")
+            icon: const FaIcon(FontAwesomeIcons.user), label: localization?.translate('navigation.profile'))
       ],
       elevation: 20,
       selectedIconTheme: const IconThemeData(color: Colors.black),

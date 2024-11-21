@@ -1,8 +1,10 @@
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
 import 'package:dhenu_dharma/utils/constants/app_assets.dart';
 import 'package:dhenu_dharma/view_models/auth/login/login_bloc.dart';
+import 'package:dhenu_dharma/views/screens/auth/otp_verification_screen.dart';
 import 'package:dhenu_dharma/views/screens/auth/sign_up_screen.dart';
 import 'package:dhenu_dharma/views/screens/initial/initial_screen.dart';
+import 'package:dhenu_dharma/views/screens/onboarding/onboarding_Screen.dart';
 import 'package:dhenu_dharma/views/widgets/custom_button.dart';
 import 'package:dhenu_dharma/views/widgets/custom_input_field.dart';
 import 'package:dhenu_dharma/views/widgets/custom_navigator.dart';
@@ -56,7 +58,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               children: [
                 SizedBox(
-                  height: 220.h,
+                  height: 190.h,
                   child: Center(
                     child: Image.asset(AssetsConstants.logoImg, height: 44.h),
                   ),
@@ -86,17 +88,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Text('हिंदी'),
                     ),
                   ],
-                  // onChanged: (Locale? locale) {
-                  //   if (locale != null) {
-                  //     setState(() {
-                  //       AppLocalizations.changeLocale(context, locale);
-                  //     });
-                  //   }
-                  // },
+                  
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 16.h),
-                  height: MediaQuery.of(context).size.height - 220.h,
+                  height: MediaQuery.of(context).size.height - 190.h,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     color: AppColors.secondaryWhite,

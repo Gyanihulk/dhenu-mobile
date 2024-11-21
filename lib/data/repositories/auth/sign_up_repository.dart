@@ -47,21 +47,20 @@ class SignUpRepository extends BaseRepository {
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
 
-        // Access the auth_token from the data field
         final authToken =
             responseData['data']['auth_token']; // Adjust based on API response
-
+        return Resource.success(null);
         // Ensure authToken is not null before storing it
-        if (authToken != null) {
-          // Store the token using TokenStorageService
-          await TokenStorageService.storeAuthToken(authToken);
-          return Resource.success(null);
-        } else {
-          return Resource.error(BaseException(
-            response.statusCode,
-            'Auth token not found in the response',
-          ));
-        }
+        // if (authToken != null) {
+        //   // Store the token using TokenStorageService
+        //   await TokenStorageService.storeAuthToken(authToken);
+        //   return Resource.success(null);
+        // } else {
+        //   return Resource.error(BaseException(
+        //     response.statusCode,
+        //     'Auth token not found in the response',
+        //   ));
+        // }
       } else {
         return Resource.error(BaseException(
           response.statusCode,
@@ -75,6 +74,62 @@ class SignUpRepository extends BaseRepository {
         null,
         error.toString(),
       ));
+    }
+  }
+
+  Future<Resource> verifyOtp({
+    required String phoneOrEmail,
+    required String otp,
+  }) async {
+    try {
+      final queryParams = {
+        'username': phoneOrEmail,
+        'code': otp,
+      };
+      print(queryParams);
+      final response = await requestHttps(
+        RequestType.POST,
+        ApiConstants.verifyOtpEndpoint,
+        queryParams, // No request body needed
+        baseURL: ApiConstants.baseUrl,
+        queryParameters: queryParams,
+        headers: {
+          ApiConstants.kAccept: ApiConstants.kApplictionJson,
+        },
+      );
+
+      // Log the response status code and body
+      print('Response Status Code: ${response.statusCode}');
+      print('Response Body: ${response.body}');
+      if (response.statusCode == 200) {
+        final responseData = jsonDecode(response.body);
+
+        final authToken =
+            responseData['data']['auth_token']; // Adjust based on API response
+        return Resource.success(null);
+        // Ensure authToken is not null before storing it
+        // if (authToken != null) {
+        //   // Store the token using TokenStorageService
+        //   await TokenStorageService.storeAuthToken(authToken);
+        //   return Resource.success(null);
+        // } else {
+        //   return Resource.error(BaseException(
+        //     response.statusCode,
+        //     'Auth token not found in the response',
+        //   ));
+        // }
+      } else {
+        return Resource.error(BaseException(
+          response.statusCode,
+          'Otp Verification failed',
+          response: response.body,
+        ));
+      }
+    } catch (error, stackTrace) {
+      print('Exception type: ${error.runtimeType}');
+      print('Error: $error'); // Calls toString() implicitly
+      print('Stack Trace: $stackTrace');
+      return Resource.error(null);
     }
   }
 }

@@ -1,8 +1,10 @@
+import 'package:dhenu_dharma/utils/providers/locale_provider.dart';
 import 'package:dhenu_dharma/views/widgets/custom_bottom_navigation_bar.dart';
 import 'package:dhenu_dharma/views/widgets/custom_button.dart';
 import 'package:dhenu_dharma/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../../utils/constants/app_assets.dart';
 import '../../../../../utils/constants/app_colors.dart';
@@ -29,7 +31,7 @@ class LanguagesScreen extends StatelessWidget {
     );
   }
 
-  Positioned buildLanguagesContent(BuildContext context) {
+  Widget buildLanguagesContent(BuildContext context) {
     return Positioned(
       top: 150.h,
       left: 0,
@@ -53,9 +55,15 @@ class LanguagesScreen extends StatelessWidget {
               fontWeight: FontWeight.w500,
               color: Color(0xff3d3d3d),
             ),
-            buildLanguageList(),
-            const Spacer(),
-            CustomButton(text: "Done", onPressed: () {}),
+            Expanded(
+              child: ListView(
+                children: [
+                  buildLanguageOption(context, const Locale('en', ''), 'English'),
+                  buildLanguageOption(context, const Locale('hi', ''), 'हिंदी'),
+                ],
+              ),
+            ),
+            
             SizedBox(height: 24.h)
           ],
         ),
@@ -63,50 +71,20 @@ class LanguagesScreen extends StatelessWidget {
     );
   }
 
-  Column buildLanguageList() {
-    return Column(
-      children: [
-        SizedBox(height: 10.h),
-        buildLanguage(name: "English", engLabel: "", isActive: true),
-        buildLanguage(name: "Hindi", engLabel: "(Hindi)", isActive: false),
-        buildLanguage(name: "Gujrati", engLabel: "(Gujrati)", isActive: false),
-        buildLanguage(name: "Marathi", engLabel: "(Marathi)", isActive: false),
-        buildLanguage(name: "Punjabi", engLabel: "(Punjabi)", isActive: false),
-      ],
+  Widget buildLanguageOption(BuildContext context, Locale locale, String language) {
+    return Consumer<LocaleProvider>(
+      builder: (context, localeProvider, child) {
+        return ListTile(
+          title: Text(language, style: TextStyle(fontSize: 18.h)),
+          trailing: localeProvider.locale == locale
+              ? Icon(Icons.check_circle, color: Colors.green)
+              : null,
+          onTap: () {
+            localeProvider.setLocale(locale);
+          },
+        );
+      },
     );
   }
 
-  ListTile buildLanguage({
-    required String name,
-    required String engLabel,
-    required bool isActive,
-  }) {
-    return ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 12.w),
-        title: Row(
-          children: [
-            CustomText(
-              name,
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-            ),
-            SizedBox(width: 4.w),
-            CustomText(
-              engLabel,
-              fontSize: 16,
-            ),
-          ],
-        ),
-        trailing: isActive
-            ? CircleAvatar(
-                radius: 10.h,
-                backgroundColor: Colors.black,
-                child: Icon(
-                  Icons.check_rounded,
-                  color: Colors.white,
-                  size: 14.h,
-                ),
-              )
-            : null);
-  }
 }
