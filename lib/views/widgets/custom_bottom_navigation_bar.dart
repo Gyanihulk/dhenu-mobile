@@ -33,6 +33,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
      final localization = AppLocalizations.of(context);
+       final currentLanguageCode = Localizations.localeOf(context).languageCode;
+  print("Current Localization Language bottom : $currentLanguageCode");
     return BottomNavigationBar(
       backgroundColor: const Color(0XFFEAE5D8),
       currentIndex: currentPageIndex,

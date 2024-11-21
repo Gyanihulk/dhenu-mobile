@@ -1,4 +1,5 @@
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
+import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:dhenu_dharma/views/screens/donate/donate_screen.dart';
 import 'package:dhenu_dharma/views/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
@@ -37,19 +38,23 @@ class _InitialScreenState extends State<InitialScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     return Scaffold(
       body: _widgetOptions[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0XFFEAE5D8),
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.house), label: "Home"),
+              icon: const FaIcon(FontAwesomeIcons.house),
+              label: localization?.translate('navigation.home')),
           BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.handHoldingHeart), label: "Donate"),
+              icon: const FaIcon(FontAwesomeIcons.handHoldingHeart),
+              label: localization?.translate('navigation.donate')),
           BottomNavigationBarItem(
-              icon: FaIcon(FontAwesomeIcons.user), label: "Profile")
+              icon: const FaIcon(FontAwesomeIcons.user),
+              label: localization?.translate('navigation.profile'))
         ],
         elevation: 20,
         selectedIconTheme: const IconThemeData(color: Colors.black),
