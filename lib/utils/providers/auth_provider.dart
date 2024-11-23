@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'package:dhenu_dharma/data/repositories/language/language_repository.dart';
+import 'package:dhenu_dharma/utils/providers/language_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:dhenu_dharma/service/app_preferences.dart';
 import 'package:dhenu_dharma/data/models/user_model.dart';
@@ -7,11 +9,12 @@ class AuthProvider with ChangeNotifier {
   bool _isAuthenticated = AppPreferences.instance.isAuthenticated();
   UserModel? _user;
   String? _authToken;
-
+  final LanguageRepository languageRepository;
+   List<Map<String, dynamic>> languages = []; 
+  AuthProvider({required this.languageRepository});
   bool get isAuthenticated => _isAuthenticated;
   UserModel? get user => _user;
   String? get authToken => _authToken;
-
   Future<void> loadUserData() async {
     final token = AppPreferences.instance.fetchToken();
     final userInfo = AppPreferences.instance.fetchUserInfo();
@@ -38,6 +41,24 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> initializeLanguages(LanguageProvider languageProvider) async {
+    if (_authToken == null || _authToken!.isEmpty) {
+      debugPrint('Token is null or empty. Cannot fetch languages.');
+      return;
+    }
+
+    try {
+      debugPrint('Fetching languages...');
+      // Fetch languages using the LanguageProvider
+      await languageProvider.fetchLanguages();
+      debugPrint(
+          'Languages fetched and updated in LanguageProvider: ${languageProvider.languages}');
+    } catch (error) {
+      debugPrint('Error fetching languages: $error');
+    }
+  }
+
+
   Future<void> logout() async {
     _authToken = null;
     _user = null;
@@ -49,6 +70,4 @@ class AuthProvider with ChangeNotifier {
 
     notifyListeners();
   }
-  
 }
-

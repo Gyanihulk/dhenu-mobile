@@ -9,7 +9,15 @@ class AppPreferences {
   Future<void> initSharedPreferences() async {
     preferences = await SharedPreferences.getInstance();
   }
+  // Save the selected language code
+  Future<void> saveSelectedLanguage(String languageCode) async {
+    await preferences.setString('selected_language', languageCode);
+  }
 
+  // Fetch the saved selected language code
+  String? fetchSelectedLanguage() {
+    return preferences.getString('selected_language');
+  }
   // Save a string
   Future<void> saveString(String key, String value) async {
     await preferences.setString(key, value);

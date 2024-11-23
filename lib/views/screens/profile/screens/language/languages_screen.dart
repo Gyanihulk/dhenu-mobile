@@ -1,6 +1,5 @@
-import 'package:dhenu_dharma/utils/providers/locale_provider.dart';
+import 'package:dhenu_dharma/utils/providers/language_provider.dart';
 import 'package:dhenu_dharma/views/widgets/custom_bottom_navigation_bar.dart';
-import 'package:dhenu_dharma/views/widgets/custom_button.dart';
 import 'package:dhenu_dharma/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,12 +21,14 @@ class LanguagesScreen extends StatelessWidget {
           ProfileBackgroundComponent(bgImg: AssetsConstants.userProfileBgImg1),
           buildLanguagesContent(context),
           ScreenLabelComponent(
+            // Removed const
             label: "Languages",
             icon: Icons.language,
-          )
+          ),
         ],
       ),
-      bottomNavigationBar: CustomBottomNavigationBar(pageIndex: 2),
+      bottomNavigationBar:
+          CustomBottomNavigationBar(pageIndex: 2), // Removed const
     );
   }
 
@@ -46,45 +47,63 @@ class LanguagesScreen extends StatelessWidget {
             topRight: Radius.circular(70.w),
           ),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CustomText(
-              "Select Language",
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
-              color: Color(0xff3d3d3d),
-            ),
-            Expanded(
-              child: ListView(
-                children: [
-                  buildLanguageOption(context, const Locale('en', ''), 'English'),
-                  buildLanguageOption(context, const Locale('hi', ''), 'हिंदी'),
-                ],
-              ),
-            ),
-            
-            SizedBox(height: 24.h)
-          ],
+        child: Consumer<LanguageProvider>(
+          builder: (context, languageProvider, child) {
+            if (languageProvider.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
+print('Languages in Language screen: ${languageProvider.languages}');
+            if (languageProvider.errorMessage.isNotEmpty) {
+              return Center(
+                child: Text(
+                  languageProvider.errorMessage,
+                  style: const TextStyle(color: Colors.red),
+                ),
+              );
+            }
+
+            if (languageProvider.languages.isEmpty) {
+              return const Center(child: Text("No languages available."));
+            }
+
+            return ListView.builder(
+              itemCount: languageProvider.languages.length,
+              itemBuilder: (context, index) {
+                final language = languageProvider.languages[index];
+                final isSelected =
+                    true;
+
+                return ListTile(
+                  title: Text(language['translated_name'] ?? language['name']),
+                  trailing: isSelected ? const Icon(Icons.check_circle) : null,
+                  onTap: () {
+                    // languageProvider.setSelectedLanguage(language['code']);
+                  },
+                );
+              },
+            );
+          },
         ),
       ),
     );
   }
 
-  Widget buildLanguageOption(BuildContext context, Locale locale, String language) {
-    return Consumer<LocaleProvider>(
-      builder: (context, localeProvider, child) {
-        return ListTile(
-          title: Text(language, style: TextStyle(fontSize: 18.h)),
-          trailing: localeProvider.locale == locale
-              ? Icon(Icons.check_circle, color: Colors.green)
-              : null,
-          onTap: () {
-            localeProvider.setLocale(locale);
-          },
-        );
+  Widget buildLanguageOption(
+    BuildContext context,
+    Locale locale,
+    String language,
+    bool isSelected,
+  ) {
+    return ListTile(
+      title: Text(language, style: TextStyle(fontSize: 18.h)),
+      trailing: isSelected
+          ? const Icon(Icons.check_circle, color: Colors.green)
+          : null,
+      onTap: () {
+        final languageProvider =
+            Provider.of<LanguageProvider>(context, listen: false);
+        // languageProvider.setSelectedLanguage(locale.languageCode);
       },
     );
   }
-
 }

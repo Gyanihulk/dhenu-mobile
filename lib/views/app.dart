@@ -1,5 +1,8 @@
 import 'package:dhenu_dharma/data/repositories/cowshed/cow_shed_repository.dart';
+import 'package:dhenu_dharma/data/repositories/laguage/language_repository.dart';
+import 'package:dhenu_dharma/data/repositories/language/language_repository.dart';
 import 'package:dhenu_dharma/utils/providers/cow_shed_provider.dart';
+import 'package:dhenu_dharma/utils/providers/language_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,8 +22,6 @@ import 'package:dhenu_dharma/views/screens/auth/login_screen.dart';
 import 'package:dhenu_dharma/views/screens/initial/initial_screen.dart';
 import 'package:dhenu_dharma/views/screens/splash/splash_screen.dart';
 import 'package:dhenu_dharma/utils/providers/auth_provider.dart'; // Import AuthProvider
-
-
 class MyApp extends StatelessWidget {
   final AuthProvider authProvider;
 
@@ -29,14 +30,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Initialize repositories
-    AuthRepository authRepository = AuthRepository();
-    UserRepository userRepository = UserRepository();
-  CowShedRepository cowShedRepository = CowShedRepository();
-    // Wrap the app with ChangeNotifierProviders
+    final authRepository = AuthRepository();
+    final userRepository = UserRepository();
+    final cowShedRepository = CowShedRepository();
+
+
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
-        ChangeNotifierProvider(create: (_) => authProvider),
         ChangeNotifierProxyProvider<AuthProvider, CowShedProvider>(
           create: (context) => CowShedProvider(
             repository: cowShedRepository,
@@ -86,10 +87,9 @@ class MyApp extends StatelessWidget {
                     GlobalWidgetsLocalizations.delegate,
                     GlobalCupertinoLocalizations.delegate,
                   ],
-                  // Show different home screens based on auth state
                   home: authProvider.isAuthenticated
-                      ? const InitialScreen(pageIndex: 0) // Main app screen
-                      : const LoginScreen(), // Login screen
+                      ? const InitialScreen(pageIndex: 0)
+                      : const LoginScreen(),
                 ),
               );
             },

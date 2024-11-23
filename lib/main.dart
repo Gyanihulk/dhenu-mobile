@@ -1,11 +1,13 @@
+import 'package:dhenu_dharma/data/repositories/language/language_repository.dart';
 import 'package:dhenu_dharma/service/app_preferences.dart';
 import 'package:dhenu_dharma/utils/providers/auth_provider.dart';
+import 'package:dhenu_dharma/utils/providers/language_provider.dart';
 import 'package:dhenu_dharma/views/app.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
-  // Ensure Widgets are initialized
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: const FirebaseOptions(
@@ -16,12 +18,35 @@ void main() async {
       storageBucket: "dhenu-dharma.firebasestorage.app",
     ),
   );
-  // Initialize SharedPreferences
+
+  // Initialize shared preferences
   await AppPreferences.instance.initSharedPreferences();
 
-  // Initialize AuthProvider
-  final authProvider = AuthProvider();
-  await authProvider.loadUserData(); // Load saved user data and auth state
+  // Initialize repositories
+  final languageRepository = LanguageRepository();
 
-  runApp(MyApp(authProvider: authProvider));
+  // Initialize AuthProvider
+  final authProvider = AuthProvider(languageRepository: languageRepository);
+
+  // Load user data
+  await authProvider.loadUserData();
+
+  // Initialize LanguageProvider
+  final languageProvider = LanguageProvider(
+    languageRepository: languageRepository,
+    authProvider: authProvider,
+  );
+
+  // Fetch languages (ensure proper initialization)
+  await languageProvider.fetchLanguages();
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => authProvider),
+        ChangeNotifierProvider(create: (_) => languageProvider),
+      ],
+      child: MyApp(authProvider: authProvider),
+    ),
+  );
 }

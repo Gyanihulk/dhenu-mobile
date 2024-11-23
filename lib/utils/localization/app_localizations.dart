@@ -326,7 +326,7 @@ class _AppLocalizationsDelegate
 
   @override
   Future<AppLocalizations> load(Locale locale) async {
-    debugPrint('Loading AppLocalizations for locale: ${locale.languageCode}');
+    // debugPrint('Loading AppLocalizations for locale: ${locale.languageCode}');
     return AppLocalizations(locale);
   }
 
