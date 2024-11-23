@@ -1,12 +1,14 @@
 import 'package:dhenu_dharma/utils/constants/app_assets.dart';
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
 import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
+import 'package:dhenu_dharma/utils/providers/cow_shed_provider.dart';
 import 'package:dhenu_dharma/views/screens/donate/components/donate_label_component.dart';
 import 'package:dhenu_dharma/views/screens/donate/components/donate_top_content_component.dart';
 import 'package:dhenu_dharma/views/widgets/custom_button.dart';
 import 'package:dhenu_dharma/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 class DonateScreen extends StatefulWidget {
   const DonateScreen({super.key});
@@ -14,8 +16,30 @@ class DonateScreen extends StatefulWidget {
   @override
   State<DonateScreen> createState() => _DonateScreenState();
 }
+
 class _DonateScreenState extends State<DonateScreen> {
   TextEditingController searchController = TextEditingController();
+ @override
+void initState() {
+  super.initState();
+  // Fetch initial cow shed data immediately without async gap
+  WidgetsBinding.instance.addPostFrameCallback((_) {
+    final cowShedProvider = Provider.of<CowShedProvider>(context, listen: false);
+    cowShedProvider.fetchCowSheds(
+      currentLatitude: 12.971598,
+      currentLongitude: 77.594566,
+    ).then((_) {
+      if (mounted) {
+        print('Fetched Cow Sheds: ${cowShedProvider.cowSheds}');
+      }
+    }).catchError((error) {
+      if (mounted) {
+        print('Error fetching Cow Sheds: $error');
+      }
+    });
+  });
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +139,8 @@ class _DonateScreenState extends State<DonateScreen> {
                     label: localization.translate('donate_screen.need_based'),
                     isActive: true),
                 buildLocationFilterTab(
-                    label: localization.translate('donate_screen.within_10_km')),
+                    label:
+                        localization.translate('donate_screen.within_10_km')),
                 buildLocationFilterTab(
                     label: localization.translate('donate_screen.nearest')),
                 buildLocationFilterTab(

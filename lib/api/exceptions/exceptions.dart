@@ -51,3 +51,14 @@ class ServerErrorException extends BaseException {
     return "Internal server error.";
   }
 }
+
+class FetchDataException implements Exception {
+  final String message;
+
+  FetchDataException({this.message = 'Error During Communication'});
+
+  @override
+  String toString() {
+    return "FetchDataException: $message";
+  }
+}

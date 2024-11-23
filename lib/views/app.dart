@@ -1,3 +1,5 @@
+import 'package:dhenu_dharma/data/repositories/cowshed/cow_shed_repository.dart';
+import 'package:dhenu_dharma/utils/providers/cow_shed_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,12 +31,20 @@ class MyApp extends StatelessWidget {
     // Initialize repositories
     AuthRepository authRepository = AuthRepository();
     UserRepository userRepository = UserRepository();
-
+  CowShedRepository cowShedRepository = CowShedRepository();
     // Wrap the app with ChangeNotifierProviders
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
         ChangeNotifierProvider(create: (_) => authProvider),
+        ChangeNotifierProxyProvider<AuthProvider, CowShedProvider>(
+          create: (context) => CowShedProvider(
+            repository: cowShedRepository,
+            authProvider: authProvider,
+          ),
+          update: (context, authProvider, previousProvider) =>
+              previousProvider!..updateAuthProvider(authProvider),
+        ),
       ],
       child: Consumer<LocaleProvider>(
         builder: (context, localeProvider, child) {
