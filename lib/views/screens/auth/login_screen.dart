@@ -18,6 +18,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:dhenu_dharma/utils/providers/locale_provider.dart';
+import 'package:dhenu_dharma/utils/auth/sign_in_with_google.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -89,7 +92,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Text('हिंदी'),
                     ),
                   ],
-                  
                 ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 16.h),
@@ -140,12 +142,14 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           SizedBox(height: 24.h),
           CustomText(
-            localization.translate('login.phone_or_email'), // Changed to nested key
+            localization
+                .translate('login.phone_or_email'), // Changed to nested key
             fontSize: 16,
             fontWeight: FontWeight.w500,
           ),
           CustomInputField(
-            hint: localization.translate('login.enter_phone_or_email'), // Changed to nested key
+            hint: localization.translate(
+                'login.enter_phone_or_email'), // Changed to nested key
             controller: usernameController,
             prefixIcon: Icons.email,
             onChangeText: (text) {
@@ -154,7 +158,8 @@ class _LoginScreenState extends State<LoginScreen> {
             },
             validator: (text) {
               if (text == null || text.trim().isEmpty) {
-                return localization.translate('login.username_empty'); // Changed to nested key
+                return localization
+                    .translate('login.username_empty'); // Changed to nested key
               }
               return null;
             },
@@ -166,7 +171,8 @@ class _LoginScreenState extends State<LoginScreen> {
             fontWeight: FontWeight.w500,
           ),
           CustomInputField(
-            hint: localization.translate('login.enter_password'), // Changed to nested key
+            hint: localization
+                .translate('login.enter_password'), // Changed to nested key
             controller: passwordController,
             prefixIcon: Icons.lock,
             obscureText: true,
@@ -180,26 +186,26 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
           SizedBox(height: 2.h),
           Align(
-  alignment: Alignment.centerRight,
-  child: GestureDetector(
-    onTap: () {
-      CustomNavigator(
-        context: context,
-        screen: const ForgetPasswordScreen(),
-      ).push();
-    },
-    child: CustomText(
-      localization.translate('login.forgot_password'),
-      color: AppColors.secondaryGrey,
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-    ),
-  ),
-),
-
+            alignment: Alignment.centerRight,
+            child: GestureDetector(
+              onTap: () {
+                CustomNavigator(
+                  context: context,
+                  screen: const ForgetPasswordScreen(),
+                ).push();
+              },
+              child: CustomText(
+                localization.translate('login.forgot_password'),
+                color: AppColors.secondaryGrey,
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
           SizedBox(height: 20.h),
           CustomButton(
-            text: localization.translate('login.login'), // Changed to nested key
+            text:
+                localization.translate('login.login'), // Changed to nested key
             onPressed: () {
               login();
             },
@@ -208,7 +214,6 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
 
   String? passwordValidation(String? text, AppLocalizations localization) {
     if (text == null || text.trim().isEmpty) {
@@ -263,11 +268,21 @@ class _LoginScreenState extends State<LoginScreen> {
           ],
         ),
         SizedBox(height: 16.h),
-        const FaIcon(
+        GestureDetector(
+        onTap: () async {
+          User? user = await signInWithGoogle();
+          if (user != null) {
+            print('Google sign-in successful: ${user}');
+          } else {
+            print('Google sign-in canceled or failed.');
+          }
+        },
+        child: const FaIcon(
           FontAwesomeIcons.google,
           size: 28,
           color: AppColors.secondaryGrey,
         ),
+      ),
         SizedBox(height: 20.h)
       ],
     );

@@ -1,5 +1,6 @@
 {
   "files.autoSave": "afterDelay",
   "files.autoSaveWhenNoErrors": false,
-  "files.autoSaveWorkspaceFilesOnly": false
+  "files.autoSaveWorkspaceFilesOnly": false,
+  "java.configuration.updateBuildConfiguration": "interactive"
 }

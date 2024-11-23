@@ -114,24 +114,37 @@ class AppLocalizations {
         'provide_title': 'What We Provide',
       },
       "forget_password": {
-    "title": "Forgot Password",
-    "enter_email_or_phone": "Enter your email or phone number to reset your password.",
-    "email_phone_hint": "Enter email or phone number",
-    "send_code": "Send Verification Code",
-    "empty_field_error": "Please enter a valid email or phone number.",
-    "code_sent": "Verification code sent!",
-    "enter_otp": "Enter the verification code sent to your email/phone.",
-    "otp_hint": "Enter verification code",
-    "verify_code": "Verify Code",
-    "invalid_otp": "Please enter a valid 6-digit OTP.",
-    "otp_verified": "OTP Verified!",
-    "enter_new_password": "Set your new password.",
-    "new_password_hint": "Enter new password",
-    "confirm_password_hint": "Confirm new password",
-    "reset_button": "Reset Password",
-    "password_mismatch": "Passwords do not match or are empty.",
-    "success": "Password reset successfully!"
-  }
+        "title": "Forgot Password",
+        "enter_email_or_phone":
+            "Enter your email or phone number to reset your password.",
+        "email_phone_hint": "Enter email or phone number",
+        "send_code": "Send Verification Code",
+        "empty_field_error": "Please enter a valid email or phone number.",
+        "code_sent": "Verification code sent!",
+        "enter_otp": "Enter the verification code sent to your email/phone.",
+        "otp_hint": "Enter verification code",
+        "verify_code": "Verify Code",
+        "invalid_otp": "Please enter a valid 6-digit OTP.",
+        "otp_verified": "OTP Verified!",
+        "enter_new_password": "Set your new password.",
+        "new_password_hint": "Enter new password",
+        "confirm_password_hint": "Confirm new password",
+        "reset_button": "Reset Password",
+        "password_mismatch": "Passwords do not match or are empty.",
+        "success": "Password reset successfully!"
+      },
+      "donate_screen": {
+        "title": "Location",
+        "subtitle": "Choose Gowshala near you",
+        "next": "Next",
+        "need_based": "Need Based",
+        "within_10_km": "Within 10 km",
+        "nearest": "Nearest",
+        "most_review": "Most Review",
+        "search_hint": "Search Gowshala near you",
+        "back_button": "Back",
+        "donate": "Donate"
+      }
     },
     'hi': {
       'home': {
@@ -227,24 +240,36 @@ class AppLocalizations {
         'provide_title': 'हम क्या प्रदान करते हैं',
       },
       "forget_password": {
-    "title": "पासवर्ड भूल गए",
-    "enter_email_or_phone": "अपना ईमेल या फोन नंबर दर्ज करें ताकि हम आपके पासवर्ड को रीसेट कर सकें।",
-    "email_phone_hint": "ईमेल या फोन नंबर दर्ज करें",
-    "send_code": "सत्यापन कोड भेजें",
-    "empty_field_error": "कृपया सही ईमेल या फोन नंबर दर्ज करें।",
-    "code_sent": "सत्यापन कोड भेजा गया!",
-    "enter_otp": "अपने ईमेल/फोन पर भेजा गया सत्यापन कोड दर्ज करें।",
-    "otp_hint": "सत्यापन कोड दर्ज करें",
-    "verify_code": "कोड सत्यापित करें",
-    "invalid_otp": "कृपया सही 6-अंकों का कोड दर्ज करें।",
-    "otp_verified": "ओटीपी सत्यापित हो गया!",
-    "enter_new_password": "अपना नया पासवर्ड सेट करें।",
-    "new_password_hint": "नया पासवर्ड दर्ज करें",
-    "confirm_password_hint": "पासवर्ड की पुष्टि करें",
-    "reset_button": "पासवर्ड रीसेट करें",
-    "password_mismatch": "पासवर्ड मेल नहीं खाते या खाली हैं।",
-    "success": "पासवर्ड सफलतापूर्वक रीसेट हो गया!"
-  }
+        "title": "पासवर्ड भूल गए",
+        "enter_email_or_phone":
+            "अपना ईमेल या फोन नंबर दर्ज करें ताकि हम आपके पासवर्ड को रीसेट कर सकें।",
+        "email_phone_hint": "ईमेल या फोन नंबर दर्ज करें",
+        "send_code": "सत्यापन कोड भेजें",
+        "empty_field_error": "कृपया सही ईमेल या फोन नंबर दर्ज करें।",
+        "code_sent": "सत्यापन कोड भेजा गया!",
+        "enter_otp": "अपने ईमेल/फोन पर भेजा गया सत्यापन कोड दर्ज करें।",
+        "otp_hint": "सत्यापन कोड दर्ज करें",
+        "verify_code": "कोड सत्यापित करें",
+        "invalid_otp": "कृपया सही 6-अंकों का कोड दर्ज करें।",
+        "otp_verified": "ओटीपी सत्यापित हो गया!",
+        "enter_new_password": "अपना नया पासवर्ड सेट करें।",
+        "new_password_hint": "नया पासवर्ड दर्ज करें",
+        "confirm_password_hint": "पासवर्ड की पुष्टि करें",
+        "reset_button": "पासवर्ड रीसेट करें",
+        "password_mismatch": "पासवर्ड मेल नहीं खाते या खाली हैं।",
+        "success": "पासवर्ड सफलतापूर्वक रीसेट हो गया!"
+      },
+      "donate_screen": {
+        "title": "स्थान",
+        "subtitle": "अपने पास की गौशाला चुनें",
+        "next": "आगे बढ़ें",
+        "need_based": "जरूरत आधारित",
+        "within_10_km": "10 किमी के भीतर",
+        "nearest": "निकटतम",
+        "most_review": "सर्वाधिक समीक्षा",
+        "search_hint": "अपने पास की गौशाला खोजें",
+        "back_button": "वापस", "donate": "दान"
+      }
     },
   };
 

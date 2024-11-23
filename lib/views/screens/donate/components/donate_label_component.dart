@@ -1,4 +1,5 @@
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
+import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:dhenu_dharma/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,7 @@ class DonateLabelComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+        final localization = AppLocalizations.of(context);
     return Positioned(
       top: 142.h,
       left: 16.h,
@@ -19,9 +21,9 @@ class DonateLabelComponent extends StatelessWidget {
         child: SizedBox(
           width: 112.w,
           height: 40.h,
-          child: const Center(
+          child:  Center(
             child: CustomText(
-              "Donate",
+              localization?.translate('donate_screen.donate') ?? 'Donate',
               fontSize: 16,
               fontWeight: FontWeight.w500,
             ),

@@ -1,5 +1,6 @@
 import 'package:dhenu_dharma/utils/constants/app_assets.dart';
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
+import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:dhenu_dharma/views/screens/donate/components/donate_label_component.dart';
 import 'package:dhenu_dharma/views/screens/donate/components/donate_top_content_component.dart';
 import 'package:dhenu_dharma/views/widgets/custom_button.dart';
@@ -13,26 +14,26 @@ class DonateScreen extends StatefulWidget {
   @override
   State<DonateScreen> createState() => _DonateScreenState();
 }
-
 class _DonateScreenState extends State<DonateScreen> {
   TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
     return Scaffold(
       body: Stack(
         children: [
           DonateTopContentComponent(
             isBack: false,
           ),
-          buildDonateContent(),
+          buildDonateContent(localization!),
           const DonateLabelComponent()
         ],
       ),
     );
   }
 
-  Positioned buildDonateContent() {
+  Positioned buildDonateContent(AppLocalizations localization) {
     return Positioned(
       top: 162.h,
       left: 0,
@@ -66,22 +67,26 @@ class _DonateScreenState extends State<DonateScreen> {
                           size: 28.h,
                         ),
                         title: CustomText(
-                          "Location",
+                          localization.translate('donate_screen.title'),
                           fontSize: 14.h,
                           fontWeight: FontWeight.w500,
                         ),
                         subtitle: CustomText(
-                          "Choose Gowshala near you",
+                          localization.translate('donate_screen.subtitle'),
                           fontSize: 12.h,
                         ),
                         trailing: const Icon(Icons.keyboard_arrow_up),
                       ),
-                      buildLocationFilter(),
+                      buildLocationFilter(localization),
                     ],
                   ),
                 ),
                 SizedBox(height: 30.h),
-                CustomButton(width: 124.w, text: "Next", onPressed: () {})
+                CustomButton(
+                  width: 124.w,
+                  text: localization.translate('donate_screen.next'),
+                  onPressed: () {},
+                )
               ],
             ),
           ),
@@ -90,7 +95,7 @@ class _DonateScreenState extends State<DonateScreen> {
     );
   }
 
-  Container buildLocationFilter() {
+  Container buildLocationFilter(AppLocalizations localization) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
       margin: EdgeInsets.symmetric(horizontal: 8.h),
@@ -106,10 +111,15 @@ class _DonateScreenState extends State<DonateScreen> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                buildLocationFilterTab(label: "Need Based", isActive: true),
-                buildLocationFilterTab(label: "Within 10 km"),
-                buildLocationFilterTab(label: "Nearest"),
-                buildLocationFilterTab(label: "Most Review"),
+                buildLocationFilterTab(
+                    label: localization.translate('donate_screen.need_based'),
+                    isActive: true),
+                buildLocationFilterTab(
+                    label: localization.translate('donate_screen.within_10_km')),
+                buildLocationFilterTab(
+                    label: localization.translate('donate_screen.nearest')),
+                buildLocationFilterTab(
+                    label: localization.translate('donate_screen.most_review')),
               ],
             ),
           ),

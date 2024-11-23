@@ -1,5 +1,3 @@
-// ignore_for_file: must_be_immutable
-
 import 'package:dhenu_dharma/utils/constants/app_assets.dart';
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
 import 'package:dhenu_dharma/views/widgets/custom_text.dart';
@@ -7,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 
 class DonateTopContentComponent extends StatefulWidget {
   bool isBack;
@@ -23,6 +22,8 @@ class _DonateTopContentComponentState extends State<DonateTopContentComponent> {
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context);
+
     return Positioned(
       top: 0,
       left: 0,
@@ -65,7 +66,7 @@ class _DonateTopContentComponentState extends State<DonateTopContentComponent> {
                 SizedBox(height: 16.h),
                 Wrap(
                   children: [
-                    buildSearch(),
+                    buildSearch(localization!),
                     SizedBox(width: 8.w),
                     CircleAvatar(
                       radius: 20.h,
@@ -85,7 +86,7 @@ class _DonateTopContentComponentState extends State<DonateTopContentComponent> {
     );
   }
 
-  SizedBox buildSearch() {
+  SizedBox buildSearch(AppLocalizations localization) {
     return SizedBox(
       width: MediaQuery.of(context).size.width * .75,
       height: 38.h,
@@ -99,7 +100,7 @@ class _DonateTopContentComponentState extends State<DonateTopContentComponent> {
             size: 16.h,
             color: const Color(0XFFAAAAAA),
           ),
-          hintText: 'Search Gowshala near you',
+          hintText: localization.translate('donate_screen.search_hint'),
           hintStyle: TextStyle(
             color: const Color(0XFFCCCCCC),
             fontSize: 14.sp,
