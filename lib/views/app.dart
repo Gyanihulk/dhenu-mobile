@@ -1,5 +1,5 @@
 import 'package:dhenu_dharma/data/repositories/cowshed/cow_shed_repository.dart';
-import 'package:dhenu_dharma/data/repositories/laguage/language_repository.dart';
+import 'package:dhenu_dharma/data/repositories/language/language_repository.dart';
 import 'package:dhenu_dharma/data/repositories/language/language_repository.dart';
 import 'package:dhenu_dharma/utils/providers/cow_shed_provider.dart';
 import 'package:dhenu_dharma/utils/providers/language_provider.dart';

@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
+import 'package:dhenu_dharma/utils/common/url_launcher_util.dart';
 import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:dhenu_dharma/views/screens/donate/donate_screen.dart';
 import 'package:dhenu_dharma/views/screens/home/misson/mission_screen.dart';
@@ -14,7 +15,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import '../../../utils/constants/app_assets.dart';
 import '../../widgets/custom_navigator.dart';
 import '../profile/screens/my_donations/upcoming_donation_detail_screen.dart';
@@ -145,10 +145,13 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: BoxDecoration(
                   border: Border.all(color: AppColors.primary),
                   borderRadius: BorderRadius.circular(12.h)),
-              child: const CustomText(
-                "Read more",
-                color: Colors.white,
-              ),
+              child: CustomButton(
+              text: "Read More",
+              onPressed: () async {
+                await launchURL(
+                    context, 'https://www.dhenudharmafoundation.org/');
+              },
+            ),
             )
           ],
         ),
@@ -199,8 +202,12 @@ class _HomeScreenState extends State<HomeScreen> {
           child: SizedBox(
             width: 120.w,
             child: CustomButton(
-                text: localization?.translate("main.know_more") ?? "Know More",
-                onPressed: () {}),
+              text: localization?.translate("main.know_more") ?? "Know More",
+              onPressed: () async {
+                await launchURL(
+                    context, 'https://www.dhenudharmafoundation.org/');
+              },
+            ),
           ),
         )
       ],
@@ -297,11 +304,13 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         SizedBox(height: 20.h),
-        Center(
-            child: CustomButton(
-                width: 120.w,
-                text: localization?.translate("main.view_more") ?? "View More",
-                onPressed: () {}))
+        CustomButton(
+          width: 120.w,
+          text: localization?.translate("main.view_more") ?? "View More",
+          onPressed: () async {
+            await launchURL(context, 'https://www.dhenudharmafoundation.org/');
+          },
+        )
       ],
     );
   }

@@ -36,7 +36,7 @@ class LanguageProvider with ChangeNotifier {
 
       // Update state
       _languages = fetchedLanguages;
-
+print('saving languages in provider $_languages');
       notifyListeners();
     } catch (error) {
       _errorMessage = 'Error fetching languages: $error';

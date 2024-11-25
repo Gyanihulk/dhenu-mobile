@@ -9,7 +9,7 @@ import 'package:dhenu_dharma/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
-
+import 'package:dhenu_dharma/utils/common/url_launcher_util.dart';
 class DonateScreen extends StatefulWidget {
   const DonateScreen({super.key});
 
@@ -109,7 +109,10 @@ void initState() {
                 CustomButton(
                   width: 124.w,
                   text: localization.translate('donate_screen.next'),
-                  onPressed: () {},
+                  onPressed: () async {
+                await launchURL(
+                    context, 'https://www.dhenudharmafoundation.org/');
+              },
                 )
               ],
             ),
