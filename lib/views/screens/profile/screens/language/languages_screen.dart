@@ -10,9 +10,40 @@ import '../../../../../utils/constants/app_colors.dart';
 import '../../components/profile_background_component.dart';
 import '../../components/screen_label_component.dart';
 
-class LanguagesScreen extends StatelessWidget {
+
+class LanguagesScreen extends StatefulWidget {
   const LanguagesScreen({super.key});
 
+  @override
+  State<LanguagesScreen> createState() => _LanguagesScreen();
+}
+
+
+class _LanguagesScreen extends State<LanguagesScreen> {
+
+
+@override
+  void initState() {
+    super.initState();
+    // Fetch initial cow shed data immediately without async gap
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final languageProvider =
+          Provider.of<LanguageProvider>(context, listen: false);
+      languageProvider
+          .fetchLanguages(
+    
+      )
+          .then((_) {
+        if (mounted) {
+          print('Fetched Cow Sheds: ${languageProvider.languages}');
+        }
+      }).catchError((error) {
+        if (mounted) {
+          print('Error fetching Cow Sheds: $error');
+        }
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -52,6 +83,7 @@ class LanguagesScreen extends StatelessWidget {
             if (languageProvider.isLoading) {
               return const Center(child: CircularProgressIndicator());
             }
+            
 print('Languages in Language screen: ${languageProvider.languages}');
             if (languageProvider.errorMessage.isNotEmpty) {
               return Center(

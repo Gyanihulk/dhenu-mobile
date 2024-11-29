@@ -134,8 +134,12 @@ class AppLocalizations {
         "success": "Password reset successfully!"
       },
       "donate_screen": {
-        "title": "Location",
-        "subtitle": "Choose Gowshala near you",
+        "card1title": "Location",
+        "card1subtitle": "Choose Gowshala near you",
+        "card2title": "Type of Seva",
+        "card2subtitle": "Choose what to donate",
+        "card3title": "Donate Amount",
+        "card4subtitle": "Choose how much to donate",
         "next": "Next",
         "need_based": "Need Based",
         "within_10_km": "Within 10 km",

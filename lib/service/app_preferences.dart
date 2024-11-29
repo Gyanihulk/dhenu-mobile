@@ -63,6 +63,7 @@ class AppPreferences {
   }
 
   String? fetchUserInfo() {
+  
     return preferences.getString('user_info');
   }
 

@@ -1,10 +1,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
     <application
         android:label="Dhenu Dharma"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+         <meta-data
+        android:name="com.google.android.gms.ads.APPLICATION_ID"
+        android:value="ca-app-pub-4078042381069561~6025364247"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

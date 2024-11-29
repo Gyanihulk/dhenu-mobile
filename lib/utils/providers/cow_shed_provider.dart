@@ -9,7 +9,7 @@ class CowShedProvider with ChangeNotifier {
   List<dynamic> cowSheds = [];
   bool isLoading = false;
   String errorMessage = '';
-
+int? selectedCowShedId;
   CowShedProvider({required this.repository, required this.authProvider});
   
   void updateAuthProvider(AuthProvider newAuthProvider) {
@@ -55,5 +55,9 @@ class CowShedProvider with ChangeNotifier {
       isLoading = false;
       notifyListeners();
     }
+  }
+   void updateSelectedCowShedId(int id) {
+    selectedCowShedId = id;
+    notifyListeners(); // Notify listeners to update the UI
   }
 }
