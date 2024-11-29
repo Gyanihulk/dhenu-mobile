@@ -3,7 +3,7 @@ class AssetsConstants {
   static const String onboardingDir = "assets/images/onboarding";
   static const String profileDir = "assets/images/profile";
   static const String homeDir = "assets/images/home";
-
+static const String donationDir = "assets/images/donation";
   // Logo
   static const String logoImg = "$imageDir/logo.png";
   static const String logoImg2 = "$imageDir/logo-2.png";
@@ -13,6 +13,11 @@ class AssetsConstants {
   static const String onboardingImg2 = "$onboardingDir/onboarding-2.png";
   static const String onboardingImg3 = "$onboardingDir/onboarding-3.png";
 
+  // Seva
+  static const String sevaImg1 = "$donationDir/doctor.png";
+  static const String sevaImg2 = "$donationDir/medicine.png";
+  static const String sevaImg3 = "$donationDir/food.png";
+  static const String sevaImg4 = "$donationDir/others.png";
   // Profile
   static const String userProfileBgImg1 = "$profileDir/user-profile-1.png";
   static const String shareImg = "$profileDir/share-img.png";
