@@ -9,8 +9,13 @@ import 'gowshala_card.dart'; // Import GowshalaCard widget
 
 class CowShedSelectionContainer extends StatelessWidget {
   final AppLocalizations localization;
+  final Function(int cowShedId) onSelect; // Callback for selection
 
-  const CowShedSelectionContainer({super.key, required this.localization});
+  const CowShedSelectionContainer({
+    super.key,
+    required this.localization,
+    required this.onSelect,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +36,7 @@ class CowShedSelectionContainer extends StatelessWidget {
       ),
       child: Column(
         children: [
+          // Location Filter Tabs
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Row(
@@ -53,21 +59,27 @@ class CowShedSelectionContainer extends StatelessWidget {
             ),
           ),
           SizedBox(height: 12.h),
+          // Cow Shed Cards
           Expanded(
             child: SingleChildScrollView(
               child: Consumer<CowShedProvider>(
                 builder: (context, cowShedProvider, child) {
-                  // Dynamically create cards for each cow shed
                   return Column(
                     children: cowShedProvider.cowSheds.map((cowShed) {
                       final randomImage =
                           images[random.nextInt(images.length)];
-                      return GowshalaCard(
-                        image: randomImage,
-                        name: cowShed['name'] ?? 'Unknown',
-                        distance: cowShed['distance'] ?? 0,
-                        id: cowShed['id'],
-                        cowShedProvider: cowShedProvider,
+                      return GestureDetector(
+                        onTap: () {
+                          onSelect(cowShed['id']); // Trigger the callback
+                        },
+                        child: GowshalaCard(
+                          image: randomImage,
+                          name: cowShed['name'] ?? 'Unknown',
+                          distance: cowShed['distance'] ?? 0,
+                          id: cowShed['id'],
+                          isSelected: cowShedProvider.selectedCowShedId ==
+                              cowShed['id'], // Optional highlighting
+                        ),
                       );
                     }).toList(),
                   );

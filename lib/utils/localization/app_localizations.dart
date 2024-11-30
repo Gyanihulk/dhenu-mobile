@@ -139,7 +139,7 @@ class AppLocalizations {
         "card2title": "Type of Seva",
         "card2subtitle": "Choose what to donate",
         "card3title": "Donate Amount",
-        "card4subtitle": "Choose how much to donate",
+        "card3subtitle": "Choose how much to donate",
         "next": "Next",
         "need_based": "Need Based",
         "within_10_km": "Within 10 km",
@@ -147,7 +147,14 @@ class AppLocalizations {
         "most_review": "Most Review",
         "search_hint": "Search Gowshala near you",
         "back_button": "Back",
-        "donate": "Donate"
+        "donate": "Donate",
+        "action_label_quantity": "QUANTITY OF BAGS",
+        "action_label_amount": "ENTER AMOUNT",
+        "enter_amount": "Enter an amount",
+        "food_details": "1 bag costs ₹500 & feeds 4 cows",
+        "total_price": "Total Price",
+        "cows_fed": "Feeding",
+        "cows":"cows"
       }
     },
     'hi': {
@@ -272,7 +279,15 @@ class AppLocalizations {
         "nearest": "निकटतम",
         "most_review": "सर्वाधिक समीक्षा",
         "search_hint": "अपने पास की गौशाला खोजें",
-        "back_button": "वापस", "donate": "दान"
+        "back_button": "वापस",
+        "donate": "दान",
+        "action_label_quantity": "बैग की मात्रा",
+        "action_label_amount": "राशि दर्ज करें",
+        "enter_amount": "राशि दर्ज करें",
+        "food_details": "1 बैग की कीमत ₹500 है और 4 गायों को खिलाता है",
+        "total_price": "कुल कीमत",
+        "cows_fed": "",
+        "cows":"गायों को खिला रहे हैं"
       }
     },
   };

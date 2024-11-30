@@ -4,9 +4,10 @@ import 'package:dhenu_dharma/utils/constants/app_colors.dart';
 import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:dhenu_dharma/utils/providers/cow_shed_provider.dart';
 import 'package:dhenu_dharma/views/screens/donate/components/collapsible_container.dart';
-import 'package:dhenu_dharma/views/screens/donate/components/docation_order_card.dart';
+import 'package:dhenu_dharma/views/screens/donate/components/cow_shed_selection_container.dart';
 import 'package:dhenu_dharma/views/screens/donate/components/donate_label_component.dart';
 import 'package:dhenu_dharma/views/screens/donate/components/donate_top_content_component.dart';
+import 'package:dhenu_dharma/views/screens/donate/components/donation_form_component.dart';
 import 'package:dhenu_dharma/views/screens/donate/components/seva_selection_container.dart';
 import 'package:dhenu_dharma/views/widgets/custom_button.dart';
 import 'package:dhenu_dharma/views/widgets/custom_text.dart';
@@ -51,20 +52,22 @@ class _DonateScreenState extends State<DonateScreen> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context);
+    final cowShedProvider = Provider.of<CowShedProvider>(context);
     return Scaffold(
       body: Stack(
         children: [
           DonateTopContentComponent(
             isBack: false,
           ),
-          buildDonateContent(localization!),
+          buildDonateContent(localization!, cowShedProvider),
           const DonateLabelComponent()
         ],
       ),
     );
   }
 
-  Positioned buildDonateContent(AppLocalizations localization) {
+  Positioned buildDonateContent(
+      AppLocalizations localization, CowShedProvider cowShedProvider) {
     return Positioned(
       top: 162.h,
       left: 0,
@@ -89,8 +92,19 @@ class _DonateScreenState extends State<DonateScreen> {
                   title: localization.translate('donate_screen.card1title'),
                   subtitle:
                       localization.translate('donate_screen.card1subtitle'),
-                  content:
-                      CowShedSelectionContainer(localization: localization),
+                  content: CowShedSelectionContainer(
+                    localization: localization,
+                    onSelect: (selectedCowShedId) {
+                      print('Selected Cow Shed ID: $selectedCowShedId');
+
+                      cowShedProvider.updateSelectedCowShedId(
+                          selectedCowShedId); // Update provider
+                          setState(() {
+                      expandedContainerIndex =
+                          expandedContainerIndex == 0 ? -1 : 0;
+                    });
+                    },
+                  ),
                   onToggle: () {
                     setState(() {
                       expandedContainerIndex =
@@ -106,8 +120,12 @@ class _DonateScreenState extends State<DonateScreen> {
                       localization.translate('donate_screen.card2subtitle'),
                   content: SevaSelectionContainer(
                     onSelect: (selectedSeva) {
-                      print(
-                          'Selected Seva: $selectedSeva'); // Handle selected seva type
+                      print('Selected Seva: $selectedSeva');
+                      cowShedProvider.updateDonationType(selectedSeva);
+                      setState(() {
+                        expandedContainerIndex =
+                            expandedContainerIndex == 2 ? -1 : 2;
+                      }); // Handle selected seva type
                     },
                   ),
                   onToggle: () {
@@ -117,11 +135,50 @@ class _DonateScreenState extends State<DonateScreen> {
                     });
                   },
                 ),
+                CollapsibleContainer(
+                  index: 2,
+                  isExpanded: expandedContainerIndex == 2,
+                  title: localization.translate('donate_screen.card3title'),
+                  subtitle:
+                      localization.translate('donate_screen.card3subtitle'),
+                  content: DonationFormComponent(
+                      donationType: cowShedProvider.donationType ??
+                          "Other", // Use donationType from provider
+                      quantity: cowShedProvider.quantity,
+                      onInputChange: (amount) {
+                        cowShedProvider
+                            .updateAmount(double.tryParse(amount) ?? 0);
+                        print("Entered Amount: $amount");
+                      },
+                      onQuantityChange: (newQuantity) {
+                        cowShedProvider.updateQuantity(newQuantity);
+                        print("Selected Quantity: $newQuantity");
+                      },
+                      localization: localization),
+                  onToggle: () {
+                    setState(() {
+                      expandedContainerIndex =
+                          expandedContainerIndex == 2 ? -1 : 2;
+                    });
+                  },
+                ),
                 SizedBox(height: 30.h),
                 CustomButton(
                   width: 124.w,
                   text: localization.translate('donate_screen.next'),
                   onPressed: () {
+                    final donationDetails =
+                        cowShedProvider.getDonationDetails();
+
+                    // Log the donation details
+                    print("Donation Details:");
+                    print(
+                        "Selected Cow Shed ID: ${donationDetails['selectedCowShedId']}");
+                    print("Donation Type: ${donationDetails['donationType']}");
+                    print("Quantity: ${donationDetails['quantity']}");
+                    print("Amount: ${donationDetails['amount']}");
+                    print(
+                        "Related Fields: ${donationDetails['relatedFields']}");
                     setState(() {
                       if (expandedContainerIndex == 0) {
                         expandedContainerIndex = 1;

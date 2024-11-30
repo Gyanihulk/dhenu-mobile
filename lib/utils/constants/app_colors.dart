@@ -10,4 +10,7 @@ class AppColors {
   static const Color selected = Color(0xFF777777);
   static const Color selectedBorder = Color.fromRGBO(0, 0, 0, 1);
   static const Color lightYellow =Color(0xFFEAE5D8);
+  static const Color white = Color(0xFFFFFFFF);
+    static const Color subtitle = Color(0xFF232122);
+
 }

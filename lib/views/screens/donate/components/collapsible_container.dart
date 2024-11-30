@@ -11,14 +11,14 @@ class CollapsibleContainer extends StatelessWidget {
   final VoidCallback onToggle;
 
   const CollapsibleContainer({
-    Key? key,
+    super.key,
     required this.index,
     required this.isExpanded,
     required this.title,
     required this.subtitle,
     required this.content,
     required this.onToggle,
-  }) : super(key: key);
+  }) ;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +26,11 @@ class CollapsibleContainer extends StatelessWidget {
       onTap: onToggle,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
-        height: isExpanded ? 340.h : 80.h,
+        height: isExpanded
+            ? index == 2 
+                ? 260.h
+                : 340.h
+            : 80.h,
         margin: EdgeInsets.only(top: 16.h),
         decoration: BoxDecoration(
           color: isExpanded ? AppColors.primary : AppColors.lightYellow,
@@ -57,7 +61,9 @@ class CollapsibleContainer extends StatelessWidget {
                 ),
               ),
               trailing: Icon(
-                isExpanded ? Icons.keyboard_arrow_down : Icons.keyboard_arrow_up,
+                isExpanded
+                    ? Icons.keyboard_arrow_down
+                    : Icons.keyboard_arrow_up,
                 color: isExpanded ? AppColors.title : Colors.black87,
               ),
             ),
