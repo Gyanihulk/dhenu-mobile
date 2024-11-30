@@ -3,6 +3,7 @@ import 'package:dhenu_dharma/utils/constants/app_assets.dart';
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
 import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:dhenu_dharma/utils/providers/cow_shed_provider.dart';
+import 'package:dhenu_dharma/views/screens/donate/components/calendar_selection.dart';
 import 'package:dhenu_dharma/views/screens/donate/components/collapsible_container.dart';
 import 'package:dhenu_dharma/views/screens/donate/components/cow_shed_selection_container.dart';
 import 'package:dhenu_dharma/views/screens/donate/components/donate_label_component.dart';
@@ -99,10 +100,10 @@ class _DonateScreenState extends State<DonateScreen> {
 
                       cowShedProvider.updateSelectedCowShedId(
                           selectedCowShedId); // Update provider
-                          setState(() {
-                      expandedContainerIndex =
-                          expandedContainerIndex == 0 ? -1 : 0;
-                    });
+                      setState(() {
+                        expandedContainerIndex =
+                            expandedContainerIndex == 0 ? -1 : 0;
+                      });
                     },
                   ),
                   onToggle: () {
@@ -159,6 +160,27 @@ class _DonateScreenState extends State<DonateScreen> {
                     setState(() {
                       expandedContainerIndex =
                           expandedContainerIndex == 2 ? -1 : 2;
+                    });
+                  },
+                ),
+                CollapsibleContainer(
+                  index: 3,
+                  isExpanded: expandedContainerIndex == 3,
+                  title: localization.translate('donate_screen.card4title'),
+                  subtitle:
+                      localization.translate('donate_screen.card4subtitle'),
+                  content: DonationFrequency(
+                    onNameChange: (name) {
+                      print("Donor Name: $name");
+                    },
+                    onAmountChange: (amount) {
+                      print("Total Donation Amount: $amount");
+                    },
+                  ),
+                  onToggle: () {
+                    setState(() {
+                      expandedContainerIndex =
+                          expandedContainerIndex == 3 ? -1 : 3;
                     });
                   },
                 ),

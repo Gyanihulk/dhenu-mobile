@@ -140,6 +140,8 @@ class AppLocalizations {
         "card2subtitle": "Choose what to donate",
         "card3title": "Donate Amount",
         "card3subtitle": "Choose how much to donate",
+         "card4title": "Donation Frequency",
+        "card4subtitle": "When do you want to donate",
         "next": "Next",
         "need_based": "Need Based",
         "within_10_km": "Within 10 km",

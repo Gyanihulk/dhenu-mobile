@@ -29,7 +29,7 @@ class CollapsibleContainer extends StatelessWidget {
         height: isExpanded
             ? index == 2 
                 ? 260.h
-                : 340.h
+                : index==3?660.h:340.h
             : 80.h,
         margin: EdgeInsets.only(top: 16.h),
         decoration: BoxDecoration(
