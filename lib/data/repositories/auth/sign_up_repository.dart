@@ -16,27 +16,27 @@ class SignUpRepository extends BaseRepository {
   }) async {
     try {
       // Prepare query parameters
-      final queryParams = {
-        'first_name': firstName,
-        'last_name': lastName,
-        'email': email,
-        'phone': phone,
-        'password': password,
-        'password_confirmation': passwordConfirmation,
+      final Map<String, dynamic> requestBody = {
+        "first_name": firstName,
+        "last_name": lastName,
+        "email": email,
+        "phone": phone,
+        "password": password,
+        "password_confirmation": passwordConfirmation,
+        "google_login": false, // Include google_login if required by the API
       };
 
-      final fullUrl = ApiConstants.baseUrl +
-          ApiConstants.registerEndpoint +
-          Uri(queryParameters: queryParams).toString();
-      print('Register url: ${fullUrl}');
+      final String fullUrl = ApiConstants.registerEndpoint;
+
       final response = await requestHttps(
         RequestType.POST,
-        ApiConstants.registerEndpoint,
-        null, // No request body needed
+        fullUrl,
+        jsonEncode(requestBody), // Encode request body as JSON
         baseURL: ApiConstants.baseUrl,
-        queryParameters: queryParams,
         headers: {
           ApiConstants.kAccept: ApiConstants.kApplictionJson,
+          ApiConstants.kContentType:
+              ApiConstants.kApplictionJson, // Set Content-Type
         },
       );
 

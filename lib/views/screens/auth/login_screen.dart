@@ -273,6 +273,10 @@ class _LoginScreenState extends State<LoginScreen> {
           User? user = await signInWithGoogle();
           if (user != null) {
             print('Google sign-in successful: ${user}');
+              CustomNavigator(
+              context: context,
+              screen: const InitialScreen(pageIndex: 0),
+            ).pushReplacement();
           } else {
             print('Google sign-in canceled or failed.');
           }

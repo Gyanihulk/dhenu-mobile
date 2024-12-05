@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:dhenu_dharma/api/base/resource.dart';
 import 'package:dhenu_dharma/api/base/base_repository.dart';
 import 'package:dhenu_dharma/api/exceptions/exceptions.dart';
 import 'package:dhenu_dharma/data/models/user_model.dart';
@@ -8,7 +7,7 @@ import 'package:dhenu_dharma/data/models/login_response.dart';
 import 'package:dhenu_dharma/utils/constants/api_constants.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 import 'package:dhenu_dharma/service/token_storage_service.dart';
-import 'package:dhenu_dharma/api/base/base_exception.dart';
+
 
 class AuthRepository extends BaseRepository {
   Future<UserModel?> login({
@@ -16,24 +15,27 @@ class AuthRepository extends BaseRepository {
     required String password,
   }) async {
     try {
-      final queryParams = {
-        'username': username,
-        'password': password,
+      final Map<String, dynamic> requestBody = {
+        "username": username,
+        "password": password,
+        "is_mobile": true,
+        "device_uuid": "unique1",
+        "fcm_token": "fcm_1",
+        "device_info": "information",
+        "os_type": "android",
+        "app_version": "v.1.0.0.1",
+        "google_login": false 
       };
 
-      final fullUrl =
-          Uri.parse(ApiConstants.baseUrl + ApiConstants.loginEndpoint)
-              .replace(queryParameters: queryParams)
-              .toString();
-      
+      const String fullUrl = ApiConstants.loginEndpoint;
 
       final response = await requestHttps(
         RequestType.POST,
         fullUrl,
-        jsonEncode(queryParams), // Pass as body
-        baseURL: '',
+        jsonEncode(requestBody), // Encode the body as JSON
         headers: {
           ApiConstants.kContentType: ApiConstants.kApplictionJson,
+          // 'Cookie': 'XSRF-TOKEN=eyJpdiI6IlZFbXJ1...; laravel_session=eyJpdiI6ImRzRm5oU...', // Add the required cookies
         },
       );
 
@@ -41,7 +43,7 @@ class AuthRepository extends BaseRepository {
       print('Response Body: ${response.body}');
 
       if (response.statusCode == 200) {
-         // Parse the response using LoginResponse
+        // Parse the response using LoginResponse
         final loginResponse = loginResponseFromJson(response.body);
 
         // Check for auth token
@@ -50,10 +52,11 @@ class AuthRepository extends BaseRepository {
         }
 
         // Store the auth token
-        await TokenStorageService.storeAuthToken(loginResponse.data!.authToken!);
+        await TokenStorageService.storeAuthToken(
+            loginResponse.data!.authToken!);
 
         // Return the UserModel
-        return loginResponse.data; 
+        return loginResponse.data;
       } else {
         throw Exception('Login failed with status: ${response.statusCode}');
       }

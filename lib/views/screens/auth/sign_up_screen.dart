@@ -1,4 +1,5 @@
 import 'package:dhenu_dharma/data/repositories/auth/sign_up_repository.dart'; // Import for SignUpRepository
+import 'package:dhenu_dharma/utils/auth/sign_up_with_google.dart';
 import 'package:dhenu_dharma/views/screens/auth/login_screen.dart';
 import 'package:dhenu_dharma/views/screens/auth/otp_verification_screen.dart';
 import 'package:dhenu_dharma/views/screens/onboarding/onboarding_screen.dart';
@@ -9,13 +10,14 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:dhenu_dharma/api/base/resource.dart';
 import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
-
+import 'package:dhenu_dharma/utils/auth/sign_in_with_google.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../utils/constants/app_assets.dart';
 import '../../../utils/constants/app_colors.dart';
 import '../../widgets/custom_input_field.dart';
 import '../../widgets/custom_navigator.dart';
 import '../../widgets/custom_text.dart';
-
+import 'package:dhenu_dharma/views/screens/initial/initial_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -246,7 +248,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             ),
             SizedBox(width: 8.w),
             CustomText(
-              localization.translate('signup.or'),
+              localization.translate('login.or'),
               color: AppColors.secondaryBlack,
               fontSize: 14,
               fontWeight: FontWeight.w500,
@@ -260,12 +262,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
           ],
         ),
         SizedBox(height: 16.h),
-        SizedBox(width: 30.w),
-        const FaIcon(
+        GestureDetector(
+        onTap: () async {
+          User? user = await signUpWithGoogle();
+          if (user != null) {
+            print('Google sign-in successful: ${user}');
+           CustomNavigator(
+              context: context,
+              screen: const InitialScreen(pageIndex: 0),
+            ).pushReplacement();
+          } else {
+            print('Google sign-in canceled or failed.');
+          }
+        },
+        child: const FaIcon(
           FontAwesomeIcons.google,
           size: 28,
           color: AppColors.secondaryGrey,
         ),
+      ),
         SizedBox(height: 20.h)
       ],
     );
