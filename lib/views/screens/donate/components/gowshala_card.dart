@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
 import 'package:dhenu_dharma/utils/providers/cow_shed_provider.dart';
+
 class GowshalaCard extends StatelessWidget {
   final String image;
   final String name;
@@ -18,6 +19,10 @@ class GowshalaCard extends StatelessWidget {
     required this.isSelected,
   });
 
+  bool _isNetworkImage(String url) {
+    return url.startsWith('http://') || url.startsWith('https://');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,11 +37,43 @@ class GowshalaCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Image.asset(
-            image,
-            height: 50.h,
-            width: 50.w,
-            fit: BoxFit.cover,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8.r), // Optional rounded corners
+            child: _isNetworkImage(image)
+                ? Image.network(
+                    image,
+                    height: 50.h,
+                    width: 50.w,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Icon(
+                        Icons.broken_image,
+                        size: 50.w,
+                        color: Colors.grey,
+                      );
+                    },
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return SizedBox(
+                        height: 50.h,
+                        width: 50.w,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    (loadingProgress.expectedTotalBytes ?? 1)
+                                : null,
+                          ),
+                        ),
+                      );
+                    },
+                  )
+                : Image.asset(
+                    image,
+                    height: 50.h,
+                    width: 50.w,
+                    fit: BoxFit.cover,
+                  ),
           ),
           SizedBox(width: 12.w),
           Column(

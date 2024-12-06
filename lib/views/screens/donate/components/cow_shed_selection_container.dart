@@ -73,7 +73,7 @@ class CowShedSelectionContainer extends StatelessWidget {
                           onSelect(cowShed['id']); // Trigger the callback
                         },
                         child: GowshalaCard(
-                          image: randomImage,
+                          image: cowShed['picture'] ??randomImage,
                           name: cowShed['name'] ?? 'Unknown',
                           distance: cowShed['distance'] ?? 0,
                           id: cowShed['id'],

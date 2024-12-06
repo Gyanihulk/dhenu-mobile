@@ -12,5 +12,7 @@ class AppColors {
   static const Color lightYellow =Color(0xFFEAE5D8);
   static const Color white = Color(0xFFFFFFFF);
     static const Color subtitle = Color(0xFF232122);
-
+static const Color success = Color(0xFF28A745); // Vibrant green for success
+  static const Color danger = Color(0xFFFF4C4C);  // Bright red for danger
+  static const Color failure = Color(0xFFB22222);
 }

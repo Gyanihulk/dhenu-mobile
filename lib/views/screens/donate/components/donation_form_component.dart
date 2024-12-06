@@ -1,7 +1,7 @@
-import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
+import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 
 class DonationFormComponent extends StatelessWidget {
   final String
@@ -11,7 +11,8 @@ class DonationFormComponent extends StatelessWidget {
   final double? amount; // For amount-based donation
   final Function(int)? onQuantityChange; // Callback for increment/decrement
   final AppLocalizations localization;
-
+  final VoidCallback onConfirm; // New callback for confirming the selection
+  final String? errorMessage;
   const DonationFormComponent({
     Key? key,
     required this.donationType,
@@ -20,31 +21,74 @@ class DonationFormComponent extends StatelessWidget {
     this.amount,
     this.onQuantityChange,
     required this.localization,
+    required this.onConfirm,
+    this.errorMessage, // Added onConfirm parameter
   }) : super(key: key);
+@override
+Widget build(BuildContext context) {
+  return Container(
+    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+    margin: EdgeInsets.symmetric(horizontal: 8.w),
+    decoration: BoxDecoration(
+      color: AppColors.white,
+      borderRadius: BorderRadius.circular(12.h),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: donationType.toLowerCase() == "food"
+                  ? _buildFoodDonation(context)
+                  : _buildAmountDonation(context),
+            ),
+            Stack(
+              clipBehavior: Clip.none, // Allow overflow outside Stack
+              children: [
+                // Positioned IconButton
+                Positioned(
+                  top: 50.h, // Position it relative to the IconButton
+                    left: -90.w, // Align to the right
+                  child: IconButton(
+                    onPressed: onConfirm, // Move to next section on confirm
+                    icon: const Icon(Icons.check_circle, color: AppColors.success),
+                    tooltip: localization.translate('donate_screen.confirm') ??
+                        "Confirm",
+                  ),
+                ),
+                SizedBox(width: 4.w),
+                
+                if (errorMessage != null)
+                  Positioned(
+                    top: 95.h, // Position it relative to the IconButton
+                     left: -180.w, // Adjust horizontal position
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 8.w),
+                      color: Colors.white, // Optional: Add a background color
+                      child: Text(
+                        errorMessage!,
+                        style: TextStyle(
+                          fontSize: 12.sp,
+                          color: AppColors.danger,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
-      margin: EdgeInsets.symmetric(horizontal: 8.w),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(12.h),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          donationType.toLowerCase() == "food"
-              ? _buildFoodDonation(context)
-              : _buildAmountDonation(context),
-        ],
-      ),
-    );
-  }
 
   // Function to build Food Donation UI
   Widget _buildFoodDonation(BuildContext context) {
-    // Calculate the number of cows fed based on the quantity of bags
     final int cowsFed = (quantity ?? 0) * 4; // 1 bag feeds 4 cows
 
     return Column(
@@ -64,75 +108,61 @@ class DonationFormComponent extends StatelessWidget {
           ],
         ),
         SizedBox(height: 12.h),
-        Column(
+        Row(
           children: [
-            Row(
-              children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(50),
-                      side: const BorderSide(
-                        color: Colors.black, // Set the border color
-                        width: 2.0, // Set the border width
-                      ),
-                    ),
-                    backgroundColor: AppColors.white,
-                  ),
-                  child: Text(
-                    localization
-                            .translate('donate_screen.action_label_quantity') ??
-                        "QUANTITY OF BAGS",
-                    style: TextStyle(fontSize: 12.sp, color: AppColors.title),
+            ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50),
+                  side: const BorderSide(
+                    color: Colors.black,
+                    width: 2.0,
                   ),
                 ),
-                Spacer(),
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () {
-                            if (onQuantityChange != null &&
-                                (quantity ?? 0) > 0) {
-                              onQuantityChange!(quantity! - 1);
-                            }
-                          },
-                          icon:
-                              Icon(Icons.remove_circle, color: AppColors.title),
-                        ),
-                        Text(
-                          "${quantity ?? 0}",
-                          style: TextStyle(
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                            color: AppColors.title,
-                          ),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            if (onQuantityChange != null) {
-                              onQuantityChange!(quantity! + 1);
-                            }
-                          },
-                          icon: const Icon(Icons.add_circle,
-                              color: AppColors.title),
-                        ),
-                      ],
-                    ),
-                    
-                    Text(
-                      "${localization.translate('donate_screen.cows_fed')} ${cowsFed == 1 ? "$cowsFed ${localization.translate('donate_screen.cows')}" : "$cowsFed ${localization.translate('donate_screen.cows')}"}" ??
-                          "Feeding $cowsFed cows", // Dynamically show cows fed
-                      style:
-                          TextStyle(fontSize: 12.sp, color: AppColors.subtitle),
-                    ),
-                  ],
-                )
+                backgroundColor: AppColors.white,
+              ),
+              child: Text(
+                localization.translate('donate_screen.action_label_quantity') ??
+                    "QUANTITY OF BAGS",
+                style: TextStyle(fontSize: 12.sp, color: AppColors.title),
+              ),
+            ),
+            Spacer(),
+            Row(
+              children: [
+                IconButton(
+                  onPressed: () {
+                    if (onQuantityChange != null && (quantity ?? 0) > 0) {
+                      onQuantityChange!(quantity! - 1);
+                    }
+                  },
+                  icon: Icon(Icons.remove_circle, color: AppColors.title),
+                ),
+                Text(
+                  "${quantity ?? 0}",
+                  style: TextStyle(
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.title,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    if (onQuantityChange != null) {
+                      onQuantityChange!(quantity! + 1);
+                    }
+                  },
+                  icon: Icon(Icons.add_circle, color: AppColors.title),
+                ),
               ],
             ),
           ],
+        ),
+        SizedBox(height: 8.h),
+        Text(
+          "${localization.translate('donate_screen.cows_fed')} $cowsFed",
+          style: TextStyle(fontSize: 12.sp, color: AppColors.subtitle),
         ),
         SizedBox(height: 16.h),
         Text(
@@ -145,7 +175,7 @@ class DonationFormComponent extends StatelessWidget {
         ),
         SizedBox(height: 4.h),
         Text(
-          "₹ ${quantity != null ? quantity! * 500 : 0}.00", // Dynamically calculate total price
+          "₹ ${quantity != null ? quantity! * 500 : 0}.00",
           style: TextStyle(
             fontSize: 20.sp,
             fontWeight: FontWeight.bold,
@@ -169,8 +199,8 @@ class DonationFormComponent extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50),
                   side: const BorderSide(
-                    color: Colors.black, // Set the border color
-                    width: 2.0, // Set the border width
+                    color: Colors.black,
+                    width: 2.0,
                   ),
                 ),
                 backgroundColor: AppColors.white,
@@ -197,13 +227,18 @@ class DonationFormComponent extends StatelessWidget {
           ],
         ),
         SizedBox(height: 16.h),
-        Text(
-          localization.translate('donate_screen.total_price') ?? "Total Price",
-          style: TextStyle(
-            fontSize: 14.sp,
-            fontWeight: FontWeight.w500,
-            color: AppColors.title,
-          ),
+        Row(
+          children: [
+            Text(
+              localization.translate('donate_screen.total_price') ??
+                  "Total Price",
+              style: TextStyle(
+                fontSize: 14.sp,
+                fontWeight: FontWeight.w500,
+                color: AppColors.title,
+              ),
+            ),
+          ],
         ),
         SizedBox(height: 4.h),
         Text(

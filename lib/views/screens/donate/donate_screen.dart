@@ -24,7 +24,8 @@ class DonateScreen extends StatefulWidget {
 }
 
 class _DonateScreenState extends State<DonateScreen> {
-  int expandedContainerIndex = 0;
+  int expandedContainerIndex = 2;
+  String? errorMessage;
   TextEditingController searchController = TextEditingController();
   @override
   void initState() {
@@ -54,6 +55,7 @@ class _DonateScreenState extends State<DonateScreen> {
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context);
     final cowShedProvider = Provider.of<CowShedProvider>(context);
+
     return Scaffold(
       body: Stack(
         children: [
@@ -69,6 +71,28 @@ class _DonateScreenState extends State<DonateScreen> {
 
   Positioned buildDonateContent(
       AppLocalizations localization, CowShedProvider cowShedProvider) {
+    void toggleExpandedIndex(int index) {
+      setState(() {
+        expandedContainerIndex = expandedContainerIndex == index ? -1 : index;
+      });
+    }
+
+    void validateAndConfirm() {
+      setState(() {
+        if (cowShedProvider.donationType == "food" &&
+            (cowShedProvider.quantity == null ||
+                cowShedProvider.quantity == 0)) {
+          errorMessage = "Please select at least one bag.";
+        } else if (cowShedProvider.donationType != "food" &&
+            (cowShedProvider.amount == null || cowShedProvider.amount == 0)) {
+          errorMessage = "Please enter a valid amount.";
+        } else {
+          errorMessage = null; // Clear error if validation passes
+          toggleExpandedIndex(3); // Move to the next step
+        }
+      });
+    }
+
     return Positioned(
       top: 162.h,
       left: 0,
@@ -100,18 +124,10 @@ class _DonateScreenState extends State<DonateScreen> {
 
                       cowShedProvider.updateSelectedCowShedId(
                           selectedCowShedId); // Update provider
-                      setState(() {
-                        expandedContainerIndex =
-                            expandedContainerIndex == 0 ? -1 : 0;
-                      });
+                      toggleExpandedIndex(1);
                     },
                   ),
-                  onToggle: () {
-                    setState(() {
-                      expandedContainerIndex =
-                          expandedContainerIndex == 0 ? -1 : 0;
-                    });
-                  },
+                  onToggle: () => toggleExpandedIndex(0),
                 ),
                 CollapsibleContainer(
                   index: 1,
@@ -123,18 +139,10 @@ class _DonateScreenState extends State<DonateScreen> {
                     onSelect: (selectedSeva) {
                       print('Selected Seva: $selectedSeva');
                       cowShedProvider.updateDonationType(selectedSeva);
-                      setState(() {
-                        expandedContainerIndex =
-                            expandedContainerIndex == 2 ? -1 : 2;
-                      }); // Handle selected seva type
+                      toggleExpandedIndex(2); // Handle selected seva type
                     },
                   ),
-                  onToggle: () {
-                    setState(() {
-                      expandedContainerIndex =
-                          expandedContainerIndex == 1 ? -1 : 1;
-                    });
-                  },
+                  onToggle: () => toggleExpandedIndex(1),
                 ),
                 CollapsibleContainer(
                   index: 2,
@@ -150,18 +158,16 @@ class _DonateScreenState extends State<DonateScreen> {
                         cowShedProvider
                             .updateAmount(double.tryParse(amount) ?? 0);
                         print("Entered Amount: $amount");
+                        
                       },
                       onQuantityChange: (newQuantity) {
                         cowShedProvider.updateQuantity(newQuantity);
                         print("Selected Quantity: $newQuantity");
                       },
+                      onConfirm: validateAndConfirm,
+                       errorMessage: errorMessage, 
                       localization: localization),
-                  onToggle: () {
-                    setState(() {
-                      expandedContainerIndex =
-                          expandedContainerIndex == 2 ? -1 : 2;
-                    });
-                  },
+                  onToggle: () => toggleExpandedIndex(2),
                 ),
                 CollapsibleContainer(
                   index: 3,
@@ -177,12 +183,7 @@ class _DonateScreenState extends State<DonateScreen> {
                       print("Total Donation Amount: $amount");
                     },
                   ),
-                  onToggle: () {
-                    setState(() {
-                      expandedContainerIndex =
-                          expandedContainerIndex == 3 ? -1 : 3;
-                    });
-                  },
+                  onToggle: () => toggleExpandedIndex(3),
                 ),
                 SizedBox(height: 30.h),
                 CustomButton(
