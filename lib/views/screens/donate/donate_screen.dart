@@ -24,9 +24,11 @@ class DonateScreen extends StatefulWidget {
 }
 
 class _DonateScreenState extends State<DonateScreen> {
-  int expandedContainerIndex = 2;
+  int expandedContainerIndex = 0;
   String? errorMessage;
   TextEditingController searchController = TextEditingController();
+  bool showConfirmation = false;
+
   @override
   void initState() {
     super.initState();
@@ -79,16 +81,49 @@ class _DonateScreenState extends State<DonateScreen> {
 
     void validateAndConfirm() {
       setState(() {
-        if (cowShedProvider.donationType == "food" &&
+        // Reset error message initially
+        errorMessage = null;
+
+        // Log current donation details for debugging
+        print("Validation Debug Log:");
+        print("Selected Cow Shed ID: ${cowShedProvider.selectedCowShedId}");
+        print("Donation Type: ${cowShedProvider.donationType}");
+        print("Quantity: ${cowShedProvider.quantity}");
+        print("Amount: ${cowShedProvider.amount}");
+        print("Name: ${cowShedProvider.name}");
+
+        // Check if cow shed is not selected
+        if (cowShedProvider.selectedCowShedId == null) {
+          errorMessage = "Please select a cow shed.";
+          expandedContainerIndex = 0; // Open the first container
+          print("Error: No cow shed selected.");
+        }
+        // Check if donation type is not selected
+        else if (cowShedProvider.donationType == null) {
+          errorMessage = "Please select a donation type.";
+          expandedContainerIndex = 1; // Open the second container
+          print("Error: No donation type selected.");
+        }
+        // If donation type is 'food', validate quantity
+        else if (cowShedProvider.donationType == "Food" &&
             (cowShedProvider.quantity == null ||
                 cowShedProvider.quantity == 0)) {
           errorMessage = "Please select at least one bag.";
-        } else if (cowShedProvider.donationType != "food" &&
+          expandedContainerIndex = 2; // Open the third container
+          print("Error: Quantity for food donation is not valid.");
+        }
+        // If donation type is not 'food', validate amount
+        else if (cowShedProvider.donationType != "Food" &&
             (cowShedProvider.amount == null || cowShedProvider.amount == 0)) {
           errorMessage = "Please enter a valid amount.";
-        } else {
-          errorMessage = null; // Clear error if validation passes
-          toggleExpandedIndex(3); // Move to the next step
+          expandedContainerIndex = 2; // Open the third container
+          print("Error: Amount for donation is not valid.");
+        }
+        // If all validations pass, proceed to confirmation
+        else {
+          errorMessage = null;
+          showConfirmation = true;
+          print("Validation Passed: Proceeding to confirmation.");
         }
       });
     }
@@ -109,112 +144,170 @@ class _DonateScreenState extends State<DonateScreen> {
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
           child: SingleChildScrollView(
-            child: Column(
-              children: [
-                CollapsibleContainer(
-                  index: 0,
-                  isExpanded: expandedContainerIndex == 0,
-                  title: localization.translate('donate_screen.card1title'),
-                  subtitle:
-                      localization.translate('donate_screen.card1subtitle'),
-                  content: CowShedSelectionContainer(
-                    localization: localization,
-                    onSelect: (selectedCowShedId) {
-                      print('Selected Cow Shed ID: $selectedCowShedId');
+            child: showConfirmation
+                ? buildConfirmationComponent(cowShedProvider, localization)
+                : Column(
+                    children: [
+                      CollapsibleContainer(
+                        index: 0,
+                        isExpanded: expandedContainerIndex == 0,
+                        title:
+                            localization.translate('donate_screen.card1title'),
+                        subtitle: localization
+                            .translate('donate_screen.card1subtitle'),
+                        content: CowShedSelectionContainer(
+                          localization: localization,
+                          onSelect: (selectedCowShedId) {
+                            cowShedProvider.updateSelectedCowShedId(
+                                selectedCowShedId); // Update provider
+                            toggleExpandedIndex(1);
+                          },
+                        ),
+                        onToggle: () => toggleExpandedIndex(0),
+                      ),
+                      CollapsibleContainer(
+                        index: 1,
+                        isExpanded: expandedContainerIndex == 1,
+                        title:
+                            localization.translate('donate_screen.card2title'),
+                        subtitle: localization
+                            .translate('donate_screen.card2subtitle'),
+                        content: SevaSelectionContainer(
+                          onSelect: (selectedSeva) {
+                            cowShedProvider.updateDonationType(selectedSeva);
+                            toggleExpandedIndex(2); // Handle selected seva type
+                          },
+                        ),
+                        onToggle: () => toggleExpandedIndex(1),
+                      ),
+                      CollapsibleContainer(
+                        index: 2,
+                        isExpanded: expandedContainerIndex == 2,
+                        title:
+                            localization.translate('donate_screen.card3title'),
+                        subtitle: localization
+                            .translate('donate_screen.card3subtitle'),
+                        content: DonationFormComponent(
+                            donationType: cowShedProvider.donationType ??
+                                "Other", // Use donationType from provider
+                            quantity: cowShedProvider.quantity,
+                            onInputChange: (amount) {
+                              cowShedProvider
+                                  .updateAmount(double.tryParse(amount) ?? 0);
+                            },
+                            onQuantityChange: (newQuantity) {
+                              cowShedProvider.updateQuantity(newQuantity);
+                            },
+                            onConfirm: (amount) {
+                              final donationDetails =
+                                  cowShedProvider.getDonationDetails();
 
-                      cowShedProvider.updateSelectedCowShedId(
-                          selectedCowShedId); // Update provider
-                      toggleExpandedIndex(1);
-                    },
-                  ),
-                  onToggle: () => toggleExpandedIndex(0),
-                ),
-                CollapsibleContainer(
-                  index: 1,
-                  isExpanded: expandedContainerIndex == 1,
-                  title: localization.translate('donate_screen.card2title'),
-                  subtitle:
-                      localization.translate('donate_screen.card2subtitle'),
-                  content: SevaSelectionContainer(
-                    onSelect: (selectedSeva) {
-                      print('Selected Seva: $selectedSeva');
-                      cowShedProvider.updateDonationType(selectedSeva);
-                      toggleExpandedIndex(2); // Handle selected seva type
-                    },
-                  ),
-                  onToggle: () => toggleExpandedIndex(1),
-                ),
-                CollapsibleContainer(
-                  index: 2,
-                  isExpanded: expandedContainerIndex == 2,
-                  title: localization.translate('donate_screen.card3title'),
-                  subtitle:
-                      localization.translate('donate_screen.card3subtitle'),
-                  content: DonationFormComponent(
-                      donationType: cowShedProvider.donationType ??
-                          "Other", // Use donationType from provider
-                      quantity: cowShedProvider.quantity,
-                      onInputChange: (amount) {
-                        cowShedProvider
-                            .updateAmount(double.tryParse(amount) ?? 0);
-                        print("Entered Amount: $amount");
-                        
-                      },
-                      onQuantityChange: (newQuantity) {
-                        cowShedProvider.updateQuantity(newQuantity);
-                        print("Selected Quantity: $newQuantity");
-                      },
-                      onConfirm: validateAndConfirm,
-                       errorMessage: errorMessage, 
-                      localization: localization),
-                  onToggle: () => toggleExpandedIndex(2),
-                ),
-                CollapsibleContainer(
-                  index: 3,
-                  isExpanded: expandedContainerIndex == 3,
-                  title: localization.translate('donate_screen.card4title'),
-                  subtitle:
-                      localization.translate('donate_screen.card4subtitle'),
-                  content: DonationFrequency(
-                    onNameChange: (name) {
-                      print("Donor Name: $name");
-                    },
-                    onAmountChange: (amount) {
-                      print("Total Donation Amount: $amount");
-                    },
-                  ),
-                  onToggle: () => toggleExpandedIndex(3),
-                ),
-                SizedBox(height: 30.h),
-                CustomButton(
-                  width: 124.w,
-                  text: localization.translate('donate_screen.next'),
-                  onPressed: () {
-                    final donationDetails =
-                        cowShedProvider.getDonationDetails();
+                              toggleExpandedIndex(3);
+                            },
+                            errorMessage: errorMessage,
+                            localization: localization),
+                        onToggle: () => toggleExpandedIndex(2),
+                      ),
+                      CollapsibleContainer(
+                        index: 3,
+                        isExpanded: expandedContainerIndex == 3,
+                        title:
+                            localization.translate('donate_screen.card4title'),
+                        subtitle: localization
+                            .translate('donate_screen.card4subtitle'),
+                        content: DonationFrequency(
+                          onNameChange: (name) {
+                            cowShedProvider.updateName(name);
+                          },
+                          onAmountChange: (amount) {},
+                          onConfirm: (selectedFilter, selectedDates) {
+                            cowShedProvider
+                                .updateDonationFrequency(selectedFilter);
+                            cowShedProvider.updateSelectedDates(selectedDates);
 
-                    // Log the donation details
-                    print("Donation Details:");
-                    print(
-                        "Selected Cow Shed ID: ${donationDetails['selectedCowShedId']}");
-                    print("Donation Type: ${donationDetails['donationType']}");
-                    print("Quantity: ${donationDetails['quantity']}");
-                    print("Amount: ${donationDetails['amount']}");
-                    print(
-                        "Related Fields: ${donationDetails['relatedFields']}");
-                    setState(() {
-                      if (expandedContainerIndex == 0) {
-                        expandedContainerIndex = 1;
-                      } else {
-                        expandedContainerIndex = 0;
-                      }
-                    });
-                  },
-                )
-              ],
-            ),
+                            final donationDetails =
+                                cowShedProvider.getDonationDetails();
+
+                            // validateAndConfirm();
+                          },
+                        ),
+                        onToggle: () => toggleExpandedIndex(3),
+                      ),
+                      SizedBox(height: 30.h),
+                      if (errorMessage != null)
+                        Positioned(
+                          top: 50.h, // Position it below the IconButton
+                          right: 0.w, // Align it to the right
+                          child: Container(
+                            padding: EdgeInsets.symmetric(horizontal: 8.w),
+                            color: Colors.white,
+                            child: Text(
+                              errorMessage!,
+                              style: TextStyle(
+                                fontSize: 12.sp,
+                                color: AppColors.danger,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      CustomButton(
+                        width: 124.w,
+                        text: localization.translate('donate_screen.complete_payment') ??
+                            'Confirm',
+                        onPressed: () async {
+                          validateAndConfirm();
+                          try {
+                            await cowShedProvider.createDonation();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content:
+                                      Text("Please Complete the payment.")),
+                            );
+                          } catch (error) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text(
+                                      "Error: ${cowShedProvider.errorMessage}")),
+                            );
+                          }
+                        },
+                      ),
+                    ],
+                  ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget buildConfirmationComponent(
+      CowShedProvider cowShedProvider, AppLocalizations localization) {
+    final donationDetails = cowShedProvider.getDonationDetails();
+
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      height: 660.h, // Fixed height
+      margin: EdgeInsets.only(top: 16.h),
+      decoration: BoxDecoration(
+        color: AppColors.primary,
+        borderRadius: BorderRadius.circular(16.h),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.all(16.h),
+            child: Text(
+              "Complete payment details", // Fixed text
+              style: TextStyle(
+                fontSize: 18.sp,
+                fontWeight: FontWeight.bold,
+                color: AppColors.title,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

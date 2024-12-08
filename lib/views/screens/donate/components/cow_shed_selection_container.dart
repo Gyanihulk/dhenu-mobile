@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 import 'package:dhenu_dharma/utils/constants/app_assets.dart';
 import 'package:dhenu_dharma/utils/providers/cow_shed_provider.dart';
-import 'gowshala_card.dart'; // Import GowshalaCard widget
+import 'cow_shed_card.dart'; // Import GowshalaCard widget
 
 class CowShedSelectionContainer extends StatelessWidget {
   final AppLocalizations localization;

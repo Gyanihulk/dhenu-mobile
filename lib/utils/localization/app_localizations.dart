@@ -156,7 +156,8 @@ class AppLocalizations {
         "food_details": "1 bag costs ₹500 & feeds 4 cows",
         "total_price": "Total Price",
         "cows_fed": "Feeding",
-        "cows":"cows"
+        "cows":"cows",
+        "complete_payment":"Pay"
       }
     },
     'hi': {
@@ -289,7 +290,9 @@ class AppLocalizations {
         "food_details": "1 बैग की कीमत ₹500 है और 4 गायों को खिलाता है",
         "total_price": "कुल कीमत",
         "cows_fed": "",
-        "cows":"गायों को खिला रहे हैं"
+        "cows":"गायों को खिला रहे हैं",
+        "complete_payment": "भुगतान करें"
+
       }
     },
   };

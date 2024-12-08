@@ -7,14 +7,15 @@ class DonationFrequency extends StatefulWidget {
   final String? donorName;
   final Function(double) onAmountChange;
   final double donationPerDay;
-
+ final Function(String,dynamic) onConfirm; 
   const DonationFrequency({
-    Key? key,
+    super.key,
     required this.onNameChange,
     required this.onAmountChange,
     this.donorName,
     this.donationPerDay = 500, // Default donation per day
-  }) : super(key: key);
+    required this.onConfirm,
+  }) ;
 
   @override
   _DonationFrequency createState() => _DonationFrequency();
@@ -130,6 +131,7 @@ class _DonationFrequency extends State<DonationFrequency> {
                   } else {
                     _selectedDates.add(selectedDay);
                   }
+                  
                 } else {
                   // Allow only one date to be selected for all other filters
                   if (_selectedDates.isEmpty) {
@@ -144,9 +146,10 @@ class _DonationFrequency extends State<DonationFrequency> {
                     );
                   }
                 }
+                widget.onConfirm(_selectedFilter,_selectedDates);
               });
             },
-            calendarStyle: CalendarStyle(
+            calendarStyle: const CalendarStyle(
               todayDecoration: BoxDecoration(
                 color: Colors.yellow,
                 shape: BoxShape.circle,

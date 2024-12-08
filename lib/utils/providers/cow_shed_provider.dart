@@ -10,10 +10,28 @@ class CowShedProvider with ChangeNotifier {
   bool isLoading = false;
   String errorMessage = '';
   int? selectedCowShedId;
-    String? donationType;
+  String? donationType;
   int quantity = 0;
   double amount = 0.0;
+  List<DateTime> selectedDates = []; // Store array of selected dates
+  String? donationFrequency;
+  String name = '';
   CowShedProvider({required this.repository, required this.authProvider});
+  void updateName(String newName) {
+    name = newName;
+    notifyListeners();
+  }
+
+  void updateSelectedDates(List<DateTime> dates) {
+    selectedDates = dates;
+    notifyListeners();
+  }
+
+  // Method to update donation frequency
+  void updateDonationFrequency(String frequency) {
+    donationFrequency = frequency;
+    notifyListeners();
+  }
 
   void updateAuthProvider(AuthProvider newAuthProvider) {
     authProvider = newAuthProvider;
@@ -69,7 +87,7 @@ class CowShedProvider with ChangeNotifier {
   // Update donation type
   void updateDonationType(String type) {
     donationType = type;
- 
+
     notifyListeners(); // Notify listeners to update the UI
   }
 
@@ -84,15 +102,52 @@ class CowShedProvider with ChangeNotifier {
     amount = newAmount;
     notifyListeners();
   }
-  
-   Map<String, dynamic> getDonationDetails() {
+
+  Map<String, dynamic> getDonationDetails() {
     return {
       "selectedCowShedId": selectedCowShedId,
       "donationType": donationType,
       "quantity": quantity,
       "amount": amount,
-      "relatedFields": getRelatedFields(), // Helper function to get related fields
+      "name": name,
+      "selectedDates":
+          selectedDates.map((date) => date.toIso8601String()).toList(),
+      "donationFrequency": donationFrequency,
+      "relatedFields":
+          getRelatedFields(), // Helper function to get related fields
     };
+  }
+
+  Future<void> createDonation() async {
+    isLoading = true;
+    errorMessage = '';
+    notifyListeners();
+
+    try {
+      final token = authProvider.authToken;
+      if (token == null) {
+        throw Exception('User is not authenticated');
+      }
+
+      await repository.createDonation(
+        token: token,
+        cowShedId: selectedCowShedId!,
+        donationType: donationType!,
+        amount: amount,
+        quantity: quantity,
+        frequency: donationFrequency!,
+        name: name,
+        period: selectedDates,
+      );
+
+      print('Donation created successfully');
+    } catch (error) {
+      errorMessage = error.toString();
+      print('Error creating donation: $error');
+    } finally {
+      isLoading = false;
+      notifyListeners();
+    }
   }
 
   /// Helper function to return related fields based on donation type

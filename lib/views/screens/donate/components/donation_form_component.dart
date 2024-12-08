@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
 import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 
-class DonationFormComponent extends StatelessWidget {
+class DonationFormComponent extends StatefulWidget {
   final String
       donationType; // Determines whether to show quantity or amount input
   final Function(String) onInputChange;
@@ -11,8 +11,9 @@ class DonationFormComponent extends StatelessWidget {
   final double? amount; // For amount-based donation
   final Function(int)? onQuantityChange; // Callback for increment/decrement
   final AppLocalizations localization;
-  final VoidCallback onConfirm; // New callback for confirming the selection
+  final Function(String) onConfirm; // Callback for confirming the selection
   final String? errorMessage;
+
   const DonationFormComponent({
     Key? key,
     required this.donationType,
@@ -22,70 +23,101 @@ class DonationFormComponent extends StatelessWidget {
     this.onQuantityChange,
     required this.localization,
     required this.onConfirm,
-    this.errorMessage, // Added onConfirm parameter
+    this.errorMessage,
   }) : super(key: key);
-@override
-Widget build(BuildContext context) {
-  return Container(
-    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
-    margin: EdgeInsets.symmetric(horizontal: 8.w),
-    decoration: BoxDecoration(
-      color: AppColors.white,
-      borderRadius: BorderRadius.circular(12.h),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: donationType.toLowerCase() == "food"
-                  ? _buildFoodDonation(context)
-                  : _buildAmountDonation(context),
-            ),
-            Stack(
-              clipBehavior: Clip.none, // Allow overflow outside Stack
-              children: [
-                // Positioned IconButton
-                Positioned(
-                  top: 50.h, // Position it relative to the IconButton
-                    left: -90.w, // Align to the right
-                  child: IconButton(
-                    onPressed: onConfirm, // Move to next section on confirm
-                    icon: const Icon(Icons.check_circle, color: AppColors.success),
-                    tooltip: localization.translate('donate_screen.confirm') ??
-                        "Confirm",
-                  ),
-                ),
-                SizedBox(width: 4.w),
-                
-                if (errorMessage != null)
-                  Positioned(
-                    top: 95.h, // Position it relative to the IconButton
-                     left: -180.w, // Adjust horizontal position
-                    child: Container(
-                      padding: EdgeInsets.symmetric(horizontal: 8.w),
-                      color: Colors.white, // Optional: Add a background color
-                      child: Text(
-                        errorMessage!,
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: AppColors.danger,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-              ],
-            ),
-          ],
-        ),
-      ],
-    ),
-  );
+
+  @override
+  _DonationFormComponentState createState() => _DonationFormComponentState();
 }
 
+class _DonationFormComponentState extends State<DonationFormComponent> {
+  late String donationType;
+  late int quantity;
+  late double amount;
+  late String? errorMessage;
+  late AppLocalizations localization;
+
+  @override
+  void initState() {
+    super.initState();
+    donationType = widget.donationType;
+    quantity = widget.quantity ?? 0;
+    amount = widget.amount ?? 0.0;
+    errorMessage = widget.errorMessage;
+    localization = widget.localization;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
+      margin: EdgeInsets.symmetric(horizontal: 8.w),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(12.h),
+      ),
+      child: Stack(
+        clipBehavior: Clip.none, // Allow overflow outside Stack
+        children: [
+          // Main content (Row with donation form)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: donationType.toLowerCase() == "food"
+                        ? _buildFoodDonation(context)
+                        : _buildAmountDonation(context),
+                  ),
+                  SizedBox(width: 4.w),
+                ],
+              ),
+            ],
+          ),
+
+          // Positioned IconButton on top layer
+          Positioned(
+            top: 70.h, // Adjust vertical position as needed
+            right: 45.w, // Adjust horizontal position as needed
+            child: IconButton(
+              onPressed: () {
+                print('Confirm button pressed in DonationFormComponent');
+                widget.onConfirm("test");
+              },
+              icon: const Icon(
+                Icons.check_circle,
+                color: AppColors.success,
+                size: 40, // Increase size if needed
+              ),
+              tooltip:
+                  localization.translate('donate_screen.confirm') ?? "Confirm",
+            ),
+          ),
+
+          // Positioned Error Message
+          if (errorMessage != null)
+            Positioned(
+              top: 50.h, // Position it below the IconButton
+              right: 0.w, // Align it to the right
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 8.w),
+                color: Colors.white,
+                child: Text(
+                  errorMessage!,
+                  style: TextStyle(
+                    fontSize: 12.sp,
+                    color: AppColors.danger,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
 
   // Function to build Food Donation UI
   Widget _buildFoodDonation(BuildContext context) {
@@ -133,8 +165,12 @@ Widget build(BuildContext context) {
               children: [
                 IconButton(
                   onPressed: () {
-                    if (onQuantityChange != null && (quantity ?? 0) > 0) {
-                      onQuantityChange!(quantity! - 1);
+                    if (widget.onQuantityChange != null &&
+                        (quantity ?? 0) > 0) {
+                      setState(() {
+                        quantity -= 1;
+                      });
+                      widget.onQuantityChange!(quantity! - 1);
                     }
                   },
                   icon: Icon(Icons.remove_circle, color: AppColors.title),
@@ -149,8 +185,12 @@ Widget build(BuildContext context) {
                 ),
                 IconButton(
                   onPressed: () {
-                    if (onQuantityChange != null) {
-                      onQuantityChange!(quantity! + 1);
+                    if (widget.onQuantityChange != null) {
+                      setState(() {
+        quantity += 1;
+      });
+                      print('$quantity +1 ');
+                      widget.onQuantityChange!(quantity + 1);
                     }
                   },
                   icon: Icon(Icons.add_circle, color: AppColors.title),
@@ -221,7 +261,7 @@ Widget build(BuildContext context) {
                           "Enter an amount",
                   border: const UnderlineInputBorder(),
                 ),
-                onChanged: onInputChange,
+                onChanged: widget.onInputChange,
               ),
             ),
           ],

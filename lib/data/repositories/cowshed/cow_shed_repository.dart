@@ -53,4 +53,55 @@ class CowShedRepository extends BaseRepository {
       throw FetchDataException(message: error.toString());
     }
   }
+
+  // New function to create a donation
+  Future<Map<String, dynamic>> createDonation({
+    required String token,
+    required int cowShedId,
+    required String donationType,
+    required double amount,
+    required int quantity,
+    required String frequency,
+    required String name,
+    required List<DateTime> period,
+  }) async {
+    try {
+      // Format the period dates as a list of ISO strings
+      final List<String> formattedPeriod =
+          period.map((date) => date.toIso8601String()).toList();
+
+      final Map<String, dynamic> body = {
+        'cow_sheds_id': cowShedId,
+        'donation_type': donationType,
+        'amount': amount,
+        'quantity': quantity,
+        'frequency': frequency,
+        'name': name,
+        'period': formattedPeriod,
+      };
+
+      final response = await requestHttps(
+        RequestType.POST,
+        ApiConstants
+            .donationEndpoint, // Ensure this constant is defined in `ApiConstants`
+        jsonEncode(body),
+        headers: {
+          ApiConstants.kAuthorization: 'Bearer $token',
+          ApiConstants.kAccept: ApiConstants.kApplictionJson,
+          ApiConstants.kContentType: ApiConstants.kApplictionJson,
+        },
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final responseData = jsonDecode(response.body);
+        return responseData;
+      } else {
+        throw Exception(
+            'Failed to create donation: ${response.statusCode} ${response.reasonPhrase}');
+      }
+    } catch (error) {
+      log('Error in createDonation: $error');
+      throw FetchDataException(message: error.toString());
+    }
+  }
 }

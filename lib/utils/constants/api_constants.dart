@@ -7,6 +7,8 @@ class ApiConstants {
   static const String verifyOtpEndpoint = "$version/user/verify-code";
   static const String cowShedEndpoint = "$version/cow-shed";
   static const String languageEndpoint = "$version/languages";
+    static const String donationEndpoint = "$version/cow-shed/donations";
+  
 
   static const String kContentType = "Content-Type";
   static const String kApplictionJson = "application/json";
