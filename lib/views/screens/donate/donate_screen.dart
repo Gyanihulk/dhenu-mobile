@@ -5,6 +5,7 @@ import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:dhenu_dharma/utils/providers/cow_shed_provider.dart';
 import 'package:dhenu_dharma/views/screens/donate/components/calendar_selection.dart';
 import 'package:dhenu_dharma/views/screens/donate/components/collapsible_container.dart';
+import 'package:dhenu_dharma/views/screens/donate/components/confirmation_component.dart';
 import 'package:dhenu_dharma/views/screens/donate/components/cow_shed_selection_container.dart';
 import 'package:dhenu_dharma/views/screens/donate/components/donate_label_component.dart';
 import 'package:dhenu_dharma/views/screens/donate/components/donate_top_content_component.dart';
@@ -92,38 +93,65 @@ class _DonateScreenState extends State<DonateScreen> {
         print("Amount: ${cowShedProvider.amount}");
         print("Name: ${cowShedProvider.name}");
 
+        String? dynamicErrorMessage;
+
         // Check if cow shed is not selected
         if (cowShedProvider.selectedCowShedId == null) {
-          errorMessage = "Please select a cow shed.";
+          dynamicErrorMessage = "Please select a cow shed.";
           expandedContainerIndex = 0; // Open the first container
           print("Error: No cow shed selected.");
         }
         // Check if donation type is not selected
         else if (cowShedProvider.donationType == null) {
-          errorMessage = "Please select a donation type.";
+          dynamicErrorMessage = "Please select a donation type.";
           expandedContainerIndex = 1; // Open the second container
           print("Error: No donation type selected.");
         }
-        // If donation type is 'food', validate quantity
+        // Check if name is not provided
+        else if (cowShedProvider.name == null ||
+            cowShedProvider.name!.isEmpty) {
+          dynamicErrorMessage = "Please enter your name.";
+          expandedContainerIndex = 3; // Open the fourth container
+          print("Error: No name provided.");
+        }
+        // If donation type is 'Food', validate quantity
         else if (cowShedProvider.donationType == "Food" &&
             (cowShedProvider.quantity == null ||
                 cowShedProvider.quantity == 0)) {
-          errorMessage = "Please select at least one bag.";
+          dynamicErrorMessage =
+              "Please select at least one bag for food donation.";
           expandedContainerIndex = 2; // Open the third container
           print("Error: Quantity for food donation is not valid.");
         }
-        // If donation type is not 'food', validate amount
+        // If donation type is not 'Food', validate amount
         else if (cowShedProvider.donationType != "Food" &&
             (cowShedProvider.amount == null || cowShedProvider.amount == 0)) {
-          errorMessage = "Please enter a valid amount.";
+          dynamicErrorMessage = "Please enter a valid amount for the donation.";
           expandedContainerIndex = 2; // Open the third container
           print("Error: Amount for donation is not valid.");
         }
-        // If all validations pass, proceed to confirmation
-        else {
-          errorMessage = null;
+
+        // Show dynamic error message in SnackBar if there's an error
+        if (dynamicErrorMessage != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(dynamicErrorMessage),
+              backgroundColor: Colors.red,
+              duration: const Duration(seconds: 3),
+            ),
+          );
+        } else {
+          // If all validations pass, proceed to confirmation
           showConfirmation = true;
           print("Validation Passed: Proceeding to confirmation.");
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content:
+                  Text("All details are valid. Proceeding to confirmation."),
+              backgroundColor: Colors.green,
+              duration: const Duration(seconds: 2),
+            ),
+          );
         }
       });
     }
@@ -145,7 +173,9 @@ class _DonateScreenState extends State<DonateScreen> {
           padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 24.h),
           child: SingleChildScrollView(
             child: showConfirmation
-                ? buildConfirmationComponent(cowShedProvider, localization)
+                ? ConfirmationComponent(
+                    cowShedProvider: cowShedProvider,
+                    localization: localization!)
                 : Column(
                     children: [
                       CollapsibleContainer(
@@ -253,24 +283,19 @@ class _DonateScreenState extends State<DonateScreen> {
                         ),
                       CustomButton(
                         width: 124.w,
-                        text: localization.translate('donate_screen.complete_payment') ??
+                        text: localization
+                                .translate('donate_screen.complete_payment') ??
                             'Confirm',
                         onPressed: () async {
                           validateAndConfirm();
                           try {
-                            await cowShedProvider.createDonation();
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content:
-                                      Text("Please Complete the payment.")),
-                            );
-                          } catch (error) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                  content: Text(
-                                      "Error: ${cowShedProvider.errorMessage}")),
-                            );
-                          }
+                            // await cowShedProvider.createDonation();
+                            // ScaffoldMessenger.of(context).showSnackBar(
+                            //   const SnackBar(
+                            //       content:
+                            //           Text("Please Complete the payment.")),
+                            // );
+                          } catch (error) {}
                         },
                       ),
                     ],
@@ -281,34 +306,4 @@ class _DonateScreenState extends State<DonateScreen> {
     );
   }
 
-  Widget buildConfirmationComponent(
-      CowShedProvider cowShedProvider, AppLocalizations localization) {
-    final donationDetails = cowShedProvider.getDonationDetails();
-
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      height: 660.h, // Fixed height
-      margin: EdgeInsets.only(top: 16.h),
-      decoration: BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.circular(16.h),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(16.h),
-            child: Text(
-              "Complete payment details", // Fixed text
-              style: TextStyle(
-                fontSize: 18.sp,
-                fontWeight: FontWeight.bold,
-                color: AppColors.title,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 }

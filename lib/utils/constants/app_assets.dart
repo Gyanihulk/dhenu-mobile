@@ -4,6 +4,7 @@ class AssetsConstants {
   static const String profileDir = "assets/images/profile";
   static const String homeDir = "assets/images/home";
 static const String donationDir = "assets/images/donation";
+static const String missionDir = "assets/images/mission";
   // Logo
   static const String logoImg = "$imageDir/logo.png";
   static const String logoImg2 = "$imageDir/logo-2.png";
@@ -43,4 +44,9 @@ static const String donationDir = "assets/images/donation";
 
   //Home - About Us
   static const String aboutUsImg = "$homeDir/about-us-img.png";
+  static const String mission1 = "$missionDir/1.png";
+  static const String mission2 = "$missionDir/2.png";
+  static const String mission3 = "$missionDir/3.png";
+  static const String mission4 = "$missionDir/4.png";
+  static const String mission5 = "$missionDir/5.png";
 }

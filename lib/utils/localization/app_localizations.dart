@@ -140,7 +140,7 @@ class AppLocalizations {
         "card2subtitle": "Choose what to donate",
         "card3title": "Donate Amount",
         "card3subtitle": "Choose how much to donate",
-         "card4title": "Donation Frequency",
+        "card4title": "Donation Frequency",
         "card4subtitle": "When do you want to donate",
         "next": "Next",
         "need_based": "Need Based",
@@ -156,8 +156,30 @@ class AppLocalizations {
         "food_details": "1 bag costs ₹500 & feeds 4 cows",
         "total_price": "Total Price",
         "cows_fed": "Feeding",
-        "cows":"cows",
-        "complete_payment":"Pay"
+        "cows": "cows",
+        "complete_payment": "Pay",
+        "complete_payment_details": "Confirm details and Pay",
+      },
+      "mission": {
+        "mission": "Mission",
+        "missionDescription":
+            "The mission of Dhenu Dharma is clear: to save our sacred cows and uphold our duty towards them. By joining this initiative, you become a part of something greater - a movement rooted in compassion and respect for all living beings.",
+        "missionHighlight":
+            "a movement rooted in compassion and respect for all living beings.",
+        "contributionsMessage":
+            "Your contributions, no matter how big or small, make a difference in the lives of these vulnerable animals.",
+        "howWeWorkTitle": "How we work?",
+        "howWeWorkDescription":
+            "Your donation goes towards providing essential care for these cows, ensuring they have access to food, shelter, and medical attention. With Dhenu Dharma, you can rest assured that your contribution is making a tangible impact on the lives of these gentle creatures.",
+        "howWeWorkHighlight": "food, shelter, and medical attention.",
+        "impact":
+            "Imagine being able to witness the impact of your donation in real-time, receiving timely receipts, and gentle reminders to continue your support.",
+        "description":
+            "In the ancient teachings of Sanatan Dharma, cows hold a position of utmost reverence, often likened to that of a mother.",
+        "problem":
+            "Unfortunately, many of these sacred animals face a grim fate once they stop producing milk. They either end up slaughtered or left to wander helplessly. Dhenu Dharma aims to change this narrative.",
+        "solution":
+            "Dhenu Dharma introduces a platform designed to connect caring individuals with shelters that house non-lactating, vulnerable cows. Through this platform, users can contribute funds towards the welfare of these cows with unparalleled transparency."
       }
     },
     'hi': {
@@ -290,9 +312,31 @@ class AppLocalizations {
         "food_details": "1 बैग की कीमत ₹500 है और 4 गायों को खिलाता है",
         "total_price": "कुल कीमत",
         "cows_fed": "",
-        "cows":"गायों को खिला रहे हैं",
-        "complete_payment": "भुगतान करें"
-
+        "cows": "गायों को खिला रहे हैं",
+        "complete_payment": "भुगतान करें",
+        "complete_payment_details": "विवरण की पुष्टि करें और भुगतान करें"
+      },
+      "mission": {
+        "mission": "मिशन",
+        "mission.title": "मिशन",
+        "mission.description":
+            "धेनु धर्म का मिशन स्पष्ट है: हमारी पवित्र गायों को बचाना और उनके प्रति हमारे कर्तव्यों का पालन करना। इस पहल से जुड़कर, आप किसी महान कार्य का हिस्सा बनते हैं - एक ऐसा आंदोलन जो करुणा और सभी जीवों के प्रति सम्मान में निहित है।",
+        "mission.highlight":
+            "एक ऐसा आंदोलन जो करुणा और सभी जीवों के प्रति सम्मान में निहित है।",
+        "contributions.message":
+            "आपका योगदान, चाहे बड़ा हो या छोटा, इन कमजोर जानवरों के जीवन में एक महत्वपूर्ण अंतर लाता है।",
+        "howWeWork.title": "हम कैसे काम करते हैं?",
+        "howWeWork.description":
+            "आपका दान इन गायों की देखभाल के लिए आवश्यक सहायता प्रदान करता है, जिससे उन्हें भोजन, आश्रय और चिकित्सा देखभाल मिल सके। धेनु धर्म के साथ, आप निश्चिंत रह सकते हैं कि आपका योगदान इन कोमल प्राणियों के जीवन में एक ठोस प्रभाव डाल रहा है।",
+        "howWeWork.highlight": "भोजन, आश्रय और चिकित्सा देखभाल।",
+        "impact":
+            "कल्पना कीजिए कि आप अपने दान के प्रभाव को वास्तविक समय में देख सकते हैं, समय पर रसीदें प्राप्त कर सकते हैं, और समर्थन जारी रखने के लिए कोमल अनुस्मारक पा सकते हैं।",
+        "description":
+            "सनातन धर्म के प्राचीन शिक्षाओं में, गायों का अत्यंत सम्मानजनक स्थान है, जिन्हें अक्सर माँ के समान माना जाता है।",
+        "problem":
+            "दुर्भाग्य से, इन पवित्र जानवरों को एक कठोर भाग्य का सामना करना पड़ता है जब वे दूध देना बंद कर देती हैं। वे या तो मारे जाते हैं या लाचार होकर इधर-उधर भटकते हैं। धेनु धर्म इस स्थिति को बदलने का प्रयास करता है।",
+        "solution":
+            "धेनु धर्म एक ऐसा मंच प्रस्तुत करता है जो सहानुभूति रखने वाले लोगों को उन गौशालाओं से जोड़ता है, जहां गैर-दुग्ध देने वाली, कमजोर गायों को रखा जाता है। इस मंच के माध्यम से, उपयोगकर्ता पारदर्शी तरीके से इन गायों की भलाई के लिए धनराशि का योगदान कर सकते हैं।",
       }
     },
   };

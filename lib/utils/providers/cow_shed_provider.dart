@@ -129,7 +129,7 @@ class CowShedProvider with ChangeNotifier {
         throw Exception('User is not authenticated');
       }
 
-      await repository.createDonation(
+      final response =await repository.createDonation(
         token: token,
         cowShedId: selectedCowShedId!,
         donationType: donationType!,
@@ -140,7 +140,7 @@ class CowShedProvider with ChangeNotifier {
         period: selectedDates,
       );
 
-      print('Donation created successfully');
+      print('Donation created successfully $response');
     } catch (error) {
       errorMessage = error.toString();
       print('Error creating donation: $error');

@@ -53,55 +53,72 @@ class CowShedRepository extends BaseRepository {
       throw FetchDataException(message: error.toString());
     }
   }
+Future<Map<String, dynamic>> createDonation({
+  required String token,
+  required int cowShedId,
+  required String donationType,
+  required double amount,
+  required int quantity,
+  required String frequency,
+  required String name,
+  required List<DateTime> period,
+}) async {
+  try {
+    // Define constants for donation types
+    const DOCTOR_SEVA = 'doctor_seva';
+    const FOOD_SEVA = 'food_seva';
+    const OTHER_SEVA = 'other_seva';
 
-  // New function to create a donation
-  Future<Map<String, dynamic>> createDonation({
-    required String token,
-    required int cowShedId,
-    required String donationType,
-    required double amount,
-    required int quantity,
-    required String frequency,
-    required String name,
-    required List<DateTime> period,
-  }) async {
-    try {
-      // Format the period dates as a list of ISO strings
-      final List<String> formattedPeriod =
-          period.map((date) => date.toIso8601String()).toList();
-
-      final Map<String, dynamic> body = {
-        'cow_sheds_id': cowShedId,
-        'donation_type': donationType,
-        'amount': amount,
-        'quantity': quantity,
-        'frequency': frequency,
-        'name': name,
-        'period': formattedPeriod,
-      };
-
-      final response = await requestHttps(
-        RequestType.POST,
-        ApiConstants
-            .donationEndpoint, // Ensure this constant is defined in `ApiConstants`
-        jsonEncode(body),
-        headers: {
-          ApiConstants.kAuthorization: 'Bearer $token',
-          ApiConstants.kAccept: ApiConstants.kApplictionJson,
-          ApiConstants.kContentType: ApiConstants.kApplictionJson,
-        },
-      );
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        final responseData = jsonDecode(response.body);
-        return responseData;
-      } else {
-        throw Exception(
-            'Failed to create donation: ${response.statusCode} ${response.reasonPhrase}');
-      }
-    } catch (error) {
-      log('Error in createDonation: $error');
-      throw FetchDataException(message: error.toString());
+    // Map donationType to the appropriate constant
+    String mappedDonationType;
+    switch (donationType.toLowerCase()) {
+      case 'food':
+        mappedDonationType = FOOD_SEVA;
+        break;
+      case 'doctor':
+        mappedDonationType = DOCTOR_SEVA;
+        break;
+      default:
+        mappedDonationType = OTHER_SEVA;
     }
+
+    // Format the period dates as a string with the required format
+    final String formattedPeriod = jsonEncode(
+      period.map((date) => date.toIso8601String().split('T')[0]).toList(),
+    );
+
+    final Map<String, dynamic> body = {
+      'cow_sheds_id': cowShedId,
+      'donation_type': mappedDonationType,
+      'amount': amount,
+      'quantity': quantity,
+      'frequency': frequency.toLowerCase(),
+      'name': name,
+      'period': formattedPeriod, // Send period as a stringified array
+    };
+
+    final response = await requestHttps(
+      RequestType.POST,
+      ApiConstants.donationEndpoint,
+      jsonEncode(body), // Encode the body as JSON
+      headers: {
+        ApiConstants.kAuthorization: 'Bearer $token',
+        ApiConstants.kAccept: ApiConstants.kApplictionJson,
+        ApiConstants.kContentType: ApiConstants.kApplictionJson,
+      },
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      final responseData = jsonDecode(response.body);
+      return responseData;
+    } else {
+      throw Exception(
+          'Failed to create donation: ${response.statusCode} ${response.reasonPhrase}');
+    }
+  } catch (error) {
+    log('Error in createDonation: $error');
+    throw FetchDataException(message: error.toString());
   }
+}
+
 }

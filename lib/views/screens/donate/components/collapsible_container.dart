@@ -18,28 +18,31 @@ class CollapsibleContainer extends StatelessWidget {
     required this.subtitle,
     required this.content,
     required this.onToggle,
-  }) ;
+  });
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onToggle,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        height: isExpanded
-            ? index == 2 
-                ? 260.h
-                : index==3?660.h:340.h
-            : 80.h,
-        margin: EdgeInsets.only(top: 16.h),
-        decoration: BoxDecoration(
-          color: isExpanded ? AppColors.primary : AppColors.lightYellow,
-          borderRadius: BorderRadius.circular(16.h),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ListTile(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
+      height: isExpanded
+          ? index == 2
+              ? 260.h
+              : index == 3
+                  ? 660.h
+                  : 340.h
+          : 80.h,
+      margin: EdgeInsets.only(top: 16.h),
+      decoration: BoxDecoration(
+        color: isExpanded ? AppColors.primary : AppColors.lightYellow,
+        borderRadius: BorderRadius.circular(16.h),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Wrap only the ListTile with GestureDetector
+          GestureDetector(
+            onTap: onToggle,
+            child: ListTile(
               leading: Icon(
                 index == 0 ? Icons.location_on_outlined : Icons.receipt,
                 size: 28.h,
@@ -48,7 +51,7 @@ class CollapsibleContainer extends StatelessWidget {
               title: Text(
                 title,
                 style: TextStyle(
-                  fontSize: 14.h,
+                  fontSize: 14.sp,
                   fontWeight: FontWeight.w500,
                   color: isExpanded ? AppColors.title : Colors.black,
                 ),
@@ -56,7 +59,7 @@ class CollapsibleContainer extends StatelessWidget {
               subtitle: Text(
                 subtitle,
                 style: TextStyle(
-                  fontSize: 12.h,
+                  fontSize: 12.sp,
                   color: isExpanded ? AppColors.title : Colors.black54,
                 ),
               ),
@@ -67,9 +70,9 @@ class CollapsibleContainer extends StatelessWidget {
                 color: isExpanded ? AppColors.title : Colors.black87,
               ),
             ),
-            if (isExpanded) content,
-          ],
-        ),
+          ),
+          if (isExpanded) content, // Only show content when expanded
+        ],
       ),
     );
   }

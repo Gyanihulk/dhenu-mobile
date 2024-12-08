@@ -73,7 +73,7 @@ void printCurlCommand(RequestType type, Uri uri, Map<String, String> headers, dy
     curlCmd.write(" -d '${jsonEncode(body)}'");
   }
   curlCmd.write(" '${uri.toString()}'");
-  print("cURL Command: $curlCmd");
+  print(" $curlCmd");
 }
 
   Future<http.Response> sendFile(
