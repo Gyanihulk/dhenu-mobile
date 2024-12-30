@@ -25,7 +25,7 @@ class _DonationFrequency extends State<DonationFrequency> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
   List<DateTime> _selectedDates = [];
-  String _selectedFilter = "One Time";
+  String _selectedFilter = "single";
   TextEditingController _nameController = TextEditingController();
 
   @override
@@ -65,7 +65,7 @@ class _DonationFrequency extends State<DonationFrequency> {
             ),
             itemBuilder: (context, index) {
               const filters = [
-                "One Time",
+                "Single",
                 "Daily",
                 "Weekly",
                 "Monthly",

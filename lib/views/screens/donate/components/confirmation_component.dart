@@ -98,7 +98,7 @@ class _ConfirmationComponentState extends State<ConfirmationComponent> {
                     onPressed: () async {
                       // validateAndConfirm();
                       try {
-                        await widget.cowShedProvider.createDonation();
+                        await widget.cowShedProvider.createDonation(context);
                         // ScaffoldMessenger.of(context).showSnackBar(
                         //   const SnackBar(content: Text("Please Complete the payment.")),
                         // );

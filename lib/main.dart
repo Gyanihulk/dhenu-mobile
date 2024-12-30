@@ -6,7 +6,7 @@ import 'package:dhenu_dharma/views/app.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
-
+import 'package:app_links/app_links.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -39,7 +39,7 @@ void main() async {
 
   // Fetch languages (ensure proper initialization)
   await languageProvider.fetchLanguages();
-
+  initDeepLinkListener();
   runApp(
     MultiProvider(
       providers: [
@@ -49,4 +49,26 @@ void main() async {
       child: MyApp(authProvider: authProvider),
     ),
   );
+}
+
+void initDeepLinkListener() async {
+  final appLinks = AppLinks();
+  appLinks.uriLinkStream.listen((Uri? uri) {
+    if (uri != null) {
+      print('Received deep link: $uri');
+
+      if (uri.scheme == 'gyanitech.dhenudharma' && uri.host == 'payment-callback') {
+        final status = uri.queryParameters['status'];
+        final transactionId = uri.queryParameters['transaction_id'];
+
+        if (status == 'success') {
+          print('Payment successful! Transaction ID: $transactionId');
+        } else {
+          print('Payment failed.');
+        }
+      }
+    }
+  }, onError: (err) {
+    print('Failed to handle deep link: $err');
+  });
 }
