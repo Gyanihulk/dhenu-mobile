@@ -147,7 +147,7 @@ class CowShedRepository extends BaseRepository {
       final Map<String, dynamic> body = {
         'donation_id': donationId,
         'amount': amount,
-        'callback_url': 'gyani.dhenudharma://payment-callback',
+        'callback_url': 'gyanitech.dhenudharma://payment-callback',
       };
 
       final headers = {

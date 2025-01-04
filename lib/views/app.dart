@@ -1,7 +1,11 @@
 import 'package:dhenu_dharma/data/repositories/cowshed/cow_shed_repository.dart';
+import 'package:dhenu_dharma/data/repositories/faqAndFeedback/help_and_feedback_repository.dart';
+import 'package:dhenu_dharma/data/repositories/homePage/home_repository.dart';
 import 'package:dhenu_dharma/data/repositories/language/language_repository.dart';
 import 'package:dhenu_dharma/data/repositories/language/language_repository.dart';
 import 'package:dhenu_dharma/utils/providers/cow_shed_provider.dart';
+import 'package:dhenu_dharma/utils/providers/help_and_feedback.dart';
+import 'package:dhenu_dharma/utils/providers/home_provider.dart';
 import 'package:dhenu_dharma/utils/providers/language_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,9 +26,11 @@ import 'package:dhenu_dharma/views/screens/auth/login_screen.dart';
 import 'package:dhenu_dharma/views/screens/initial/initial_screen.dart';
 import 'package:dhenu_dharma/views/screens/splash/splash_screen.dart';
 import 'package:dhenu_dharma/utils/providers/auth_provider.dart'; // Import AuthProvider
+
 class MyApp extends StatelessWidget {
   final AuthProvider authProvider;
-
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
   const MyApp({required this.authProvider, super.key});
 
   @override
@@ -33,8 +39,8 @@ class MyApp extends StatelessWidget {
     final authRepository = AuthRepository();
     final userRepository = UserRepository();
     final cowShedRepository = CowShedRepository();
-
-
+    final homeRepository = HomeRepository();
+ final helpAndFeedbackRepository = HelpAndFeedbackRepository();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
@@ -45,6 +51,17 @@ class MyApp extends StatelessWidget {
           ),
           update: (context, authProvider, previousProvider) =>
               previousProvider!..updateAuthProvider(authProvider),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => HomeProvider(
+            homeRepository: homeRepository,
+            authProvider: authProvider,
+          ),
+        ), ChangeNotifierProvider(
+          create: (_) => HelpAndFeedbackProvider(
+            helpAndFeedbackRepository: helpAndFeedbackRepository,
+            authProvider: authProvider,
+          ),
         ),
       ],
       child: Consumer<LocaleProvider>(
@@ -71,6 +88,7 @@ class MyApp extends StatelessWidget {
                 child: MaterialApp(
                   title: 'DHENU DHARMA',
                   debugShowCheckedModeBanner: false,
+                  navigatorKey: navigatorKey,
                   theme: ThemeData(
                     colorScheme:
                         ColorScheme.fromSeed(seedColor: AppColors.primary),

@@ -1,32 +1,38 @@
+import 'package:dhenu_dharma/utils/common/url_launcher_util.dart';
 import 'package:dhenu_dharma/utils/constants/app_assets.dart';
+import 'package:dhenu_dharma/utils/constants/app_colors.dart';
+import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
+import 'package:dhenu_dharma/views/screens/profile/components/profile_background_component.dart';
+import 'package:dhenu_dharma/views/screens/profile/components/screen_label_component.dart';
 import 'package:dhenu_dharma/views/widgets/custom_bottom_navigation_bar.dart';
 import 'package:dhenu_dharma/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../../../../utils/constants/app_colors.dart';
-import '../../components/profile_background_component.dart';
-import '../../components/screen_label_component.dart';
-
 class ContactUsScreen extends StatelessWidget {
   const ContactUsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context); // Access localization
+
     return Scaffold(
       body: Stack(
         children: [
           ProfileBackgroundComponent(bgImg: AssetsConstants.userProfileBgImg1),
-          buildProfileContent(context),
-          ScreenLabelComponent(label: "Contact Us", icon: Icons.phone)
+          buildProfileContent(context, localization!),
+          ScreenLabelComponent(
+            label: localization.translate('contact.contact_us'),
+            icon: Icons.phone,
+          ),
         ],
       ),
       bottomNavigationBar: CustomBottomNavigationBar(pageIndex: 2),
     );
   }
 
-  Positioned buildProfileContent(BuildContext context) {
+  Positioned buildProfileContent(BuildContext context, AppLocalizations localization) {
     return Positioned(
       top: 150.h,
       left: 0,
@@ -44,35 +50,33 @@ class ContactUsScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const CustomText(
-              "Get in touch",
+            CustomText(
+              localization.translate('contact.get_in_touch'),
               fontSize: 18,
               fontWeight: FontWeight.w500,
-              color: Color(0XFF3D3D3D),
+              color: const Color(0XFF3D3D3D),
             ),
-            SizedBox(
-              height: 4.h,
-            ),
-            const CustomText(
-              "Please contact us via phone or email for any enquiries or assistance you need.",
-              color: Color(0XFF393939),
+            SizedBox(height: 4.h),
+            CustomText(
+              localization.translate('contact.contact_us_message'),
+              color: const Color(0XFF393939),
               fontSize: 14,
             ),
-            buildContactItemList(),
+            buildContactItemList(localization),
             const Spacer(),
-            buildSocialItemList(),
+            buildSocialItemList(context, localization),
           ],
         ),
       ),
     );
   }
 
-  Column buildSocialItemList() {
+  Column buildSocialItemList(BuildContext context, AppLocalizations localization) {
     return Column(
       children: [
-        const CustomText(
-          "Follow us on",
-          color: Color(0xFF6A6A6A),
+        CustomText(
+          localization.translate('contact.follow_us_on'),
+          color: const Color(0xFF6A6A6A),
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
@@ -83,16 +87,23 @@ class ContactUsScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               buildSocialIcon(
-                  FontAwesomeIcons.linkedin, Colors.blue[700], () {}),
+                FontAwesomeIcons.linkedin,
+                Colors.blue[700],
+                'https://www.linkedin.com/company/dhenu-dharma-foundation/',
+                context,
+              ),
               buildSocialIcon(
-                  FontAwesomeIcons.squareInstagram, Colors.pink, () {}),
-              buildSocialIcon(FontAwesomeIcons.facebook, Colors.blue, () {}),
+                FontAwesomeIcons.squareInstagram,
+                Colors.pink,
+                'https://www.instagram.com/dhenudharmafoundation',
+                context,
+              ),
               buildSocialIcon(
-                  FontAwesomeIcons.squareWhatsapp, Colors.green, () {}),
-              buildSocialIcon(
-                  FontAwesomeIcons.squareYoutube, Colors.red, () {}),
-              buildSocialIcon(
-                  FontAwesomeIcons.squareXTwitter, Colors.black, () {}),
+                FontAwesomeIcons.twitter,
+                Colors.blue,
+                'https://x.com/DhenuDharma',
+                context,
+              ),
             ],
           ),
         ),
@@ -101,31 +112,44 @@ class ContactUsScreen extends StatelessWidget {
   }
 
   GestureDetector buildSocialIcon(
-      IconData icon, Color? color, Function() onTap) {
+    IconData icon,
+    Color? color,
+    String url,
+    BuildContext context,
+  ) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () async {
+        // Launch the URL when the icon is tapped
+        await launchURL(context, url);
+      },
       child: FaIcon(
         icon,
         color: color,
         size: 32.h,
       ),
     );
-    ;
   }
 
-  Column buildContactItemList() {
+  Column buildContactItemList(AppLocalizations localization) {
     return Column(
       children: [
-        buildContactItem("+91 1123456789", Icons.phone_outlined),
-        buildContactItem("ask.dhenudharma@gmail.com", Icons.email_outlined),
         buildContactItem(
-            "402 Lotus Towers, Vasant Vihar, New Delhi, Delhi 110057, India",
-            Icons.location_on_outlined),
+          localization.translate('contact.phone_label'),
+          Icons.phone_outlined,
+        ),
+        buildContactItem(
+          localization.translate('contact.email_label'),
+          Icons.email_outlined,
+        ),
+        buildContactItem(
+          localization.translate('contact.address_label'),
+          Icons.location_on_outlined,
+        ),
       ],
     );
   }
 
-  Padding buildContactItem(label, icon) {
+  Padding buildContactItem(String label, IconData icon) {
     return Padding(
       padding: EdgeInsets.only(top: 24.h),
       child: Row(

@@ -26,11 +26,11 @@ class AppLocalizations {
         'thank_you': 'Thank you for visiting!',
         'this': 'This',
       },
-      'about': {
-        'info': 'Welcome',
-        'welcome': 'Welcome to our website',
-        'thank_you': 'Thank you for visiting!',
-      },
+      // 'about': {
+      //   'info': 'Welcome',
+      //   'welcome': 'Welcome to our website',
+      //   'thank_you': 'Thank you for visiting!',
+      // },
       'login': {
         'welcome': 'Welcome to Dhenu Dharma',
         'login': 'Login',
@@ -74,7 +74,7 @@ class AppLocalizations {
         "success": "OTP Verified Successfully!",
         "failure": "Failed to verify OTP. Please try again."
       },
-      "navigation": {"home": "HOME", "donate": "DONATE", "profile": "PROFILE"},
+      "navigation": {"home": "Home", "donate": "Donate", "profile": "Profile"},
       "profile": {
         "signOut": "Sign Out",
         "myDonations": "My Donations",
@@ -94,6 +94,7 @@ class AppLocalizations {
         'thank_you': 'Thank you for visiting!',
         'this': 'This',
         'mission': 'Mission',
+        "aboutUs": "About Us",
         'donate': 'Donate',
         'authentication': 'Authentication',
         'receipts': 'Receipts',
@@ -168,18 +169,69 @@ class AppLocalizations {
             "a movement rooted in compassion and respect for all living beings.",
         "contributionsMessage":
             "Your contributions, no matter how big or small, make a difference in the lives of these vulnerable animals.",
+        "impact":
+            "Your contributions, no matter how big or small, make a difference in the lives of these vulnerable animals.",
         "howWeWorkTitle": "How we work?",
         "howWeWorkDescription":
             "Your donation goes towards providing essential care for these cows, ensuring they have access to food, shelter, and medical attention. With Dhenu Dharma, you can rest assured that your contribution is making a tangible impact on the lives of these gentle creatures.",
         "howWeWorkHighlight": "food, shelter, and medical attention.",
-        "impact":
-            "Imagine being able to witness the impact of your donation in real-time, receiving timely receipts, and gentle reminders to continue your support.",
+        "whyTrustUsTitle": "Why trust us?",
+        "whyTrustUsDescription":
+            "Dhenu Dharma stands out with its unwavering transparency. With live feeds, witness shelter conditions and cow well-being firsthand. Detailed donation receipts provide peace of mind, ensuring full clarity on where your contributions are utilized.",
+        "joinUsTitle":
+            "Join Dhenu Dharma today, championing a movement to honor and care for our sacred cows.",
+        "joinUsDescription":
+            "Together, let's uphold values of compassion and kindness, ensuring they receive the respect they deserve.",
+        "joinUsHighlight": "respect they deserve.",
         "description":
             "In the ancient teachings of Sanatan Dharma, cows hold a position of utmost reverence, often likened to that of a mother.",
         "problem":
             "Unfortunately, many of these sacred animals face a grim fate once they stop producing milk. They either end up slaughtered or left to wander helplessly. Dhenu Dharma aims to change this narrative.",
+        "footerText1":
+            "Join Dhenu Dharma today, championing a movement to honor and care for our sacred cows.",
+        "footerText2":
+            "Together, let's uphold values of compassion and kindness, ensuring they receive the respect they deserve.",
         "solution":
             "Dhenu Dharma introduces a platform designed to connect caring individuals with shelters that house non-lactating, vulnerable cows. Through this platform, users can contribute funds towards the welfare of these cows with unparalleled transparency."
+      },
+      "about": {
+        "about_us_title": "About Us",
+        "intro_main_title":
+            "Dhenu Dharma, an NGO initiative, is dedicated to the care and prosperity of sacred cows",
+        "intro_description":
+            "Dhenu Dharma maintains hundreds of shelters for non-productive cows, ensuring their well-being, with proximity-based care. It emphasizes a seamless experience, prioritizing transparency. Donors can easily find nearby shelters and observe the conditions of supported cows via the platform.",
+        "virtual_meetings_title": "Virtual Meetings",
+        "virtual_meetings_description":
+            "A unique aspect of Dhenu Dharma is its innovative approach to donor engagement. Donors have the opportunity to participate in virtual meetings, where they can observe how their contributions directly impact the welfare of the cows. This live interaction fosters a deeper connection between donors and the cause they support.",
+        "transparency_title": "Transparency",
+        "transparency_description":
+            "Donors receive receipts for their donations, ensuring complete clarity on how their contributions are utilized. Also, donations made to Dhenu Dharma are eligible for tax exemption of up to 50% under section 80G of the Income Tax Act, providing added incentives to support the cause.",
+        "topic_title": "Topic",
+        "topic_description":
+            "To further enhance donor engagement, Dhenu Dharma provides timely reminders and updates on the impact of donations. Through regular communication and content sharing, donors stay informed about the progress of the organization and the welfare of the cows they support.",
+        "closing_description":
+            "Dhenu Dharma is not just an NGO but a platform that facilitates meaningful connections between donors and the cause of cow welfare. With its emphasis on transparency, experience, and tax benefits, Dhenu Dharma empowers individuals to make a positive impact on the lives of sacred cows."
+      },
+      "contact": {
+        "contact_us": "Contact Us",
+        "get_in_touch": "Get in touch",
+        "contact_us_message":
+            "Please contact us via phone or email for any inquiries or assistance you need.",
+        "phone_label": "(+91) 7755961959",
+        "email_label": "contact@dhenudharmafoundation.org",
+        "address_label":
+            "Padtani Compound, Near Hotel Joshi Palace, Sangamner, Ahmednagar, Maharashtra, 422605",
+        "follow_us_on": "Follow us on",
+      },
+      "share": {
+        "title": "Share",
+        "share_with_friends": "Share with friends",
+        "description":
+            "Share our app with friends and family to amplify our collective impact for a great cause.",
+        "together_message":
+            "Together, we can extend our reach and make a meaningful difference in the lives we aim to support.",
+        "button_text": "Share",
+        "share_message": "https://www.dhenudharmafoundation.org/"
       }
     },
     'hi': {
@@ -187,11 +239,6 @@ class AppLocalizations {
         'welcome': 'आपका हमारी वेबसाइट पर स्वागत है',
         'thank_you': 'आपके आने का धन्यवाद!',
         'this': 'यह',
-      },
-      'about': {
-        'info': 'स्वागत',
-        'welcome': 'आपका हमारी वेबसाइट पर स्वागत है',
-        'thank_you': 'आपके आने का धन्यवाद!',
       },
       'login': {
         'welcome': 'धेनु धर्म में आपका स्वागत है',
@@ -337,6 +384,45 @@ class AppLocalizations {
             "दुर्भाग्य से, इन पवित्र जानवरों को एक कठोर भाग्य का सामना करना पड़ता है जब वे दूध देना बंद कर देती हैं। वे या तो मारे जाते हैं या लाचार होकर इधर-उधर भटकते हैं। धेनु धर्म इस स्थिति को बदलने का प्रयास करता है।",
         "solution":
             "धेनु धर्म एक ऐसा मंच प्रस्तुत करता है जो सहानुभूति रखने वाले लोगों को उन गौशालाओं से जोड़ता है, जहां गैर-दुग्ध देने वाली, कमजोर गायों को रखा जाता है। इस मंच के माध्यम से, उपयोगकर्ता पारदर्शी तरीके से इन गायों की भलाई के लिए धनराशि का योगदान कर सकते हैं।",
+      },
+      "about": {
+        "about_us_title": "हमारे बारे में",
+        "intro_main_title":
+            "धेनु धर्म, एक एनजीओ पहल, पवित्र गायों की देखभाल और समृद्धि के लिए समर्पित है",
+        "intro_description":
+            "धेनु धर्म सैकड़ों आश्रयों का प्रबंधन करता है, जो गैर-उत्पादक गायों की भलाई सुनिश्चित करता है। यह निकटता आधारित देखभाल के साथ पारदर्शिता को प्राथमिकता देता है। दानदाता पास के आश्रयों को आसानी से खोज सकते हैं और मंच के माध्यम से समर्थित गायों की स्थिति का निरीक्षण कर सकते हैं।",
+        "virtual_meetings_title": "वर्चुअल बैठकें",
+        "virtual_meetings_description":
+            "धेनु धर्म का एक अनूठा पहलू इसके दानदाता सहभागिता का अभिनव दृष्टिकोण है। दानदाताओं को वर्चुअल बैठकों में भाग लेने का अवसर मिलता है, जहां वे देख सकते हैं कि उनके योगदान सीधे गायों की भलाई को कैसे प्रभावित करते हैं। यह लाइव इंटरैक्शन दानदाताओं और उनके समर्थित कारण के बीच एक गहरा संबंध बनाता है।",
+        "transparency_title": "पारदर्शिता",
+        "transparency_description":
+            "दानदाताओं को उनके दान की रसीदें मिलती हैं, जो यह सुनिश्चित करती हैं कि उनके योगदान का उपयोग कैसे किया गया है। इसके अलावा, धेनु धर्म को दिए गए दान आयकर अधिनियम की धारा 80G के तहत 50% तक के कर छूट के लिए पात्र हैं, जो इस नेक कार्य में योगदान देने के लिए अतिरिक्त प्रोत्साहन प्रदान करता है।",
+        "topic_title": "विषय",
+        "topic_description":
+            "दानदाता सहभागिता को और बढ़ाने के लिए, धेनु धर्म दान के प्रभाव पर समय पर अनुस्मारक और अपडेट प्रदान करता है। नियमित संचार और सामग्री साझा करके, दानदाता संगठन की प्रगति और जिन गायों का वे समर्थन करते हैं, उनकी भलाई के बारे में सूचित रहते हैं।",
+        "closing_description":
+            "धेनु धर्म केवल एक एनजीओ नहीं है, बल्कि एक ऐसा मंच है जो दानदाताओं और गायों की भलाई के उद्देश्य के बीच सार्थक संबंध स्थापित करता है। पारदर्शिता, अनुभव और कर लाभ पर जोर देकर, धेनु धर्म पवित्र गायों के जीवन पर सकारात्मक प्रभाव डालने के लिए व्यक्तियों को सशक्त बनाता है।"
+      },
+      "contact": {
+        "contact_us": "संपर्क करें",
+        "get_in_touch": "संपर्क में रहें",
+        "contact_us_message":
+            "किसी भी पूछताछ या सहायता के लिए कृपया हमें फोन या ईमेल के माध्यम से संपर्क करें।",
+        "phone_label": "(+91) 7755961959",
+        "email_label": "contact@dhenudharmafoundation.org",
+        "address_label":
+            "पदतानी कंपाउंड, होटल जोशी पैलेस के पास, संगमनेर, अहमदनगर, महाराष्ट्र, 422605",
+        "follow_us_on": "हमें फॉलो करें"
+      },
+      "share": {
+        "title": "साझा करें",
+        "share_with_friends": "मित्रों के साथ साझा करें",
+        "description":
+            "हमारे ऐप को दोस्तों और परिवार के साथ साझा करें ताकि एक महान उद्देश्य के लिए हमारे सामूहिक प्रभाव को बढ़ाया जा सके।",
+        "together_message":
+            "साथ में, हम अपनी पहुंच बढ़ा सकते हैं और उन जीवनों में एक सार्थक अंतर ला सकते हैं जिन्हें हम समर्थन देने का लक्ष्य रखते हैं।",
+        "button_text": "साझा करें",
+        "share_message": "https://www.dhenudharmafoundation.org/"
       }
     },
   };

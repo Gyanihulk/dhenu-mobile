@@ -1,4 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.gyani.dhenu_dharma">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.gyanitech.dhenu_dharma">
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:label="Dhenu Dharma"
@@ -31,7 +31,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data
-                    android:scheme="gyani.dhenudharma"
+                    android:scheme="gyanitech.dhenudharma"
                     android:host="payment-callback" />
             </intent-filter>
             <intent-filter>

@@ -7,17 +7,33 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:336065761387:android:d97a9c3e51a7efc978612e",
+        "mobilesdk_app_id": "1:336065761387:android:2a1399f6db0d47e278612e",
         "android_client_info": {
-          "package_name": "com.gyani.dhenu_dharma"
+          "package_name": "com.gyanitech.dhenu_dharma"
         }
       },
       "oauth_client": [
         {
-          "client_id": "336065761387-h54mq3pq9htdio2v72n1dm4dn7p48at2.apps.googleusercontent.com",
+          "client_id": "336065761387-bqm0tsplpeqv6bss4tcd3t2gj28guglp.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.gyani.dhenu_dharma",
+            "package_name": "com.gyanitech.dhenu_dharma",
+            "certificate_hash": "be29ebbb2d233263b6923bab60ae8afd52bd8a09"
+          }
+        },
+        {
+          "client_id": "336065761387-h1pkoje93fh1f9nvudsbud30feshtv3h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gyanitech.dhenu_dharma",
+            "certificate_hash": "cc612403e7c148e6bd92b417238ffa6dadc115c4"
+          }
+        },
+        {
+          "client_id": "336065761387-t5c30c5r9tgftk41tehca4s9hmfsjppl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gyanitech.dhenu_dharma",
             "certificate_hash": "89ca8d805e31b15b77baaffbc9dab07a5ad39d5f"
           }
         },

@@ -196,9 +196,9 @@ class _ConfirmationComponentState extends State<ConfirmationComponent> {
       children: [
         if (donationDetails['donationType'] == 'Food')
           _buildRowDetail("Quantity of Bags:",
-              donationDetails['quantity'].toString(), "₹1,500"),
+              donationDetails['quantity'].toString(), "₹ ${donationDetails['quantity'] != null ? (donationDetails['quantity'] * 500).toStringAsFixed(2) : '0.00'}"),
         _buildRowDetail("Donation Frequency:",
-            donationDetails['donationFrequency'] ?? 'N/A', "₹6,000"),
+            donationDetails['donationFrequency'] ?? 'N/A',  donationDetails['amount']?.toStringAsFixed(2) ?? 'N/A'),
         ...dates.map((date) =>
             _buildRowDetail("Date:", date, "")), // Display each date in a row
       ],

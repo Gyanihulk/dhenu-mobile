@@ -1,4 +1,4 @@
-package com.gyani.dhenu_dharma
+package com.gyanitech.dhenu_dharma
 
 import io.flutter.embedding.android.FlutterActivity
 

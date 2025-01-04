@@ -170,10 +170,18 @@ class _DonationFormComponentState extends State<DonationFormComponent> {
                       setState(() {
                         quantity -= 1;
                       });
-                      widget.onQuantityChange!(quantity! - 1);
+
+                      // Calculate amount based on updated quantity and convert to string
+                      String calculatedValue = "${(quantity ?? 0) * 500}";
+                      print('$calculatedValue -1');
+
+                      widget.onQuantityChange!(
+                          quantity!); // Pass updated quantity
+                      widget.onInputChange(
+                          calculatedValue); // Update the amount as string
                     }
                   },
-                  icon: Icon(Icons.remove_circle, color: AppColors.title),
+                  icon: const Icon(Icons.remove_circle, color: AppColors.title),
                 ),
                 Text(
                   "${quantity ?? 0}",
@@ -187,13 +195,20 @@ class _DonationFormComponentState extends State<DonationFormComponent> {
                   onPressed: () {
                     if (widget.onQuantityChange != null) {
                       setState(() {
-        quantity += 1;
-      });
-                      print('$quantity +1 ');
-                      widget.onQuantityChange!(quantity + 1);
+                        quantity += 1;
+                      });
+
+                      // Calculate amount based on updated quantity and convert to string
+                      String calculatedValue = "${(quantity ?? 0) * 500}";
+                      print('$calculatedValue +1');
+
+                      widget.onQuantityChange!(
+                          quantity!); // Pass updated quantity
+                      widget.onInputChange(
+                          calculatedValue); // Update the amount as string
                     }
                   },
-                  icon: Icon(Icons.add_circle, color: AppColors.title),
+                  icon: const Icon(Icons.add_circle, color: AppColors.title),
                 ),
               ],
             ),
@@ -225,7 +240,16 @@ class _DonationFormComponentState extends State<DonationFormComponent> {
       ],
     );
   }
-
+@override
+void didUpdateWidget(covariant DonationFormComponent oldWidget) {
+  super.didUpdateWidget(oldWidget);
+  // Update local amount state when the prop changes
+  if (widget.amount != oldWidget.amount) {
+    setState(() {
+      amount = widget.amount ?? 0.0;
+    });
+  }
+}
   // Function to build Amount Donation UI
   Widget _buildAmountDonation(BuildContext context) {
     return Column(
@@ -261,7 +285,9 @@ class _DonationFormComponentState extends State<DonationFormComponent> {
                           "Enter an amount",
                   border: const UnderlineInputBorder(),
                 ),
-                onChanged: widget.onInputChange,
+                onChanged: (value) {
+                widget.onInputChange(value);
+              },
               ),
             ),
           ],

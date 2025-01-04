@@ -143,11 +143,11 @@ Padding buildProfileItemList(AppLocalizations localization) {
             label: localization.translate("profile.myDonations"),
             screen: const MyDonationsScreen(),
           ),
-          buildProfileListItem(
-            icon: Icons.insert_drive_file_outlined,
-            label: localization.translate("profile.documents"),
-            screen: const DocumentsScreen(),
-          ),
+          // buildProfileListItem(
+          //   icon: Icons.insert_drive_file_outlined,
+          //   label: localization.translate("profile.documents"),
+          //   screen: const DocumentsScreen(),
+          // ),
           buildProfileListItem(
             icon: Icons.balance,
             label: localization.translate("profile.legal"),
