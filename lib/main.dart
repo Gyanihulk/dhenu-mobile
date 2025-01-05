@@ -1,5 +1,6 @@
 import 'package:dhenu_dharma/data/repositories/language/language_repository.dart';
 import 'package:dhenu_dharma/service/app_preferences.dart';
+import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:dhenu_dharma/utils/providers/auth_provider.dart';
 import 'package:dhenu_dharma/utils/providers/language_provider.dart';
 import 'package:dhenu_dharma/views/app.dart';
@@ -41,31 +42,37 @@ void main() async {
 
   // Fetch languages (ensure proper initialization)
   await languageProvider.fetchLanguages();
-  
+
   initDeepLinkListener();
-  runApp(
-    MultiProvider(
+  runApp(AppLocalizationState(
+    child:MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => authProvider),
         ChangeNotifierProvider(create: (_) => languageProvider),
       ],
       child: MyApp(authProvider: authProvider),
     ),
-  );
+  ));
 }
+
 void initDeepLinkListener() {
   final appLinks = AppLinks();
   appLinks.uriLinkStream.listen((Uri? uri) {
     if (uri != null) {
       print('Received deep link: $uri');
 
-      if (uri.scheme == 'gyanitech.dhenudharma' && uri.host == 'payment-callback') {
-        final invoiceId = uri.queryParameters['razorpay_invoice_id'] ?? "Unknown";
-        final paymentId = uri.queryParameters['razorpay_payment_id'] ?? "Unknown";
-        final status = uri.queryParameters['razorpay_invoice_status'] ?? "Unknown";
+      if (uri.scheme == 'gyanitech.dhenudharma' &&
+          uri.host == 'payment-callback') {
+        final invoiceId =
+            uri.queryParameters['razorpay_invoice_id'] ?? "Unknown";
+        final paymentId =
+            uri.queryParameters['razorpay_payment_id'] ?? "Unknown";
+        final status =
+            uri.queryParameters['razorpay_invoice_status'] ?? "Unknown";
 
         if (status == 'paid') {
-          print('Payment successful! Invoice ID: $invoiceId, Payment ID: $paymentId');
+          print(
+              'Payment successful! Invoice ID: $invoiceId, Payment ID: $paymentId');
 
           WidgetsBinding.instance.addPostFrameCallback((_) {
             // Access navigator context to show SnackBar and navigate
@@ -85,7 +92,8 @@ void initDeepLinkListener() {
             // Navigate to the InitialScreen with home page selected
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => const InitialScreen(pageIndex: 0)),
+              MaterialPageRoute(
+                  builder: (context) => const InitialScreen(pageIndex: 0)),
               (route) => false,
             );
           });
@@ -109,7 +117,8 @@ void initDeepLinkListener() {
             // Navigate to InitialScreen (optional, if required for failed payments)
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => const InitialScreen(pageIndex: 0)),
+              MaterialPageRoute(
+                  builder: (context) => const InitialScreen(pageIndex: 0)),
               (route) => false,
             );
           });

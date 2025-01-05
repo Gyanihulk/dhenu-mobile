@@ -1,17 +1,22 @@
+import 'package:dhenu_dharma/utils/constants/app_assets.dart';
+import 'package:dhenu_dharma/utils/constants/app_colors.dart';
+import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
+import 'package:dhenu_dharma/views/screens/profile/components/profile_background_component.dart';
+import 'package:dhenu_dharma/views/screens/profile/components/screen_label_component.dart';
+import 'package:dhenu_dharma/views/widgets/custom_bottom_navigation_bar.dart';
 import 'package:dhenu_dharma/views/widgets/custom_button.dart';
+import 'package:dhenu_dharma/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:dhenu_dharma/data/models/donation_model.dart';
 
-import '../../../../../utils/constants/app_assets.dart';
-import '../../../../../utils/constants/app_colors.dart';
-import '../../../../widgets/custom_text.dart';
-import '../../components/profile_background_component.dart';
-import '../../components/screen_label_component.dart';
 
 class UpcomingDonationDetailScreen extends StatefulWidget {
-  const UpcomingDonationDetailScreen({super.key});
+  final Donation donation;
+
+  const UpcomingDonationDetailScreen({super.key, required this.donation});
 
   @override
   State<UpcomingDonationDetailScreen> createState() =>
@@ -22,21 +27,25 @@ class _UpcomingDonationDetailScreenState
     extends State<UpcomingDonationDetailScreen> {
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: Stack(
         children: [
           ProfileBackgroundComponent(bgImg: AssetsConstants.userProfileBgImg1),
-          buildUpcomingDonationDetailContent(context),
+          buildUpcomingDonationDetailContent(context, localization),
           ScreenLabelComponent(
-            label: "My Donations",
+            label: localization.translate('my_donations_screen.title'),
             icon: FontAwesomeIcons.wallet,
-          )
+          ),
         ],
       ),
+      bottomNavigationBar: CustomBottomNavigationBar(pageIndex: 2),
     );
   }
 
-  Positioned buildUpcomingDonationDetailContent(BuildContext context) {
+  Positioned buildUpcomingDonationDetailContent(
+      BuildContext context, AppLocalizations localization) {
     return Positioned(
       top: 150.h,
       left: 0,
@@ -55,14 +64,15 @@ class _UpcomingDonationDetailScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CustomText(
-                "Upcoming Donations",
-                fontSize: 18,
+              CustomText(
+                localization
+                    .translate('my_donations_screen.upcoming_donations'),
+                fontSize: 18.sp,
                 fontWeight: FontWeight.w600,
-                color: Color(0xff3d3d3d),
+                color: const Color(0xff3d3d3d),
               ),
               SizedBox(height: 6.h),
-              buildDonationDetail()
+              buildDonationDetail(localization)
             ],
           ),
         ),
@@ -70,10 +80,12 @@ class _UpcomingDonationDetailScreenState
     );
   }
 
-  Container buildDonationDetail() {
+  Container buildDonationDetail(AppLocalizations localization) {
+    final donation = widget.donation;
+
     return Container(
-      width: double.infinity,
-      height: 350.h,
+      width: MediaQuery.of(context).size.width * 1,
+      height: MediaQuery.of(context).size.height * 0.55,
       decoration: BoxDecoration(
         color: AppColors.primary,
         borderRadius: BorderRadius.circular(12.h),
@@ -92,40 +104,29 @@ class _UpcomingDonationDetailScreenState
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomText(
-                        "Kanha Aashray",
-                        fontSize: 16,
+                      CustomText(
+                        donation.name,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff2a2a2a),
-                      ),
-                      const CustomText(
-                        "Gaushala",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xff2a2a2a),
+                        color: const Color(0xff2a2a2a),
                       ),
                       SizedBox(height: 4.h),
-                      const CustomText(
-                        "15 km away",
-                        fontSize: 14,
+                      CustomText(
+                        "${localization.translate('my_donations_screen.distance')}: ${donation.distance}",
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xff595959),
+                        color: const Color(0xff595959),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  width: 90.w,
-                  height: 80.h,
+                  width: MediaQuery.of(context).size.width * 0.2,
+                  height: MediaQuery.of(context).size.height * 0.2,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40.h),
-                      bottomLeft: Radius.circular(40.h),
-                      topRight: Radius.circular(8.h),
-                      bottomRight: Radius.circular(30.h),
-                    ),
-                    image: const DecorationImage(
-                      image: AssetImage(AssetsConstants.onboardingImg1),
+                    borderRadius: BorderRadius.circular(12.h),
+                    image: DecorationImage(
+                      image: AssetImage(donation.imagePath),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -136,7 +137,6 @@ class _UpcomingDonationDetailScreenState
           Container(
             margin: EdgeInsets.symmetric(horizontal: 12.w).copyWith(top: 8.h),
             padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 6.h),
-            height: 294,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8.h),
@@ -150,150 +150,88 @@ class _UpcomingDonationDetailScreenState
                     radius: 20.h,
                     child: const Icon(Icons.person),
                   ),
-                  title: const CustomText(
-                    'ABC Nagar',
-                    fontSize: 14,
+                  title: CustomText(
+                    donation.address,
+                    fontSize: 14.sp,
                   ),
-                  subtitle: const CustomText(
-                    'xyz colony - 834004',
-                    fontSize: 10,
-                  ),
-                  trailing: Container(
-                    width: 112.w,
-                    height: 36.h,
-                    padding: EdgeInsets.symmetric(horizontal: 6.w),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(12.h),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.phone,
-                          size: 16.h,
-                        ),
-                        SizedBox(
-                          width: 4.w,
-                        ),
-                        const CustomText(
-                          "1234567891",
-                          color: Color(0xff595959),
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ],
-                    ),
+                  subtitle: CustomText(
+                    donation.contact,
+                    fontSize: 12.sp,
                   ),
                 ),
-                const Divider(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomText(
-                      "Donor : Aakash Singh",
-                      fontSize: 14.h,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    const CustomText(
-                      "Donation Amount:  ₹ 2,000",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    SizedBox(height: 12.h),
-                    const CustomText(
-                      "Date : 10 March, 2024",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    const CustomText(
-                      "Time : 2:00 pm",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    SizedBox(height: 30.h),
-                    Center(
-                      child: CustomButton(
-                          width: 150.w,
-                          height: 36.h,
-                          text: "Cancel",
-                          onPressed: () {
-                            buildCancelSure();
-                          }),
-                    )
-                  ],
-                )
+                Divider(),
+                CustomText(
+                  "${localization.translate('my_donations_screen.donor')}: ${donation.donor}",
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+                CustomText(
+                  "${localization.translate('my_donations_screen.donation_amount')}: ₹ ${donation.amount}",
+                  fontSize: 12.sp,
+                ),
+                CustomText(
+                  "${localization.translate('my_donations_screen.date')}: ${donation.date}",
+                  fontSize: 12.sp,
+                ),
+                CustomText(
+                  "${localization.translate('my_donations_screen.time')}: ${donation.time}",
+                  fontSize: 12.sp,
+                ),
+                SizedBox(height: 30.h),
+                Center(
+                  child: CustomButton(
+                    width: 150.w,
+                    height: 36.h,
+                    text: localization
+                        .translate('my_donations_screen.cancel_button'),
+                    onPressed: () {
+                      buildCancelSure(localization);
+                    },
+                  ),
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
-  buildCancelSure() {
+  buildCancelSure(AppLocalizations localization) {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: AppColors.primary,
           title: CustomText(
-            "Are you sure you want to cancel?",
-            fontSize: 16.h,
+            localization.translate('my_donations_screen.cancel_confirmation'),
+            fontSize: 16.sp,
             fontWeight: FontWeight.w600,
           ),
           actions: [
-            Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 8.h, vertical: 16.h),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8.h),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      width: 98.w,
-                      height: 30.h,
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        borderRadius: BorderRadius.circular(16.h),
-                      ),
-                      child: const Center(
-                        child: CustomText(
-                          "Yes",
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: CustomText(
+                    "Yes",
+                    fontWeight: FontWeight.w600,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                    child: Container(
-                      width: 98.w,
-                      height: 30.h,
-                      decoration: BoxDecoration(
-                        border: Border.all(),
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(16.h),
-                      ),
-                      child: const Center(
-                        child: CustomText(
-                          "No",
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: CustomText(
+                    "No",
+                    fontWeight: FontWeight.w600,
                   ),
-                ],
-              ),
-            )
+                ),
+              ],
+            ),
           ],
         );
       },

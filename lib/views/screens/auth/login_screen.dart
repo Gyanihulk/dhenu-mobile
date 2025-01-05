@@ -67,32 +67,32 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Image.asset(AssetsConstants.logoImg, height: 44.h),
                   ),
                 ),
-                DropdownButton<Locale>(
-                  value: Provider.of<LocaleProvider>(context, listen: false)
-                      .locale,
-                  onChanged: (Locale? locale) {
-                    if (locale != null) {
-                      Provider.of<LocaleProvider>(context, listen: false)
-                          .setLocale(locale);
-                    }
-                  },
-                  dropdownColor: Colors.black,
-                  style: const TextStyle(color: Colors.white),
-                  underline: Container(
-                    height: 1,
-                    color: Colors.white,
-                  ),
-                  items: const [
-                    DropdownMenuItem(
-                      value: Locale('en'),
-                      child: Text('English'),
-                    ),
-                    DropdownMenuItem(
-                      value: Locale('hi'),
-                      child: Text('हिंदी'),
-                    ),
-                  ],
-                ),
+                // DropdownButton<Locale>(
+                //   value: Provider.of<LocaleProvider>(context, listen: false)
+                //       .locale,
+                //   onChanged: (Locale? locale) {
+                //     if (locale != null) {
+                //       Provider.of<LocaleProvider>(context, listen: false)
+                //           .setLocale(locale);
+                //     }
+                //   },
+                //   dropdownColor: Colors.black,
+                //   style: const TextStyle(color: Colors.white),
+                //   underline: Container(
+                //     height: 1,
+                //     color: Colors.white,
+                //   ),
+                //   items: const [
+                //     DropdownMenuItem(
+                //       value: Locale('en'),
+                //       child: Text('English'),
+                //     ),
+                //     DropdownMenuItem(
+                //       value: Locale('hi'),
+                //       child: Text('हिंदी'),
+                //     ),
+                //   ],
+                // ),
                 Container(
                   padding: EdgeInsets.symmetric(horizontal: 16.h),
                   height: MediaQuery.of(context).size.height - 190.h,

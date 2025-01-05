@@ -1,5 +1,6 @@
 import 'package:dhenu_dharma/utils/constants/app_assets.dart';
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
+import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:dhenu_dharma/utils/providers/help_and_feedback.dart';
 import 'package:dhenu_dharma/views/screens/profile/components/profile_background_component.dart';
 import 'package:dhenu_dharma/views/screens/profile/components/screen_label_component.dart';
@@ -11,8 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
-
-
 
 class HelpAndFeedbackScreen extends StatefulWidget {
   const HelpAndFeedbackScreen({super.key});
@@ -38,14 +37,15 @@ class _HelpAndFeedbackScreenState extends State<HelpAndFeedbackScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<HelpAndFeedbackProvider>(context);
+    final localization = AppLocalizations.of(context); // Access localization
 
     return Scaffold(
       body: Stack(
         children: [
           ProfileBackgroundComponent(bgImg: AssetsConstants.userProfileBgImg1),
-          buildHelpFeedbackContent(context, provider),
+          buildHelpFeedbackContent(context, provider, localization!),
           ScreenLabelComponent(
-            label: "Help & Feedback",
+            label: localization.translate('help_and_feedback.title'),
             icon: Icons.help_outline,
           ),
         ],
@@ -55,7 +55,7 @@ class _HelpAndFeedbackScreenState extends State<HelpAndFeedbackScreen> {
   }
 
   Positioned buildHelpFeedbackContent(
-      BuildContext context, HelpAndFeedbackProvider provider) {
+      BuildContext context, HelpAndFeedbackProvider provider, AppLocalizations localization) {
     return Positioned(
       top: 150.h,
       left: 0,
@@ -74,11 +74,11 @@ class _HelpAndFeedbackScreenState extends State<HelpAndFeedbackScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              buildSearch(),
+              buildSearch(localization),
               SizedBox(height: 16.h),
-              buildTopQuestion(provider),
+              buildTopQuestion(provider, localization),
               SizedBox(height: 16.h),
-              buildFeedback(provider),
+              buildFeedback(provider, localization),
             ],
           ),
         ),
@@ -86,19 +86,19 @@ class _HelpAndFeedbackScreenState extends State<HelpAndFeedbackScreen> {
     );
   }
 
-  Column buildSearch() {
+  Column buildSearch(AppLocalizations localization) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomText(
-          "How can we help you today?",
+          localization.translate('help_and_feedback.search_title'),
           fontSize: 22.sp,
           fontWeight: FontWeight.w700,
           color: const Color(0XFF3D3D3D),
         ),
         SizedBox(height: 8.h),
         CustomInputField(
-          hint: "Search",
+          hint: localization.translate('help_and_feedback.search_hint'),
           controller: searchController,
           prefixIcon: FontAwesomeIcons.magnifyingGlass,
           prefixIconColor: const Color(0XFFAAAAAA),
@@ -107,14 +107,14 @@ class _HelpAndFeedbackScreenState extends State<HelpAndFeedbackScreen> {
     );
   }
 
-  Padding buildTopQuestion(HelpAndFeedbackProvider provider) {
+  Padding buildTopQuestion(HelpAndFeedbackProvider provider, AppLocalizations localization) {
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 12.h),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomText(
-            "Top Questions",
+            localization.translate('help_and_feedback.top_questions_title'),
             fontSize: 20.sp,
             fontWeight: FontWeight.w600,
             color: const Color(0XFF3D3D3D),
@@ -122,21 +122,21 @@ class _HelpAndFeedbackScreenState extends State<HelpAndFeedbackScreen> {
           SizedBox(height: 8.h),
           provider.isLoading
               ? Center(child: CircularProgressIndicator())
-              : buildTopQuestionCardList(provider.faqs),
+              : buildTopQuestionCardList(provider.faqs, localization),
         ],
       ),
     );
   }
 
-  Widget buildTopQuestionCardList(List<dynamic> faqs) {
+  Widget buildTopQuestionCardList(List<dynamic> faqs, AppLocalizations localization) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         children: faqs
             .map(
               (faq) => buildTopQuestionCard(
-                question: faq['question'] ?? '',
-                answer: faq['answer'] ?? '',
+                question: faq['question'] ?? localization.translate('help_and_feedback.default_question'),
+                answer: faq['answer'] ?? localization.translate('help_and_feedback.default_answer'),
               ),
             )
             .toList(),
@@ -179,26 +179,26 @@ class _HelpAndFeedbackScreenState extends State<HelpAndFeedbackScreen> {
     );
   }
 
-  Column buildFeedback(HelpAndFeedbackProvider provider) {
+  Column buildFeedback(HelpAndFeedbackProvider provider, AppLocalizations localization) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomText(
-          "Feedback",
+          localization.translate('help_and_feedback.feedback_title'),
           fontSize: 20.sp,
           fontWeight: FontWeight.w600,
           color: const Color(0XFF3D3D3D),
         ),
         SizedBox(height: 8.h),
         CustomText(
-          "We appreciate your feedback",
+          localization.translate('help_and_feedback.feedback_subtitle'),
           fontSize: 16.sp,
           fontWeight: FontWeight.w600,
           color: const Color(0XFF3D3D3D),
         ),
         SizedBox(height: 8.h),
         CustomText(
-          "We are always looking for ways to improve your experience. Please take a moment to evaluate and tell us what you think.",
+          localization.translate('help_and_feedback.feedback_description'),
           fontSize: 14.sp,
           color: const Color(0XFF393939),
         ),
@@ -227,14 +227,14 @@ class _HelpAndFeedbackScreenState extends State<HelpAndFeedbackScreen> {
         ),
         SizedBox(height: 8.h),
         CustomInputField(
-          hint: "What we can do to improve your experience?",
+          hint: localization.translate('help_and_feedback.feedback_input_hint'),
           controller: feedbackController,
           maxLines: 4,
         ),
         SizedBox(height: 12.h),
         CustomButton(
           borderRadius: 8.r,
-          text: "Submit",
+          text: localization.translate('help_and_feedback.submit_button'),
           onPressed: () async {
             await provider.submitFeedback(selectedStars, feedbackController.text);
             ScaffoldMessenger.of(context).showSnackBar(
@@ -242,7 +242,7 @@ class _HelpAndFeedbackScreenState extends State<HelpAndFeedbackScreen> {
                 content: Text(
                   provider.errorMessage.isNotEmpty
                       ? provider.errorMessage
-                      : "Feedback submitted!",
+                      : localization.translate('help_and_feedback.feedback_success'),
                 ),
               ),
             );

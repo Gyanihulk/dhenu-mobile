@@ -595,10 +595,10 @@ Container buildProvideCard({
   GestureDetector buildDonationCard() {
     return GestureDetector(
       onTap: () {
-        CustomNavigator(
-          context: context,
-          screen: const UpcomingDonationDetailScreen(),
-        ).push();
+        // CustomNavigator(
+        //   context: context,
+        //   screen: const UpcomingDonationDetailScreen(),
+        // ).push();
       },
       child: Container(
         width: double.infinity,

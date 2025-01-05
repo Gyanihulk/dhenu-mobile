@@ -2,6 +2,7 @@ import 'package:dhenu_dharma/utils/constants/app_colors.dart';
 import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:dhenu_dharma/views/screens/donate/donate_screen.dart';
 import 'package:dhenu_dharma/views/screens/profile/profile_screen.dart';
+import 'package:dhenu_dharma/views/screens/profile/screens/language/languages_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -22,6 +23,7 @@ class _InitialScreenState extends State<InitialScreen> {
     const HomeScreen(),
     const DonateScreen(),
     const ProfileScreen(),
+    const LanguagesScreen(),
   ];
 
   @override

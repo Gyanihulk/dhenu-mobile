@@ -1,14 +1,17 @@
+import 'package:dhenu_dharma/utils/constants/app_assets.dart';
+import 'package:dhenu_dharma/utils/constants/app_colors.dart';
+import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:dhenu_dharma/utils/providers/language_provider.dart';
+import 'package:dhenu_dharma/utils/providers/locale_provider.dart';
+import 'package:dhenu_dharma/views/screens/profile/components/profile_background_component.dart';
+import 'package:dhenu_dharma/views/screens/profile/components/screen_label_component.dart';
 import 'package:dhenu_dharma/views/widgets/custom_bottom_navigation_bar.dart';
 import 'package:dhenu_dharma/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../../utils/constants/app_assets.dart';
-import '../../../../../utils/constants/app_colors.dart';
-import '../../components/profile_background_component.dart';
-import '../../components/screen_label_component.dart';
 
 
 class LanguagesScreen extends StatefulWidget {
@@ -18,22 +21,15 @@ class LanguagesScreen extends StatefulWidget {
   State<LanguagesScreen> createState() => _LanguagesScreen();
 }
 
-
 class _LanguagesScreen extends State<LanguagesScreen> {
-
-
-@override
+  @override
   void initState() {
     super.initState();
     // Fetch initial cow shed data immediately without async gap
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final languageProvider =
           Provider.of<LanguageProvider>(context, listen: false);
-      languageProvider
-          .fetchLanguages(
-    
-      )
-          .then((_) {
+      languageProvider.fetchLanguages().then((_) {
         if (mounted) {
           print('Fetched Cow Sheds: ${languageProvider.languages}');
         }
@@ -44,8 +40,10 @@ class _LanguagesScreen extends State<LanguagesScreen> {
       });
     });
   }
+
   @override
   Widget build(BuildContext context) {
+     final localization = AppLocalizations.of(context); 
     return Scaffold(
       body: Stack(
         children: [
@@ -53,7 +51,7 @@ class _LanguagesScreen extends State<LanguagesScreen> {
           buildLanguagesContent(context),
           ScreenLabelComponent(
             // Removed const
-            label: "Languages",
+            label: localization!.translate('profile.languages'), 
             icon: Icons.language,
           ),
         ],
@@ -83,8 +81,9 @@ class _LanguagesScreen extends State<LanguagesScreen> {
             if (languageProvider.isLoading) {
               return const Center(child: CircularProgressIndicator());
             }
-            
-print('Languages in Language screen: ${languageProvider.languages}');
+
+            print(
+                'Languages in Language screen: ${languageProvider.languages}');
             if (languageProvider.errorMessage.isNotEmpty) {
               return Center(
                 child: Text(
@@ -102,14 +101,30 @@ print('Languages in Language screen: ${languageProvider.languages}');
               itemCount: languageProvider.languages.length,
               itemBuilder: (context, index) {
                 final language = languageProvider.languages[index];
-                final isSelected =
-                    true;
+                final isSelected = true;
 
                 return ListTile(
                   title: Text(language['translated_name'] ?? language['name']),
                   trailing: isSelected ? const Icon(Icons.check_circle) : null,
-                  onTap: () {
-                    // languageProvider.setSelectedLanguage(language['code']);
+                  onTap: () async {
+                    final selectedLanguageCode = language['code'];
+                    final locale = Locale(selectedLanguageCode);
+                    final selectedLanguageId = language['id'].toString();
+                    try {
+                      // Fetch translations
+                      // await languageProvider
+                      //     .fetchTranslations(selectedLanguageId);
+
+                      // Safely access context only if the widget is still mounted
+                      if (context.mounted) {
+                        final localeProvider =
+                            Provider.of<LocaleProvider>(context, listen: false);
+                        localeProvider.setLocale(locale);
+                        print("Locale change requested: $selectedLanguageCode");
+                      }
+                    } catch (e) {
+                      print("Error fetching translations in langauge screen: $e");
+                    }
                   },
                 );
               },

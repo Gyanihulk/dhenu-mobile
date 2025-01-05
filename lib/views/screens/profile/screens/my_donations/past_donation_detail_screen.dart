@@ -1,33 +1,43 @@
+import 'package:dhenu_dharma/data/models/donation_model.dart';
+import 'package:dhenu_dharma/utils/constants/app_assets.dart';
+import 'package:dhenu_dharma/utils/constants/app_colors.dart';
+import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:dhenu_dharma/views/screens/profile/components/profile_background_component.dart';
+import 'package:dhenu_dharma/views/screens/profile/components/screen_label_component.dart';
+import 'package:dhenu_dharma/views/widgets/custom_bottom_navigation_bar.dart';
+import 'package:dhenu_dharma/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import '../../../../../utils/constants/app_assets.dart';
-import '../../../../../utils/constants/app_colors.dart';
-import '../../../../widgets/custom_text.dart';
-import '../../components/screen_label_component.dart';
+
 
 class PastDonationDetailScreen extends StatelessWidget {
-  const PastDonationDetailScreen({super.key});
+  final Donation donation;
+
+  const PastDonationDetailScreen({super.key, required this.donation});
 
   @override
   Widget build(BuildContext context) {
+    final localization = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: Stack(
         children: [
           ProfileBackgroundComponent(bgImg: AssetsConstants.userProfileBgImg1),
-          buildPastDonationDetailContent(context),
+          buildPastDonationDetailContent(context, localization),
           ScreenLabelComponent(
-            label: "My Donations",
+            label: localization.translate('my_donations_screen.title'),
             icon: FontAwesomeIcons.wallet,
-          )
+          ),
         ],
       ),
+      bottomNavigationBar: CustomBottomNavigationBar(pageIndex: 2),
     );
   }
 
-  Positioned buildPastDonationDetailContent(BuildContext context) {
+  Positioned buildPastDonationDetailContent(
+      BuildContext context, AppLocalizations localization) {
     return Positioned(
       top: 150.h,
       left: 0,
@@ -45,13 +55,13 @@ class PastDonationDetailScreen extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              const CustomText(
-                "Upcoming Donations",
-                fontSize: 18,
+              CustomText(
+                localization.translate('my_donations_screen.past_donations'),
+                fontSize: 18.sp,
                 fontWeight: FontWeight.w600,
-                color: Color(0xff3d3d3d),
+                color: const Color(0xff3d3d3d),
               ),
-              buildDonationDetail(),
+              buildDonationDetail(context,localization),
             ],
           ),
         ),
@@ -59,7 +69,7 @@ class PastDonationDetailScreen extends StatelessWidget {
     );
   }
 
-  Container buildDonationDetail() {
+  Container buildDonationDetail( BuildContext context,AppLocalizations localization) {
     return Container(
       padding: EdgeInsets.only(bottom: 8.h),
       width: double.infinity,
@@ -81,40 +91,29 @@ class PastDonationDetailScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CustomText(
-                        "Kanha Aashray",
-                        fontSize: 16,
+                      CustomText(
+                        donation.name,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xff2a2a2a),
-                      ),
-                      const CustomText(
-                        "Gaushala",
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xff2a2a2a),
+                        color: const Color(0xff2a2a2a),
                       ),
                       SizedBox(height: 4.h),
-                      const CustomText(
-                        "15 km away",
-                        fontSize: 14,
+                      CustomText(
+                        "${localization.translate('my_donations_screen.distance')}: ${donation.distance}",
+                        fontSize: 14.sp,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xff595959),
+                        color: const Color(0xff595959),
                       ),
                     ],
                   ),
                 ),
                 Container(
-                  width: 90.w,
-                  height: 80.h,
+                   width: MediaQuery.of(context).size.width * 0.2,
+                  height: MediaQuery.of(context).size.height * 0.2,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(40.h),
-                      bottomLeft: Radius.circular(40.h),
-                      topRight: Radius.circular(8.h),
-                      bottomRight: Radius.circular(30.h),
-                    ),
-                    image: const DecorationImage(
-                      image: AssetImage(AssetsConstants.onboardingImg1),
+                    borderRadius: BorderRadius.circular(12.h),
+                    image: DecorationImage(
+                      image: AssetImage(donation.imagePath),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -138,125 +137,93 @@ class PastDonationDetailScreen extends StatelessWidget {
                     radius: 20.h,
                     child: const Icon(Icons.person),
                   ),
-                  title: const CustomText(
-                    'ABC Nagar',
-                    fontSize: 14,
+                  title: CustomText(
+                    donation.address,
+                    fontSize: 14.sp,
                   ),
-                  subtitle: const CustomText(
-                    'xyz colony - 834004',
-                    fontSize: 10,
-                  ),
-                  trailing: Container(
-                    width: 112.w,
-                    height: 36.h,
-                    padding: EdgeInsets.symmetric(horizontal: 6.w),
-                    decoration: BoxDecoration(
-                      color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(12.h),
-                    ),
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.phone,
-                          size: 16.h,
-                        ),
-                        SizedBox(
-                          width: 4.w,
-                        ),
-                        const CustomText(
-                          "1234567891",
-                          color: Color(0xff595959),
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ],
-                    ),
+                  subtitle: CustomText(
+                    donation.contact,
+                    fontSize: 12.sp,
                   ),
                 ),
                 const Divider(),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CustomText(
-                      "Donor : Aakash Singh",
-                      fontSize: 14.h,
-                      fontWeight: FontWeight.w600,
-                    ),
-                    const CustomText(
-                      "Donation Amount:  ₹ 2,000",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    SizedBox(height: 12.h),
-                    const CustomText(
-                      "Date : 10 March, 2024",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    const CustomText(
-                      "Time : 2:00 pm",
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    Divider(height: 28.h),
-                    buildReceipts()
-                  ],
-                )
+                CustomText(
+                  "${localization.translate('my_donations_screen.donor')}: ${donation.donor}",
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.w600,
+                ),
+                CustomText(
+                  "${localization.translate('my_donations_screen.donation_amount')}: ₹ ${donation.amount}",
+                  fontSize: 12.sp,
+                ),
+                CustomText(
+                  "${localization.translate('my_donations_screen.date')}: ${donation.date}",
+                  fontSize: 12.sp,
+                ),
+                CustomText(
+                  "${localization.translate('my_donations_screen.time')}: ${donation.time}",
+                  fontSize: 12.sp,
+                ),
+                Divider(height: 28.h),
+                buildReceipts(localization),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
   }
 
-  Column buildReceipts() {
+  Column buildReceipts(AppLocalizations localization) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         CustomText(
-          "Receipts",
-          fontSize: 16.h,
+          localization.translate('my_donations_screen.receipts'),
+          fontSize: 16.sp,
           fontWeight: FontWeight.w600,
         ),
         SizedBox(height: 4.h),
-        const Row(
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomText(
-              "Caring Contributor Receipt",
-              color: Color(0xff3b3b3b),
+              localization.translate(
+                  'my_donations_screen.caring_contributor_receipt'),
+              color: const Color(0xff3b3b3b),
             ),
-            Icon(
+            const Icon(
               Icons.file_download_outlined,
               size: 28,
               color: Color(0xff3b3b3b),
             ),
           ],
         ),
-        const SizedBox(height: 4),
-        const Row(
+        SizedBox(height: 4.h),
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomText(
-              "Dhenu Dharma Donation Aknowledgment",
-              color: Color(0xff3b3b3b),
+              localization.translate(
+                  'my_donations_screen.donation_acknowledgment'),
+              color: const Color(0xff3b3b3b),
             ),
-            Icon(
+            const Icon(
               Icons.file_download_outlined,
               size: 28,
               color: Color(0xff3b3b3b),
             ),
           ],
         ),
-        const SizedBox(height: 4),
-        const Row(
+        SizedBox(height: 4.h),
+        Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomText(
-              "Dhenu Dharma Philonthropy Proof",
-              color: Color(0xff3b3b3b),
+              localization.translate('my_donations_screen.philanthropy_proof'),
+              color: const Color(0xff3b3b3b),
             ),
-            Icon(
+            const Icon(
               Icons.file_download_outlined,
               size: 28,
               color: Color(0xff3b3b3b),

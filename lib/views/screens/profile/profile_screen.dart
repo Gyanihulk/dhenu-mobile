@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dhenu_dharma/data/models/user_model.dart';
+import 'package:dhenu_dharma/utils/common/url_launcher_util.dart';
 import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:dhenu_dharma/utils/providers/auth_provider.dart';
 import 'package:dhenu_dharma/views/screens/auth/login_screen.dart';
@@ -51,45 +52,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-Positioned buildProfileContent(
-    BuildContext context, UserModel? user, AppLocalizations localization) {
-  return Positioned(
-    top: 150.h,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    child: Container(
-      padding: EdgeInsets.symmetric(horizontal: 16.h),
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: AppColors.secondaryWhite,
-        borderRadius: BorderRadius.only(
-          topRight: Radius.circular(70.w),
+
+  Positioned buildProfileContent(
+      BuildContext context, UserModel? user, AppLocalizations localization) {
+    return Positioned(
+      top: 150.h,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 16.h),
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: AppColors.secondaryWhite,
+          borderRadius: BorderRadius.only(
+            topRight: Radius.circular(70.w),
+          ),
         ),
-      ),
-      child: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(), // Smooth scrolling
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  buildUserProfile(user, localization),
-                  SizedBox(height: 20.h),
-                  buildProfileItemList(localization),
-                ],
+        child: Column(
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(), // Smooth scrolling
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    buildUserProfile(user, localization),
+                    SizedBox(height: 20.h),
+                    buildProfileItemList(localization),
+                  ],
+                ),
               ),
             ),
-          ),
-          buildSignOutButton(context, localization),
-          SizedBox(height: 16.h), // Bottom spacing for padding
-        ],
+            buildSignOutButton(context, localization),
+            SizedBox(height: 16.h), // Bottom spacing for padding
+          ],
+        ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 
   Padding buildSignOutButton(
       BuildContext context, AppLocalizations localization) {
@@ -131,59 +132,78 @@ Positioned buildProfileContent(
     );
   }
 
-Padding buildProfileItemList(AppLocalizations localization) {
-  return Padding(
-    padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h)
-        .copyWith(top: 20.h),
-    child: SingleChildScrollView(
-      child: Column(
-        children: [
-          buildProfileListItem(
-            icon: FontAwesomeIcons.wallet,
-            label: localization.translate("profile.myDonations"),
-            screen: const MyDonationsScreen(),
-          ),
-          // buildProfileListItem(
-          //   icon: Icons.insert_drive_file_outlined,
-          //   label: localization.translate("profile.documents"),
-          //   screen: const DocumentsScreen(),
-          // ),
-          buildProfileListItem(
-            icon: Icons.balance,
-            label: localization.translate("profile.legal"),
-            screen: const LegalScreen(),
-          ),
-          buildProfileListItem(
-            icon: Icons.help,
-            label: localization.translate("profile.helpFeedback"),
-            screen: const HelpAndFeedbackScreen(),
-          ),
-          buildProfileListItem(
-            icon: FontAwesomeIcons.handHoldingHeart,
-            label: localization.translate("profile.aboutUs"),
-            screen: const AboutUsScreen(),
-          ),
-          buildProfileListItem(
-            icon: Icons.share,
-            label: localization.translate("profile.share"),
-            screen: const ShareScreen(),
-          ),
-          buildProfileListItem(
-            icon: Icons.phone,
-            label: localization.translate("profile.contactUs"),
-            screen: const ContactUsScreen(),
-          ),
-          buildProfileListItem(
-            icon: Icons.language,
-            label: localization.translate("profile.languages"),
-            screen: const LanguagesScreen(),
-          ),
-        ],
-      ),
-    ),
-  );
-}
+  Padding buildProfileItemList(AppLocalizations localization) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 16.h)
+          .copyWith(top: 20.h),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            buildProfileListItem(
+              icon: FontAwesomeIcons.wallet,
+              label: localization.translate("profile.myDonations"),
+              screen: const MyDonationsScreen(),
+            ),
+            // buildProfileListItem(
+            //   icon: Icons.insert_drive_file_outlined,
+            //   label: localization.translate("profile.documents"),
+            //   screen: const DocumentsScreen(),
+            // ),
 
+            GestureDetector(
+              onTap: () {
+                launchURL(context,
+                    "https://www.dhenudharmafoundation.org/privacy-policy");
+              },
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 20.h),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.balance,
+                      size: 16.h,
+                    ),
+                    SizedBox(width: 20.w),
+                    CustomText(
+                      localization.translate("profile.legal"),
+                      fontSize: 14.h,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    SizedBox(height: 8.h)
+                  ],
+                ),
+              ),
+            ),
+            buildProfileListItem(
+              icon: Icons.help,
+              label: localization.translate("profile.helpFeedback"),
+              screen: const HelpAndFeedbackScreen(),
+            ),
+            buildProfileListItem(
+              icon: FontAwesomeIcons.handHoldingHeart,
+              label: localization.translate("profile.aboutUs"),
+              screen: const AboutUsScreen(),
+            ),
+            buildProfileListItem(
+              icon: Icons.share,
+              label: localization.translate("profile.share"),
+              screen: const ShareScreen(),
+            ),
+            buildProfileListItem(
+              icon: Icons.phone,
+              label: localization.translate("profile.contactUs"),
+              screen: const ContactUsScreen(),
+            ),
+            buildProfileListItem(
+              icon: Icons.language,
+              label: localization.translate("profile.languages"),
+              screen: const LanguagesScreen(),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   GestureDetector buildProfileListItem(
       {required IconData icon, required String label, required screen}) {
@@ -230,10 +250,10 @@ Padding buildProfileItemList(AppLocalizations localization) {
                 fontWeight: FontWeight.w500,
               ),
               SizedBox(width: 12.w),
-              Icon(
-                Icons.edit,
-                size: 16.h,
-              ),
+              // Icon(
+              //   Icons.edit,
+              //   size: 16.h,
+              // ),
             ],
           ),
           Padding(

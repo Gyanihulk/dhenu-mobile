@@ -1,3 +1,4 @@
+import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:dhenu_dharma/data/repositories/language/language_repository.dart';
 import 'package:dhenu_dharma/service/app_preferences.dart';
@@ -36,7 +37,7 @@ class LanguageProvider with ChangeNotifier {
 
       // Update state
       _languages = fetchedLanguages;
-      print('saving languages in provider $_languages');
+      // print('saving languages in provider $_languages');
       notifyListeners();
     } catch (error) {
       _errorMessage = 'Error fetching languages: $error';
@@ -46,4 +47,38 @@ class LanguageProvider with ChangeNotifier {
       notifyListeners();
     }
   }
+
+ Future<void> fetchTranslations(String languageId) async {
+  if (authProvider.authToken == null || authProvider.authToken!.isEmpty) {
+    _errorMessage = 'Authentication token is missing. Please log in.';
+    notifyListeners();
+    return;
+  }
+
+  try {
+    _isLoading = true;
+    _errorMessage = '';
+    notifyListeners();
+
+    // Fetch translations from the repository
+    final translations = await languageRepository.fetchTranslations(
+      languageId: languageId,
+      token: authProvider.authToken!,
+    );
+
+    // Ensure `selectedLanguageCode` is set properly
+    String selectedLanguageCode = languageId == "28" ? "en" : "hi";
+print(" translations :$translations");
+    // Update the localizations dynamically
+    AppLocalizations.updateLocalizedStrings(translations["data"], Locale(selectedLanguageCode));
+    notifyListeners();
+  } catch (error) {
+    _errorMessage = 'Error fetching translations: $error';
+    notifyListeners();
+  } finally {
+    _isLoading = false;
+    notifyListeners();
+  }
+}
+
 }

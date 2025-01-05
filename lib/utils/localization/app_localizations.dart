@@ -18,7 +18,8 @@ class AppLocalizations {
     return localizations;
   }
 
-  static const Map<String, Map<String, Map<String, String>>> _localizedStrings =
+  // Suppress the "prefer_final_fields" warning because this map is updated dynamically.
+  static final Map<String, Map<String, Map<String, String>>> _localizedStrings =
       {
     'en': {
       'home': {
@@ -232,27 +233,73 @@ class AppLocalizations {
             "Together, we can extend our reach and make a meaningful difference in the lives we aim to support.",
         "button_text": "Share",
         "share_message": "https://www.dhenudharmafoundation.org/"
+      },
+      "help_and_feedback": {
+        "title": "Help & Feedback",
+        "search_title": "How can we help you today?",
+        "search_hint": "Search",
+        "top_questions_title": "Top Questions",
+        "default_question": "Default Question",
+        "default_answer": "Default Answer",
+        "feedback_title": "Feedback",
+        "feedback_subtitle": "We appreciate your feedback",
+        "feedback_description":
+            "We are always looking for ways to improve your experience. Please tell us what you think.",
+        "feedback_input_hint": "What can we do to improve your experience?",
+        "submit_button": "Submit",
+        "feedback_success": "Feedback submitted successfully!"
+      },
+      "my_donations_screen": {
+        "title": "My Donations",
+        "upcoming_donations": "Upcoming Donations",
+        "past_donations": "Past Donations",
+        "sort_by": "Sort by",
+        "lifetime_donations": "Lifetime Donations",
+        "total_donation": "Total Donation:",
+        "number_of_donations": "No. of Donations:",
+        "impact_highlights": "Impact Highlights:",
+        "thank_you": "Thank You!",
+        "thank_you_message": "For your generous donation",
+        "impact_message":
+            "It has significantly improved the lives and welfare of numerous cows under our care.",
+        "donor": "Donor:",
+        "date": "Date:",
+        "time": "Time:",
+         "donation_amount": "Donation Amount",
+    "distance": "Distance",
+    "contact": "Contact",
+    "cancel_button": "Cancel",
+    "cancel_confirmation": "Are you sure you want to cancel?",
+     "receipts": "Receipts",
+    "caring_contributor_receipt": "Caring Contributor Receipt",
+    "donation_acknowledgment": "Donation Acknowledgment",
+    "philanthropy_proof": "Philanthropy Proof"
       }
     },
     'hi': {
       'home': {
-        'welcome': 'आपका हमारी वेबसाइट पर स्वागत है',
-        'thank_you': 'आपके आने का धन्यवाद!',
+        'welcome': 'हमारी वेबसाइट पर आपका स्वागत है',
+        'thank_you': 'आने के लिए धन्यवाद!',
         'this': 'यह',
       },
+      // 'about': {
+      //   'info': 'स्वागत है',
+      //   'welcome': 'हमारी वेबसाइट पर आपका स्वागत है',
+      //   'thank_you': 'आने के लिए धन्यवाद!',
+      // },
       'login': {
         'welcome': 'धेनु धर्म में आपका स्वागत है',
-        'login': 'लॉगिन',
+        'login': 'लॉग इन करें',
         'phone_or_email': 'फ़ोन नंबर / ईमेल आईडी',
         'enter_phone_or_email': 'अपना फ़ोन नंबर या ईमेल आईडी दर्ज करें',
-        'username_empty': 'उपयोगकर्ता नाम या ईमेल खाली नहीं हो सकता',
+        'username_empty': 'यूज़रनेम या ईमेल खाली नहीं हो सकता',
         'password': 'पासवर्ड',
         'enter_password': 'अपना पासवर्ड दर्ज करें',
         'password_empty': 'पासवर्ड खाली नहीं हो सकता',
-        'password_length_error': 'पासवर्ड कम से कम 8 वर्ण लंबा होना चाहिए',
+        'password_length_error': 'पासवर्ड कम से कम 8 अक्षरों का होना चाहिए',
         'forgot_password': 'पासवर्ड भूल गए?',
         'or': 'या',
-        'dont_have_account': 'क्या आपका खाता नहीं है?',
+        'dont_have_account': 'क्या आपके पास खाता नहीं है?',
         'sign_up': 'साइन अप करें',
       },
       'signup': {
@@ -267,23 +314,27 @@ class AppLocalizations {
         'enter_email_id': 'अपना ईमेल आईडी दर्ज करें',
         'password': 'पासवर्ड',
         'enter_password': 'अपना पासवर्ड दर्ज करें',
-        'confirm_password': 'पासवर्ड की पुष्टि कीजिये',
-        'enter_confirm_password': 'पुष्टि पासवर्ड दर्ज करें',
+        'confirm_password': 'पासवर्ड की पुष्टि करें',
+        'enter_confirm_password': 'पासवर्ड की पुष्टि दर्ज करें',
         'sign_up_button': 'साइन अप करें',
         'or': 'या',
-        'have_account': 'पहले से खाता है? साइन इन करें',
-        'registration_successful': 'Please check email/phone for OTP.'
+        'have_account': 'क्या आपके पास खाता है? साइन इन करें',
+        'registration_successful': 'कृपया ईमेल/फोन पर ओटीपी जांचें।',
       },
       "otp_verification": {
-        "title": "Verify OTP",
-        "enter_otp": "Enter the 6-digit OTP sent to your phone or email",
-        "otp_hint": "Enter OTP",
-        "verify_button": "Verify OTP",
-        "invalid_otp": "Invalid OTP. Please try again.",
-        "success": "OTP Verified Successfully!",
-        "failure": "Failed to verify OTP. Please try again."
+        "title": "ओटीपी सत्यापन",
+        "enter_otp": "अपने फ़ोन या ईमेल पर भेजा गया 6-अंकीय ओटीपी दर्ज करें",
+        "otp_hint": "ओटीपी दर्ज करें",
+        "verify_button": "ओटीपी सत्यापित करें",
+        "invalid_otp": "अमान्य ओटीपी। कृपया पुनः प्रयास करें।",
+        "success": "ओटीपी सफलतापूर्वक सत्यापित हुआ!",
+        "failure": "ओटीपी सत्यापित करने में विफल। कृपया पुनः प्रयास करें।",
       },
-      "navigation": {"home": "होम", "donate": "दान", "profile": "प्रोफ़ाइल"},
+      "navigation": {
+        "home": "मुख्य पृष्ठ",
+        "donate": "दान करें",
+        "profile": "प्रोफ़ाइल",
+      },
       "profile": {
         "signOut": "साइन आउट",
         "myDonations": "मेरे दान",
@@ -292,17 +343,18 @@ class AppLocalizations {
         "helpFeedback": "सहायता और प्रतिक्रिया",
         "aboutUs": "हमारे बारे में",
         "share": "साझा करें",
-        "contactUs": "संपर्क करें",
-        "languages": "भाषाएँ",
+        "contactUs": "हमसे संपर्क करें",
+        "languages": "भाषाएं",
         "edit": "संपादित करें",
         "phoneNumber": "9876543210",
-        "userName": "अकांशा सिंह"
+        "userName": "आकांक्षा सिंह",
       },
       'main': {
-        'welcome': 'आपका हमारी वेबसाइट पर स्वागत है',
-        'thank_you': 'आपके आने का धन्यवाद!',
+        'welcome': 'हमारी वेबसाइट पर आपका स्वागत है',
+        'thank_you': 'आने के लिए धन्यवाद!',
         'this': 'यह',
         'mission': 'मिशन',
+        "aboutUs": "हमारे बारे में",
         'donate': 'दान करें',
         'authentication': 'प्रमाणीकरण',
         'receipts': 'रसीदें',
@@ -310,109 +362,126 @@ class AppLocalizations {
         'read_more': 'और पढ़ें',
         'about_us_title': 'हमारे बारे में',
         'about_us_description':
-            'धेनु धर्म, एक एनजीओ पहल, पवित्र गायों की देखभाल करता है। आप पास के शेल्टर देख सकते हैं, लाइव फीड और वर्चुअल मीटिंग के साथ पारदर्शी दान का अनुभव कर सकते हैं। दान 80G के तहत 50% तक कर-मुक्त हैं।',
-        'know_more': 'और जानें',
-        'view_more': 'और देखें',
-        'real_time_metrics_title': 'रीयल टाइम मेट्रिक्स',
+            'धेनु धर्म, एक एनजीओ पहल, कई गौशालाओं के माध्यम से पवित्र गायों की देखभाल करता है। आप निकटवर्ती गौशालाओं को देख सकते हैं, लाइव फीड और वर्चुअल मीटिंग के साथ पारदर्शी दान अनुभव का आनंद ले सकते हैं। दान 80G के तहत 50% तक कर-मुक्त हैं।',
+        'know_more': 'अधिक जानें',
+        'view_more': 'अधिक देखें',
+        'real_time_metrics_title': 'वास्तविक समय के मीट्रिक्स',
         'total_donation': 'कुल दान',
         'total_gowshala': 'कुल गौशाला',
-        'cows_helped': 'सहायता प्राप्त गायें',
-        'people_connected': 'लोग जुड़े',
+        'cows_helped': 'सहायता की गई गायें',
+        'people_connected': 'जुड़े हुए लोग',
+        'image_gallery': 'छवि गैलरी',
         'upcoming_donations_title': 'आगामी दान',
-        'image_gallery': "छवि गैलरी",
         'provide_title': 'हम क्या प्रदान करते हैं',
       },
       "forget_password": {
         "title": "पासवर्ड भूल गए",
         "enter_email_or_phone":
-            "अपना ईमेल या फोन नंबर दर्ज करें ताकि हम आपके पासवर्ड को रीसेट कर सकें।",
-        "email_phone_hint": "ईमेल या फोन नंबर दर्ज करें",
+            "अपना पासवर्ड रीसेट करने के लिए अपना ईमेल या फ़ोन नंबर दर्ज करें।",
+        "email_phone_hint": "ईमेल या फ़ोन नंबर दर्ज करें",
         "send_code": "सत्यापन कोड भेजें",
-        "empty_field_error": "कृपया सही ईमेल या फोन नंबर दर्ज करें।",
+        "empty_field_error": "कृपया एक मान्य ईमेल या फ़ोन नंबर दर्ज करें।",
         "code_sent": "सत्यापन कोड भेजा गया!",
-        "enter_otp": "अपने ईमेल/फोन पर भेजा गया सत्यापन कोड दर्ज करें।",
+        "enter_otp": "अपना नया पासवर्ड सेट करें।",
         "otp_hint": "सत्यापन कोड दर्ज करें",
         "verify_code": "कोड सत्यापित करें",
-        "invalid_otp": "कृपया सही 6-अंकों का कोड दर्ज करें।",
-        "otp_verified": "ओटीपी सत्यापित हो गया!",
+        "invalid_otp": "कृपया एक मान्य 6-अंकीय ओटीपी दर्ज करें।",
+        "otp_verified": "ओटीपी सत्यापित हुआ!",
         "enter_new_password": "अपना नया पासवर्ड सेट करें।",
         "new_password_hint": "नया पासवर्ड दर्ज करें",
-        "confirm_password_hint": "पासवर्ड की पुष्टि करें",
+        "confirm_password_hint": "नया पासवर्ड पुष्टि करें",
         "reset_button": "पासवर्ड रीसेट करें",
-        "password_mismatch": "पासवर्ड मेल नहीं खाते या खाली हैं।",
-        "success": "पासवर्ड सफलतापूर्वक रीसेट हो गया!"
+        "password_mismatch": "पासवर्ड मेल नहीं खाता या खाली है।",
+        "success": "पासवर्ड सफलतापूर्वक रीसेट हो गया!",
       },
       "donate_screen": {
-        "title": "स्थान",
-        "subtitle": "अपने पास की गौशाला चुनें",
+        "card1title": "स्थान",
+        "card1subtitle": "अपने पास की गौशाला चुनें",
+        "card2title": "सेवा का प्रकार",
+        "card2subtitle": "क्या दान करना है चुनें",
+        "card3title": "दान की राशि",
+        "card3subtitle": "कितना दान करना चाहते हैं चुनें",
+        "card4title": "दान की आवृत्ति",
+        "card4subtitle": "आप कब दान करना चाहते हैं",
         "next": "आगे बढ़ें",
         "need_based": "जरूरत आधारित",
-        "within_10_km": "10 किमी के भीतर",
-        "nearest": "निकटतम",
-        "most_review": "सर्वाधिक समीक्षा",
+        "within_10_km": "10 किलोमीटर के भीतर",
+        "nearest": "सबसे नजदीक",
+        "most_review": "सबसे ज्यादा समीक्षाएं",
         "search_hint": "अपने पास की गौशाला खोजें",
-        "back_button": "वापस",
-        "donate": "दान",
-        "action_label_quantity": "बैग की मात्रा",
+        "back_button": "वापस जाएं",
+        "donate": "दान करें",
+        "action_label_quantity": "बैग की संख्या",
         "action_label_amount": "राशि दर्ज करें",
-        "enter_amount": "राशि दर्ज करें",
+        "enter_amount": "एक राशि दर्ज करें",
         "food_details": "1 बैग की कीमत ₹500 है और 4 गायों को खिलाता है",
         "total_price": "कुल कीमत",
-        "cows_fed": "",
-        "cows": "गायों को खिला रहे हैं",
+        "cows_fed": "गायों को खिलाना",
+        "cows": "गायें",
         "complete_payment": "भुगतान करें",
-        "complete_payment_details": "विवरण की पुष्टि करें और भुगतान करें"
+        "complete_payment_details": "विवरण की पुष्टि करें और भुगतान करें",
       },
       "mission": {
         "mission": "मिशन",
-        "mission.title": "मिशन",
-        "mission.description":
-            "धेनु धर्म का मिशन स्पष्ट है: हमारी पवित्र गायों को बचाना और उनके प्रति हमारे कर्तव्यों का पालन करना। इस पहल से जुड़कर, आप किसी महान कार्य का हिस्सा बनते हैं - एक ऐसा आंदोलन जो करुणा और सभी जीवों के प्रति सम्मान में निहित है।",
-        "mission.highlight":
-            "एक ऐसा आंदोलन जो करुणा और सभी जीवों के प्रति सम्मान में निहित है।",
-        "contributions.message":
-            "आपका योगदान, चाहे बड़ा हो या छोटा, इन कमजोर जानवरों के जीवन में एक महत्वपूर्ण अंतर लाता है।",
-        "howWeWork.title": "हम कैसे काम करते हैं?",
-        "howWeWork.description":
-            "आपका दान इन गायों की देखभाल के लिए आवश्यक सहायता प्रदान करता है, जिससे उन्हें भोजन, आश्रय और चिकित्सा देखभाल मिल सके। धेनु धर्म के साथ, आप निश्चिंत रह सकते हैं कि आपका योगदान इन कोमल प्राणियों के जीवन में एक ठोस प्रभाव डाल रहा है।",
-        "howWeWork.highlight": "भोजन, आश्रय और चिकित्सा देखभाल।",
+        "missionDescription":
+            "धेनु धर्म का मिशन स्पष्ट है: हमारी पवित्र गायों को बचाना और उनके प्रति हमारी जिम्मेदारी निभाना। इस पहल से जुड़कर, आप कुछ बड़ा करने का हिस्सा बनते हैं - एक ऐसा आंदोलन जो करुणा और सभी जीवों के प्रति सम्मान पर आधारित है।",
+        "missionHighlight":
+            "एक ऐसा आंदोलन जो करुणा और सभी जीवों के प्रति सम्मान पर आधारित है।",
+        "contributionsMessage":
+            "आपका योगदान, चाहे बड़ा हो या छोटा, इन कमजोर जानवरों के जीवन में बदलाव लाता है।",
         "impact":
-            "कल्पना कीजिए कि आप अपने दान के प्रभाव को वास्तविक समय में देख सकते हैं, समय पर रसीदें प्राप्त कर सकते हैं, और समर्थन जारी रखने के लिए कोमल अनुस्मारक पा सकते हैं।",
+            "आपका योगदान, चाहे बड़ा हो या छोटा, इन कमजोर जानवरों के जीवन में बदलाव लाता है।",
+        "howWeWorkTitle": "हम कैसे काम करते हैं?",
+        "howWeWorkDescription":
+            "आपका दान इन गायों की देखभाल के लिए आवश्यक चीजों को उपलब्ध कराने में जाता है, जिसमें भोजन, आश्रय और चिकित्सा ध्यान शामिल है। धेनु धर्म के साथ, आप सुनिश्चित हो सकते हैं कि आपका योगदान इन कोमल प्राणियों के जीवन पर वास्तविक प्रभाव डाल रहा है।",
+        "howWeWorkHighlight": "भोजन, आश्रय, और चिकित्सा ध्यान।",
+        "whyTrustUsTitle": "हम पर भरोसा क्यों करें?",
+        "whyTrustUsDescription":
+            "धेनु धर्म अपनी अद्वितीय पारदर्शिता के साथ खड़ा है। लाइव फीड के साथ, शरण स्थलों की स्थिति और गायों की भलाई को सीधे देखें। विस्तृत दान रसीदें पूरी स्पष्टता प्रदान करती हैं कि आपका योगदान कहां उपयोग किया जा रहा है।",
+        "joinUsTitle":
+            "आज ही धेनु धर्म से जुड़ें, पवित्र गायों की देखभाल और सम्मान के लिए एक आंदोलन का समर्थन करें।",
+        "joinUsDescription":
+            "आइए, करुणा और दयालुता के मूल्यों को बनाए रखें, यह सुनिश्चित करते हुए कि उन्हें वह सम्मान मिले जो वे डिजर्व करती हैं।",
+        "joinUsHighlight": "जो वे डिजर्व करती हैं।",
         "description":
-            "सनातन धर्म के प्राचीन शिक्षाओं में, गायों का अत्यंत सम्मानजनक स्थान है, जिन्हें अक्सर माँ के समान माना जाता है।",
+            "सनातन धर्म की प्राचीन शिक्षाओं में, गायों को अत्यंत सम्मान का स्थान प्राप्त है, उन्हें अक्सर माँ के समान माना जाता है।",
         "problem":
-            "दुर्भाग्य से, इन पवित्र जानवरों को एक कठोर भाग्य का सामना करना पड़ता है जब वे दूध देना बंद कर देती हैं। वे या तो मारे जाते हैं या लाचार होकर इधर-उधर भटकते हैं। धेनु धर्म इस स्थिति को बदलने का प्रयास करता है।",
+            "दुर्भाग्य से, इन पवित्र जानवरों में से कई को दूध देना बंद करने के बाद भयानक स्थिति का सामना करना पड़ता है। या तो उनका वध कर दिया जाता है या वे बेबस भटकने के लिए छोड़ दी जाती हैं। धेनु धर्म इस कहानी को बदलने का लक्ष्य रखता है।",
+        "footerText1":
+            "आज ही धेनु धर्म से जुड़ें, पवित्र गायों की देखभाल और सम्मान के लिए एक आंदोलन का समर्थन करें।",
+        "footerText2":
+            "आइए, करुणा और दयालुता के मूल्यों को बनाए रखें, यह सुनिश्चित करते हुए कि उन्हें वह सम्मान मिले जो वे डिजर्व करती हैं।",
         "solution":
-            "धेनु धर्म एक ऐसा मंच प्रस्तुत करता है जो सहानुभूति रखने वाले लोगों को उन गौशालाओं से जोड़ता है, जहां गैर-दुग्ध देने वाली, कमजोर गायों को रखा जाता है। इस मंच के माध्यम से, उपयोगकर्ता पारदर्शी तरीके से इन गायों की भलाई के लिए धनराशि का योगदान कर सकते हैं।",
+            "धेनु धर्म एक ऐसा प्लेटफ़ॉर्म प्रदान करता है जो देखभाल करने वाले व्यक्तियों को उन शरण स्थलों से जोड़ता है जहां गैर-लाभकारी, कमजोर गायें रखी जाती हैं। इस प्लेटफ़ॉर्म के माध्यम से, उपयोगकर्ता इन गायों की भलाई के लिए धन का योगदान कर सकते हैं, वह भी अद्वितीय पारदर्शिता के साथ।"
       },
       "about": {
         "about_us_title": "हमारे बारे में",
         "intro_main_title":
-            "धेनु धर्म, एक एनजीओ पहल, पवित्र गायों की देखभाल और समृद्धि के लिए समर्पित है",
+            "धेनु धर्म, एक एनजीओ पहल, पवित्र गायों की देखभाल और समृद्धि के लिए समर्पित है।",
         "intro_description":
-            "धेनु धर्म सैकड़ों आश्रयों का प्रबंधन करता है, जो गैर-उत्पादक गायों की भलाई सुनिश्चित करता है। यह निकटता आधारित देखभाल के साथ पारदर्शिता को प्राथमिकता देता है। दानदाता पास के आश्रयों को आसानी से खोज सकते हैं और मंच के माध्यम से समर्थित गायों की स्थिति का निरीक्षण कर सकते हैं।",
-        "virtual_meetings_title": "वर्चुअल बैठकें",
+            "धेनु धर्म सैकड़ों शरण स्थलों का प्रबंधन करता है जो गैर-उत्पादक गायों की भलाई सुनिश्चित करते हैं, साथ ही निकटता-आधारित देखभाल प्रदान करते हैं। यह एक सहज अनुभव पर जोर देता है, पारदर्शिता को प्राथमिकता देता है। दानदाता पास के शरण स्थलों को आसानी से ढूंढ सकते हैं और प्लेटफ़ॉर्म के माध्यम से समर्थित गायों की स्थिति देख सकते हैं।",
+        "virtual_meetings_title": "वर्चुअल मीटिंग्स",
         "virtual_meetings_description":
-            "धेनु धर्म का एक अनूठा पहलू इसके दानदाता सहभागिता का अभिनव दृष्टिकोण है। दानदाताओं को वर्चुअल बैठकों में भाग लेने का अवसर मिलता है, जहां वे देख सकते हैं कि उनके योगदान सीधे गायों की भलाई को कैसे प्रभावित करते हैं। यह लाइव इंटरैक्शन दानदाताओं और उनके समर्थित कारण के बीच एक गहरा संबंध बनाता है।",
+            "धेनु धर्म की एक अनूठी विशेषता दानदाताओं को जोड़ने के लिए उसका अभिनव दृष्टिकोण है। दानदाता वर्चुअल मीटिंग्स में भाग लेने का अवसर प्राप्त करते हैं, जहां वे देख सकते हैं कि उनके योगदान का गायों की भलाई पर सीधा प्रभाव कैसे पड़ता है। यह लाइव इंटरैक्शन दानदाताओं और उनके समर्थन के कारण के बीच एक गहरा संबंध स्थापित करता है।",
         "transparency_title": "पारदर्शिता",
         "transparency_description":
-            "दानदाताओं को उनके दान की रसीदें मिलती हैं, जो यह सुनिश्चित करती हैं कि उनके योगदान का उपयोग कैसे किया गया है। इसके अलावा, धेनु धर्म को दिए गए दान आयकर अधिनियम की धारा 80G के तहत 50% तक के कर छूट के लिए पात्र हैं, जो इस नेक कार्य में योगदान देने के लिए अतिरिक्त प्रोत्साहन प्रदान करता है।",
+            "दानदाताओं को उनके दान की रसीदें मिलती हैं, जिससे यह पूरी तरह स्पष्ट होता है कि उनका योगदान कैसे उपयोग किया गया। साथ ही, धेनु धर्म को किए गए दान आयकर अधिनियम की धारा 80G के तहत 50% तक कर छूट के लिए पात्र हैं, जिससे इस कारण को समर्थन देने के लिए अतिरिक्त प्रोत्साहन मिलता है।",
         "topic_title": "विषय",
         "topic_description":
-            "दानदाता सहभागिता को और बढ़ाने के लिए, धेनु धर्म दान के प्रभाव पर समय पर अनुस्मारक और अपडेट प्रदान करता है। नियमित संचार और सामग्री साझा करके, दानदाता संगठन की प्रगति और जिन गायों का वे समर्थन करते हैं, उनकी भलाई के बारे में सूचित रहते हैं।",
+            "दानदाता सहभागिता को और बढ़ाने के लिए, धेनु धर्म दान के प्रभाव पर समय पर रिमाइंडर और अपडेट प्रदान करता है। नियमित संचार और सामग्री साझा करने के माध्यम से, दानदाता संगठन की प्रगति और उन गायों की भलाई के बारे में सूचित रहते हैं जिन्हें वे समर्थन देते हैं।",
         "closing_description":
-            "धेनु धर्म केवल एक एनजीओ नहीं है, बल्कि एक ऐसा मंच है जो दानदाताओं और गायों की भलाई के उद्देश्य के बीच सार्थक संबंध स्थापित करता है। पारदर्शिता, अनुभव और कर लाभ पर जोर देकर, धेनु धर्म पवित्र गायों के जीवन पर सकारात्मक प्रभाव डालने के लिए व्यक्तियों को सशक्त बनाता है।"
+            "धेनु धर्म केवल एक एनजीओ नहीं है, बल्कि दानदाताओं और गाय कल्याण के कारण के बीच सार्थक संबंध बनाने वाला एक प्लेटफ़ॉर्म है। पारदर्शिता, अनुभव, और कर लाभ पर जोर देने के साथ, धेनु धर्म व्यक्तियों को पवित्र गायों के जीवन पर सकारात्मक प्रभाव डालने का अधिकार देता है।"
       },
       "contact": {
-        "contact_us": "संपर्क करें",
+        "contact_us": "हमसे संपर्क करें",
         "get_in_touch": "संपर्क में रहें",
         "contact_us_message":
-            "किसी भी पूछताछ या सहायता के लिए कृपया हमें फोन या ईमेल के माध्यम से संपर्क करें।",
+            "किसी भी पूछताछ या सहायता के लिए कृपया हमें फ़ोन या ईमेल के माध्यम से संपर्क करें।",
         "phone_label": "(+91) 7755961959",
         "email_label": "contact@dhenudharmafoundation.org",
         "address_label":
-            "पदतानी कंपाउंड, होटल जोशी पैलेस के पास, संगमनेर, अहमदनगर, महाराष्ट्र, 422605",
-        "follow_us_on": "हमें फॉलो करें"
+            "पडतानी कंपाउंड, होटल जोशी पैलेस के पास, संगमनेर, अहमदनगर, महाराष्ट्र, 422605",
+        "follow_us_on": "हमसे जुड़ें",
       },
       "share": {
         "title": "साझा करें",
@@ -420,15 +489,58 @@ class AppLocalizations {
         "description":
             "हमारे ऐप को दोस्तों और परिवार के साथ साझा करें ताकि एक महान उद्देश्य के लिए हमारे सामूहिक प्रभाव को बढ़ाया जा सके।",
         "together_message":
-            "साथ में, हम अपनी पहुंच बढ़ा सकते हैं और उन जीवनों में एक सार्थक अंतर ला सकते हैं जिन्हें हम समर्थन देने का लक्ष्य रखते हैं।",
+            "हम मिलकर अपनी पहुंच को बढ़ा सकते हैं और उन जीवनों पर एक सार्थक अंतर ला सकते हैं जिनका हम समर्थन करना चाहते हैं।",
         "button_text": "साझा करें",
         "share_message": "https://www.dhenudharmafoundation.org/"
+      },
+      "help_and_feedback": {
+        "title": "सहायता और प्रतिक्रिया",
+        "search_title": "हम आपकी आज कैसे मदद कर सकते हैं?",
+        "search_hint": "खोजें",
+        "top_questions_title": "शीर्ष प्रश्न",
+        "default_question": "डिफ़ॉल्ट प्रश्न",
+        "default_answer": "डिफ़ॉल्ट उत्तर",
+        "feedback_title": "प्रतिक्रिया",
+        "feedback_subtitle": "हम आपकी प्रतिक्रिया की सराहना करते हैं",
+        "feedback_description":
+            "हम आपके अनुभव को बेहतर बनाने के तरीकों की तलाश में हमेशा रहते हैं। कृपया हमें बताएं कि आप क्या सोचते हैं।",
+        "feedback_input_hint":
+            "हम आपके अनुभव को बेहतर बनाने के लिए क्या कर सकते हैं?",
+        "submit_button": "प्रस्तुत करें",
+        "feedback_success": "प्रतिक्रिया सफलतापूर्वक सबमिट की गई!"
+      },
+      "my_donations_screen": {
+        "title": "मेरे दान",
+        "upcoming_donations": "आगामी दान",
+        "past_donations": "पिछले दान",
+        "sort_by": "इसके अनुसार क्रमबद्ध करें",
+        "lifetime_donations": "आजीवन दान",
+        "total_donation": "कुल दान:",
+        "number_of_donations": "दान की संख्या:",
+        "impact_highlights": "प्रभाव झलकियाँ:",
+        "thank_you": "धन्यवाद!",
+        "thank_you_message": "आपके उदार दान के लिए",
+        "impact_message":
+            "इसने हमारी देखभाल में कई गायों के जीवन और कल्याण में काफी सुधार किया है।",
+        "donor": "दाता:",
+        "date": "तारीख:",
+        "time": "समय:",
+         "donation_amount": "दान राशि",
+    "distance": "दूरी",
+    "contact": "संपर्क",
+    "cancel_button": "रद्द करें",
+    "cancel_confirmation": "क्या आप वाकई रद्द करना चाहते हैं?",
+    "receipts": "रसीदें",
+    "caring_contributor_receipt": "स्नेही योगदानकर्ता रसीद",
+    "donation_acknowledgment": "दान की स्वीकृति",
+    "philanthropy_proof": "परमार्थ प्रमाण"
       }
-    },
+    }
   };
 
   // Method to get translation for a specific key
   String translate(String key) {
+    // debugPrint('Translating key: $key for locale: ${locale.languageCode}');
     var keys = key.split('.');
     Map<String, dynamic>? currentMap = _localizedStrings[locale.languageCode];
 
@@ -447,6 +559,32 @@ class AppLocalizations {
 
     debugPrint('Incorrect or incomplete key provided: $key');
     return key; // Fallback for incorrectly specified keys
+  }
+
+  static void updateLocalizedStrings(
+      Map<String, dynamic> newStrings, Locale locale) {
+    // Convert `Map<String, dynamic>` to `Map<String, Map<String, String>>`
+    Map<String, Map<String, String>> formattedStrings =
+        newStrings.map((key, value) {
+      if (value is Map) {
+        return MapEntry(
+          key,
+          value.map((innerKey, innerValue) {
+            if (innerValue is String) {
+              return MapEntry(innerKey, innerValue);
+            } else {
+              throw Exception('Invalid value type in inner map: $innerValue');
+            }
+          }),
+        );
+      } else {
+        throw Exception('Invalid value type in main map: $value');
+      }
+    });
+
+    // Update localized strings for the specified locale
+    _localizedStrings[locale.languageCode] = formattedStrings;
+    print("updated the map $formattedStrings");
   }
 
   // Method to change the locale dynamically

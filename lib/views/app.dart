@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
     final userRepository = UserRepository();
     final cowShedRepository = CowShedRepository();
     final homeRepository = HomeRepository();
- final helpAndFeedbackRepository = HelpAndFeedbackRepository();
+    final helpAndFeedbackRepository = HelpAndFeedbackRepository();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => LocaleProvider()),
@@ -57,7 +57,8 @@ class MyApp extends StatelessWidget {
             homeRepository: homeRepository,
             authProvider: authProvider,
           ),
-        ), ChangeNotifierProvider(
+        ),
+        ChangeNotifierProvider(
           create: (_) => HelpAndFeedbackProvider(
             helpAndFeedbackRepository: helpAndFeedbackRepository,
             authProvider: authProvider,
@@ -66,6 +67,7 @@ class MyApp extends StatelessWidget {
       ],
       child: Consumer<LocaleProvider>(
         builder: (context, localeProvider, child) {
+          print("Locale value: ${localeProvider.locale.languageCode}");
           return ScreenUtilInit(
             designSize: const Size(360, 690),
             builder: (context, child) {
