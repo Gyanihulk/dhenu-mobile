@@ -38,7 +38,7 @@ class ProfileBackgroundComponent extends StatelessWidget {
       ),
       if (isBack)
         Positioned(
-          top: 24.h,
+          top: 44.h,
           left: 16.h,
           child: GestureDetector(
             onTap: () {

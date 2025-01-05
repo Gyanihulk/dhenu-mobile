@@ -92,7 +92,7 @@ class _DonateScreenState extends State<DonateScreen> {
         print("Quantity: ${cowShedProvider.quantity}");
         print("Amount: ${cowShedProvider.amount}");
         print("Name: ${cowShedProvider.name}");
-
+ print("Dates: ${cowShedProvider.selectedDates}");
         String? dynamicErrorMessage;
 
         // Check if cow shed is not selected
@@ -234,6 +234,7 @@ class _DonateScreenState extends State<DonateScreen> {
 
                               toggleExpandedIndex(3);
                             },
+                            amount:cowShedProvider.amount,
                             errorMessage: errorMessage,
                             localization: localization),
                         onToggle: () => toggleExpandedIndex(2),

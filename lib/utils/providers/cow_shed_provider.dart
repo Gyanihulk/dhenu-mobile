@@ -1,3 +1,4 @@
+import 'package:dhenu_dharma/utils/common/url_launcher_util.dart';
 import 'package:flutter/material.dart';
 import 'package:dhenu_dharma/data/repositories/cowshed/cow_shed_repository.dart';
 import 'package:dhenu_dharma/utils/providers/auth_provider.dart';
@@ -118,7 +119,7 @@ class CowShedProvider with ChangeNotifier {
     };
   }
 
-  Future<void> createDonation() async {
+  Future<void> createDonation(BuildContext context) async {
     isLoading = true;
     errorMessage = '';
     notifyListeners();
@@ -141,6 +142,10 @@ class CowShedProvider with ChangeNotifier {
       );
 
       print('Donation created successfully $response');
+        final paymentLink = response['payment_link'] as String;
+
+    // Use the existing launchURL function to open the payment link
+    await launchURL(context, paymentLink);
     } catch (error) {
       errorMessage = error.toString();
       print('Error creating donation: $error');

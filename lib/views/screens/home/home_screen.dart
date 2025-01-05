@@ -4,10 +4,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
 import 'package:dhenu_dharma/utils/common/url_launcher_util.dart';
 import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
+import 'package:dhenu_dharma/utils/providers/home_provider.dart';
 import 'package:dhenu_dharma/views/screens/donate/donate_screen.dart';
 import 'package:dhenu_dharma/views/screens/home/misson/mission_screen.dart';
 import 'package:dhenu_dharma/views/screens/home/receipts/receipts_screen.dart';
 import 'package:dhenu_dharma/views/screens/initial/initial_screen.dart';
+import 'package:dhenu_dharma/views/screens/profile/screens/about_us/about_us_screen.dart';
 import 'package:dhenu_dharma/views/screens/profile/screens/documents/documents_screen.dart';
 import 'package:dhenu_dharma/views/widgets/custom_button.dart';
 import 'package:dhenu_dharma/views/widgets/custom_text.dart';
@@ -15,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import '../../../utils/constants/app_assets.dart';
 import '../../widgets/custom_navigator.dart';
 import '../profile/screens/my_donations/upcoming_donation_detail_screen.dart';
@@ -27,6 +30,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+
+    // Fetch real-time metrics data when the screen loads
+    final homeProvider = Provider.of<HomeProvider>(context, listen: false);
+    homeProvider.fetchHomeData();
+  }
+
   TextEditingController searchController = TextEditingController();
   int _currentIndex = 0;
 
@@ -78,86 +90,104 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
-  Column buildWhatWeProvide(AppLocalizations? localization) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.only(top: 20.h, bottom: 8.h),
-          child: CustomText(
-            localization?.translate("main.provide_title") ?? "What we provide",
-            fontSize: 20,
-            fontWeight: FontWeight.w700,
-            color: const Color(0xff3d3d3d),
-          ),
-        ),
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              buildProvideCard(),
-              buildProvideCard(),
-              buildProvideCard(),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Container buildProvideCard() {
-    return Container(
-      width: 150.w,
-      height: 100.h,
-      margin: EdgeInsets.only(right: 6.w),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.h),
-        image: const DecorationImage(
-          image: AssetImage(AssetsConstants.galleryImg2),
-          fit: BoxFit.fill,
+Column buildWhatWeProvide(AppLocalizations? localization) {
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Padding(
+        padding: EdgeInsets.only(top: 20.h, bottom: 8.h),
+        child: CustomText(
+          localization?.translate("main.provide_title") ?? "What we provide",
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+          color: const Color(0xff3d3d3d),
         ),
       ),
-      child: Container(
-        padding: EdgeInsets.all(8.h),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8.h),
-          color: Colors.black.withOpacity(0.6),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
-          crossAxisAlignment: CrossAxisAlignment.start,
+      SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
           children: [
-            CustomText(
-              "Doctors",
-              color: Colors.white,
-              fontSize: 12.h,
+            buildProvideCard(
+              title: "Cowshed Medicine",
+              description: "Support for medical needs",
+              image: AssetsConstants.galleryImg2,
+              link: "https://www.dhenudharmafoundation.org/medicine",
             ),
-            const CustomText(
-              "Lorem ipsum dolor sit amet",
-              color: Colors.white,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
+            buildProvideCard(
+              title: "Food and Shelter",
+              description: "Ensuring proper care for cows",
+              image: AssetsConstants.galleryImg3,
+              link: "https://www.dhenudharmafoundation.org/food-shelter",
             ),
-            SizedBox(height: 4.h),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-              decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.primary),
-                  borderRadius: BorderRadius.circular(12.h)),
-              child: CustomButton(
-              text: "Read More",
-              onPressed: () async {
-                await launchURL(
-                    context, 'https://www.dhenudharmafoundation.org/');
-              },
+            buildProvideCard(
+              title: "Veterinary Services",
+              description: "Expert veterinary care",
+              image: AssetsConstants.galleryImg4,
+              link: "https://www.dhenudharmafoundation.org/vet-services",
             ),
-            )
           ],
         ),
       ),
-    );
-  }
+    ],
+  );
+}
+
+Container buildProvideCard({
+  required String title,
+  required String description,
+  required String image,
+  required String link,
+}) {
+  return Container(
+    width: 180.w,
+    height: 150.h,
+    margin: EdgeInsets.only(right: 6.w),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(8.h),
+      image: DecorationImage(
+        image: AssetImage(image),
+        fit: BoxFit.fill,
+      ),
+    ),
+    child: Container(
+      padding: EdgeInsets.all(8.h),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.h),
+        color: Colors.black.withOpacity(0.6),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomText(
+            title,
+            color: Colors.white,
+            fontSize: 12.h,
+          ),
+          CustomText(
+            description,
+            color: Colors.white,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          SizedBox(height: 4.h),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+            decoration: BoxDecoration(
+                border: Border.all(color: AppColors.primary),
+                borderRadius: BorderRadius.circular(12.h)),
+            child: CustomButton(
+              text: "Read More",
+              onPressed: () async {
+                await launchURL(context, link);
+              },
+            ),
+          )
+        ],
+      ),
+    ),
+  );
+}
 
   Column buildAboutUs(AppLocalizations? localization) {
     return Column(
@@ -431,29 +461,50 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         SizedBox(height: 8.h),
         Center(
-          child: Wrap(
-            spacing: 8.w,
-            runSpacing: 8.h,
-            children: [
-              buildMetric(
-                  title: "₹ 11 cr",
-                  subtitle: localization?.translate("main.total_donation") ??
-                      "Total Donation"),
-              buildMetric(
-                  title: "300",
-                  subtitle: localization?.translate("main.total_gowshala") ??
-                      "Total Gowshala"),
-              buildMetric(
-                  title: "45,000",
-                  subtitle: localization?.translate("main.cows_helped") ??
-                      "Cows Helped"),
-              buildMetric(
-                  title: "7000",
-                  subtitle: localization?.translate("main.people_connected") ??
-                      "People Connected"),
-            ],
+          child: Consumer<HomeProvider>(
+            builder: (context, homeProvider, child) {
+              if (homeProvider.isLoading) {
+                return const CircularProgressIndicator();
+              } else if (homeProvider.errorMessage.isNotEmpty) {
+                return Text(
+                  homeProvider.errorMessage,
+                  style: TextStyle(color: Colors.red, fontSize: 14.sp),
+                );
+              } else {
+                final metrics = homeProvider.homeData;
+                return Wrap(
+                  spacing: 8.w,
+                  runSpacing: 8.h,
+                  children: [
+                    buildMetric(
+                      title: "₹ ${metrics['total_donation'] ?? '0'}",
+                      subtitle:
+                          localization?.translate("main.total_donation") ??
+                              "Total Donation",
+                    ),
+                    buildMetric(
+                      title: "${metrics['total_cow_sheds'] ?? '0'}",
+                      subtitle:
+                          localization?.translate("main.total_gowshala") ??
+                              "Total Gowshala",
+                    ),
+                    buildMetric(
+                      title: "${metrics['total_cows'] ?? '0'}",
+                      subtitle: localization?.translate("main.cows_helped") ??
+                          "Cows Helped",
+                    ),
+                    buildMetric(
+                      title: "${metrics['total_users'] ?? '0'}",
+                      subtitle:
+                          localization?.translate("main.people_connected") ??
+                              "People Connected",
+                    ),
+                  ],
+                );
+              }
+            },
           ),
-        )
+        ),
       ],
     );
   }
@@ -544,10 +595,10 @@ class _HomeScreenState extends State<HomeScreen> {
   GestureDetector buildDonationCard() {
     return GestureDetector(
       onTap: () {
-        CustomNavigator(
-          context: context,
-          screen: const UpcomingDonationDetailScreen(),
-        ).push();
+        // CustomNavigator(
+        //   context: context,
+        //   screen: const UpcomingDonationDetailScreen(),
+        // ).push();
       },
       child: Container(
         width: double.infinity,
@@ -641,24 +692,24 @@ class _HomeScreenState extends State<HomeScreen> {
             ).pushReplacement();
           },
         ),
+        
         buildActionBox(
+          title: localization?.translate("main.aboutUs") ??
+              "About Us",
+          img: AssetsConstants.authenticationImg,
+          onTap: () {
+            CustomNavigator(
+              context: context,
+              screen: const AboutUsScreen(),
+            ).pushReplacement();
+          },
+        ),buildActionBox(
           title: localization?.translate("main.donate") ?? "Donate",
           img: AssetsConstants.donateImg,
           onTap: () {
             CustomNavigator(
               context: context,
               screen: const InitialScreen(pageIndex: 1),
-            ).pushReplacement();
-          },
-        ),
-        buildActionBox(
-          title: localization?.translate("main.authentication") ??
-              "Authentication",
-          img: AssetsConstants.authenticationImg,
-          onTap: () {
-            CustomNavigator(
-              context: context,
-              screen: const DocumentsScreen(),
             ).pushReplacement();
           },
         ),

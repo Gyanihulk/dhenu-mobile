@@ -1,31 +1,31 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'package:dhenu_dharma/api/base/base_repository.dart';
 import 'package:dhenu_dharma/api/exceptions/exceptions.dart';
 import 'package:dhenu_dharma/utils/constants/api_constants.dart';
+import 'package:http/http.dart' as http;
 
-class LanguageRepository extends BaseRepository {
+class LanguageRepository {
   Future<List<Map<String, dynamic>>> fetchLanguages({
     required String token,
   }) async {
     try {
-      // Call the custom HTTP function from BaseRepository
-      final response = await requestHttps(
-        RequestType.GET,
-        ApiConstants.languageEndpoint, // Define endpoint in ApiConstants
-        null, // No body required for GET requests
+      // Construct the URL dynamically
+      final Uri url = Uri.parse('${ApiConstants.baseUrl}${ApiConstants.languageEndpoint}');
+      
+      // Make the HTTP GET request
+      final response = await http.get(
+        url,
         headers: {
-          ApiConstants.kAuthorization: 'Bearer $token', // Add the auth token
-          ApiConstants.kAccept: ApiConstants.kApplictionJson,
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
         },
       );
 
+      // Handle the response
       if (response.statusCode == 200) {
-        // Parse and return the response body as a List
         final responseData = jsonDecode(response.body);
-        
+
         if (responseData['data'] != null && responseData['data'] is List) {
-          // print('responseData ${responseData['data']}');
           return List<Map<String, dynamic>>.from(responseData['data']);
         } else {
           throw Exception('Unexpected response format: ${response.body}');
@@ -36,6 +36,36 @@ class LanguageRepository extends BaseRepository {
       }
     } catch (error) {
       log('Error in fetchLanguages: $error');
+      throw FetchDataException(message: error.toString());
+    }
+  }
+
+  Future<Map<String, dynamic>> fetchTranslations({
+    required String languageId,
+    required String token,
+  }) async {
+    try {
+      // Construct the URL dynamically
+      final Uri url = Uri.parse('${ApiConstants.baseUrl}/api/languages/$languageId/translations');
+
+      // Make the HTTP GET request
+      final response = await http.get(
+        url,
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+        },
+      );
+
+      // Handle the response
+      if (response.statusCode == 200) {
+        return json.decode(response.body);
+      } else {
+        throw Exception(
+            'Failed to fetch translations: ${response.statusCode} ${response.reasonPhrase}');
+      }
+    } catch (error) {
+      log('Error in fetchTranslations: $error');
       throw FetchDataException(message: error.toString());
     }
   }

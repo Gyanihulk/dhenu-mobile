@@ -17,3 +17,9 @@ samples, guidance on mobile development, and a full API reference.
     
 
 firebase key password 123456 : dhenu123
+firebase key password adamya_keystore : dhenu123
+
+ keytool -genkey -v -keystore my-release-key.keystore -keyalg RSA -keysize 2048 -validity 10000 -alias my-key-alias
+
+ dhenu123
+ 

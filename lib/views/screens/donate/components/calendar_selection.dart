@@ -7,7 +7,7 @@ class DonationFrequency extends StatefulWidget {
   final String? donorName;
   final Function(double) onAmountChange;
   final double donationPerDay;
- final Function(String,dynamic) onConfirm; 
+  final Function(String, dynamic) onConfirm;
   const DonationFrequency({
     super.key,
     required this.onNameChange,
@@ -15,7 +15,7 @@ class DonationFrequency extends StatefulWidget {
     this.donorName,
     this.donationPerDay = 500, // Default donation per day
     required this.onConfirm,
-  }) ;
+  });
 
   @override
   _DonationFrequency createState() => _DonationFrequency();
@@ -24,8 +24,8 @@ class DonationFrequency extends StatefulWidget {
 class _DonationFrequency extends State<DonationFrequency> {
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;
-  List<DateTime> _selectedDates = [];
-  String _selectedFilter = "One Time";
+  Set<DateTime> _selectedDates = {};
+  String _selectedFilter = "single";
   TextEditingController _nameController = TextEditingController();
 
   @override
@@ -65,7 +65,7 @@ class _DonationFrequency extends State<DonationFrequency> {
             ),
             itemBuilder: (context, index) {
               const filters = [
-                "One Time",
+                "Single",
                 "Daily",
                 "Weekly",
                 "Monthly",
@@ -103,67 +103,76 @@ class _DonationFrequency extends State<DonationFrequency> {
           ),
           const SizedBox(height: 10),
           // Calendar
-          TableCalendar(
-            firstDay: DateTime(2020, 1, 1),
-            lastDay: DateTime(2050, 12, 31),
-            focusedDay: _focusedDay,
-            selectedDayPredicate: (day) {
-              // Check if `day` exists in `_selectedDates`
-              return _selectedDates.any((selectedDate) =>
-                  selectedDate.year == day.year &&
-                  selectedDate.month == day.month &&
-                  selectedDate.day == day.day);
-            },
-            onDaySelected: (selectedDay, focusedDay) {
-              setState(() {
-                _focusedDay = focusedDay;
+          NotificationListener<ScrollNotification>(
+  onNotification: (notification) {
+    if (notification is ScrollStartNotification ||
+        notification is ScrollUpdateNotification) {
+      Scrollable.ensureVisible(context); // Ensure parent handles scroll
+    }
+    return false; // Let the calendar handle its gestures too
+  },
+  child: TableCalendar(
+    firstDay: DateTime(2020, 1, 1),
+    lastDay: DateTime(2050, 12, 31),
+    focusedDay: _focusedDay,
+    selectedDayPredicate: (day) {
+      return _selectedDates.any((selectedDate) =>
+          selectedDate.year == day.year &&
+          selectedDate.month == day.month &&
+          selectedDate.day == day.day);
+    },
+    onDaySelected: (selectedDay, focusedDay) {
+      setState(() {
+        _focusedDay = focusedDay;
+        if (selectedDay.isBefore(
+            DateTime.now().subtract(const Duration(days: 1)))) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Past dates cannot be selected."),
+              duration: Duration(seconds: 2),
+            ),
+          );
+          return;
+        }
+        if (_selectedFilter == "Custom") {
+          if (_selectedDates.contains(selectedDay)) {
+            _selectedDates.remove(selectedDay);
+          } else {
+            _selectedDates.add(selectedDay);
+          }
+        } else {
+          if (_selectedDates.isEmpty) {
+            _selectedDates.add(selectedDay);
+            _applyFilter(selectedDay);
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                    "Only one date can be selected for $_selectedFilter"),
+              ),
+            );
+          }
+        }
+        widget.onConfirm(_selectedFilter, _selectedDates.toList());
+      });
+    },
+    calendarStyle: const CalendarStyle(
+      todayDecoration: BoxDecoration(
+        color: Colors.yellow,
+        shape: BoxShape.circle,
+      ),
+      selectedDecoration: BoxDecoration(
+        color: Colors.black,
+        shape: BoxShape.circle,
+      ),
+    ),
+    headerStyle: const HeaderStyle(
+      formatButtonVisible: false,
+      titleCentered: true,
+    ),
+  ),
+),
 
-                if (_selectedFilter == "Custom") {
-                  // Toggle individual date for custom selection
-                  if (_selectedDates.any((date) =>
-                      date.year == selectedDay.year &&
-                      date.month == selectedDay.month &&
-                      date.day == selectedDay.day)) {
-                    _selectedDates.removeWhere((date) =>
-                        date.year == selectedDay.year &&
-                        date.month == selectedDay.month &&
-                        date.day == selectedDay.day);
-                  } else {
-                    _selectedDates.add(selectedDay);
-                  }
-                  
-                } else {
-                  // Allow only one date to be selected for all other filters
-                  if (_selectedDates.isEmpty) {
-                    _selectedDates.add(selectedDay);
-                    _applyFilter(selectedDay); // Apply filter logic
-                  } else {
-                    // Prevent further selections
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                          content: Text(
-                              "Only one date can be selected for $_selectedFilter")),
-                    );
-                  }
-                }
-                widget.onConfirm(_selectedFilter,_selectedDates);
-              });
-            },
-            calendarStyle: const CalendarStyle(
-              todayDecoration: BoxDecoration(
-                color: Colors.yellow,
-                shape: BoxShape.circle,
-              ),
-              selectedDecoration: BoxDecoration(
-                color: Colors.black,
-                shape: BoxShape.circle,
-              ),
-            ),
-            headerStyle: HeaderStyle(
-              formatButtonVisible: false,
-              titleCentered: true,
-            ),
-          ),
 
           const SizedBox(height: 10),
           // Name Input
@@ -195,16 +204,28 @@ class _DonationFrequency extends State<DonationFrequency> {
   }
 
   void _applyFilter(DateTime selectedDay) {
+    // Clear the existing dates to avoid duplicates
+    _selectedDates.clear();
+    if (selectedDay
+        .isBefore(DateTime.now().subtract(const Duration(days: 1)))) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text("Past dates cannot be selected."),
+          duration: const Duration(seconds: 2),
+        ),
+      );
+      return;
+    }
     switch (_selectedFilter) {
       case "Daily":
         _selectedDates.addAll(
             List.generate(30, (i) => selectedDay.add(Duration(days: i))));
         break;
+
       case "Weekly":
         for (int i = 0; i < 4; i++) {
           _selectedDates.add(selectedDay.add(Duration(days: i * 7)));
         }
-        print(_selectedDates);
         break;
 
       case "Monthly":
@@ -213,22 +234,21 @@ class _DonationFrequency extends State<DonationFrequency> {
               selectedDay.year, selectedDay.month + i, selectedDay.day);
           _selectedDates.add(dateInNextMonth);
         }
-        print('Monthly $_selectedDates');
         break;
 
       case "Yearly":
-        // Add all dates in the selected year
-        // Add the same date across the next 10 years
         for (int i = 0; i < 10; i++) {
           DateTime dateInNextYear = DateTime(
               selectedDay.year + i, selectedDay.month, selectedDay.day);
           _selectedDates.add(dateInNextYear);
         }
-        print('yearly $_selectedDates');
         break;
+
       default:
         _selectedDates.add(selectedDay);
         break;
     }
+
+    print("Filter Applied: $_selectedFilter, Dates: $_selectedDates");
   }
 }

@@ -1,10 +1,10 @@
 // ignore_for_file: must_be_immutable
 
+import 'package:dhenu_dharma/utils/constants/app_colors.dart';
 import 'package:dhenu_dharma/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../utils/constants/app_colors.dart';
 
 class ScreenLabelComponent extends StatelessWidget {
   String label;
@@ -15,7 +15,7 @@ class ScreenLabelComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Positioned(
-      top: 134.h,
+      top: 230.h,
       left: 24.h,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 12.h),

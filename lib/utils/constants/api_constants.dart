@@ -1,5 +1,6 @@
 class ApiConstants {
   static const String baseUrl = "https://dhenu.chardhamstays.com";
+  // static const String baseUrl = "http://192.168.1.13:8000";
   static const String version = "/api";
 
   static const String loginEndpoint = "$version/user/login";
@@ -7,8 +8,11 @@ class ApiConstants {
   static const String verifyOtpEndpoint = "$version/user/verify-code";
   static const String cowShedEndpoint = "$version/cow-shed";
   static const String languageEndpoint = "$version/languages";
-    static const String donationEndpoint = "$version/cow-shed/donations";
-  
+  static const String donationEndpoint = "$version/cow-shed/donations";
+  static const String paymentLinkEndpoint = "$version/payments/donation-link";
+  static const String metricsEndpoint = "$version/metrics";
+   static const String faqsEndpoint = "$version/faqs";
+  static const String feedbacksEndpoint = "$version/feedbacks";
 
   static const String kContentType = "Content-Type";
   static const String kApplictionJson = "application/json";
