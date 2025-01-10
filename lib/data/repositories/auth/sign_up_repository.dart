@@ -4,8 +4,9 @@ import 'package:dhenu_dharma/api/base/resource.dart';
 import 'package:dhenu_dharma/api/base/base_exception.dart';
 import 'package:dhenu_dharma/utils/constants/api_constants.dart';
 import 'package:dhenu_dharma/service/token_storage_service.dart';
-
+import 'package:http/http.dart' as http;
 class SignUpRepository extends BaseRepository {
+
   Future<Resource<void>> signUp({
     required String firstName,
     required String lastName,
@@ -16,29 +17,39 @@ class SignUpRepository extends BaseRepository {
   }) async {
     try {
       // Prepare query parameters
-      final Map<String, dynamic> requestBody = {
-        "first_name": firstName,
-        "last_name": lastName,
-        "email": email,
-        "phone": phone,
-        "password": password,
-        "password_confirmation": passwordConfirmation,
-        "google_login": false, // Include google_login if required by the API
-      };
+ final Map<String, dynamic> requestBody = {
+  "first_name": firstName,
+  "last_name": lastName,
+  "email": email,
+  "phone": phone.isEmpty ? null : phone, // Send null if phone is empty
+  "password": password,
+  "password_confirmation": passwordConfirmation,
+  "google_login": false,
+};
 
-      final String fullUrl = ApiConstants.registerEndpoint;
+// Prepare the URL
+final Uri url = Uri.parse(ApiConstants.baseUrl + ApiConstants.registerEndpoint);
 
-      final response = await requestHttps(
-        RequestType.POST,
-        fullUrl,
-        jsonEncode(requestBody), // Encode request body as JSON
-        baseURL: ApiConstants.baseUrl,
-        headers: {
-          ApiConstants.kAccept: ApiConstants.kApplictionJson,
-          ApiConstants.kContentType:
-              ApiConstants.kApplictionJson, // Set Content-Type
-        },
-      );
+// Prepare headers
+final headers = {
+  // 'Accept': 'application/json',
+  'Content-Type': 'application/json',
+};
+
+// Print the cURL command
+printCurlCommand2(
+  url: url.toString(),
+  method: "POST",
+  headers: headers,
+  body: requestBody,
+);
+
+// Make the HTTP POST request
+final response = await http.post(
+  url,
+  headers: headers,
+  body: jsonEncode(requestBody), // Encode the body as JSON
+);
 
       // Log the response status code and body
       print('Response Status Code: ${response.statusCode}');
@@ -132,4 +143,7 @@ class SignUpRepository extends BaseRepository {
       return Resource.error(null);
     }
   }
+
+  
 }
+

@@ -1,27 +1,32 @@
+import 'dart:convert';
 import 'package:dhenu_dharma/api/base/base_repository.dart';
 import 'package:dhenu_dharma/utils/constants/api_constants.dart';
-import 'package:flutter/services.dart'; 
-
+import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'dart:convert';
+import 'package:dhenu_dharma/data/models/login_response.dart';
+import 'package:dhenu_dharma/service/token_storage_service.dart';
+
+
 Future<User?> signInWithGoogle() async {
   try {
-     final GoogleSignIn googleSignIn = GoogleSignIn();
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+
     // Trigger the Google sign-in flow
-     await googleSignIn.disconnect();
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+
     if (googleUser == null) {
       // The user canceled the sign-in
+      print("Google sign-Up canceled by the user.");
       return null;
     }
 
-    // Obtain the Google authentication details
+    // Obtain Google authentication details
     final GoogleSignInAuthentication googleAuth =
         await googleUser.authentication;
 
-    // Create a new credential for Firebase
-    final credential = GoogleAuthProvider.credential(
+    // Create Firebase credential
+    final AuthCredential credential = GoogleAuthProvider.credential(
       accessToken: googleAuth.accessToken,
       idToken: googleAuth.idToken,
     );
@@ -35,12 +40,15 @@ Future<User?> signInWithGoogle() async {
     if (user != null) {
       // Prepare request body for backend API
       final Map<String, dynamic> requestBody = {
-        "first_name": user.displayName?.split(' ').first ?? "Unknown",
-        "last_name": user.displayName?.split(' ').last ?? "Unknown",
-        "email": user.email,
-        "phone": null,
-        "google_secret": "google-secret", // Use the Google idToken as secret
-        "google_login": true,
+        "username": user.email,
+        "is_mobile": true,
+        "device_uuid": "uniqueandroid",
+        "fcm_token": "fcm_1",
+        "device_info": "information",
+        "os_type": "android",
+        "app_version": "v.1.0.0.1",
+        "google_secret": "google-secret",
+        "google_login": true
       };
 
       // Call your custom requestHttps function
@@ -49,18 +57,28 @@ Future<User?> signInWithGoogle() async {
       // Call your custom requestHttps function
       final response = await baseRepository.requestHttps(
         RequestType.POST,
-        ApiConstants.registerEndpoint,
+        ApiConstants.loginEndpoint,
         jsonEncode(requestBody), // Encode the body as JSON
         baseURL: ApiConstants.baseUrl,
         headers: {
           ApiConstants.kAccept: ApiConstants.kApplictionJson,
-          ApiConstants.kContentType:ApiConstants.kApplictionJson
+          ApiConstants.kContentType: ApiConstants.kApplictionJson
         },
       );
 
       // Handle the response
       if (response.statusCode == 200) {
-        print("User registered in backend: ${response.body}");
+        print("User Loged in backend: ${response.body}");
+        final loginResponse = loginResponseFromJson(response.body);
+
+        // Check for auth token
+        if (loginResponse.data?.authToken == null) {
+          throw Exception("Auth token is null or missing");
+        }
+
+        // Store the auth token
+        await TokenStorageService.storeAuthToken(
+            loginResponse.data!.authToken!);
       } else {
         print("Failed to register user in backend: ${response.statusCode}");
         print("Response: ${response.body}");

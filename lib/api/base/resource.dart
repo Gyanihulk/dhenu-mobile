@@ -12,6 +12,8 @@ class Resource<T> {
   Resource.loading() : status = Status.LOADING;
   Resource.success(this.data) : status = Status.SUCCESS;
   Resource.error(this.exception) : status = Status.ERROR;
+
+  bool get isSuccess => exception == null; 
 }
 
 enum Status { LOADING, SUCCESS, ERROR }

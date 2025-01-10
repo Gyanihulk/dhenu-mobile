@@ -7,6 +7,7 @@ import 'package:dhenu_dharma/utils/providers/cow_shed_provider.dart';
 import 'package:dhenu_dharma/utils/providers/help_and_feedback.dart';
 import 'package:dhenu_dharma/utils/providers/home_provider.dart';
 import 'package:dhenu_dharma/utils/providers/language_provider.dart';
+import 'package:dhenu_dharma/views/screens/onboarding/onboarding_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -109,7 +110,7 @@ class MyApp extends StatelessWidget {
                   ],
                   home: authProvider.isAuthenticated
                       ? const InitialScreen(pageIndex: 0)
-                      : const LoginScreen(),
+                      : const OnboardingScreen(),
                 ),
               );
             },

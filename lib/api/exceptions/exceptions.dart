@@ -62,3 +62,4 @@ class FetchDataException implements Exception {
     return "FetchDataException: $message";
   }
 }
+

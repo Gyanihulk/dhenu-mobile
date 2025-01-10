@@ -27,54 +27,95 @@ class BaseRepository {
     ], requestTimeout: const Duration(seconds: 30));
   }
 
-  Future<http.Response> requestHttps(
-      RequestType type, String endpoint, dynamic request,
-      {String baseURL = ApiConstants.baseUrl,
-      Map<String, String> queryParameters = const {},
-      Map<String, String> headers = const {}}) async {
-    String uri = baseURL + endpoint + getQueryParameters(queryParameters);
-    // print('Body: $body');
-    Uri validUri = Uri.parse(uri);
-    http.Response response;
-    // Generate and print the cURL command
-  printCurlCommand(type, validUri, headers, request);
+Future<http.Response> requestHttps(
+  RequestType type,
+  String endpoint,
+  dynamic request, {
+  String baseURL = ApiConstants.baseUrl,
+  Map<String, String> queryParameters = const {},
+  Map<String, String> headers = const {},
+}) async {
+  // Construct the full URI
+  String uri = baseURL + endpoint + getQueryParameters(queryParameters);
+  Uri validUri = Uri.parse(uri);
+  http.Response response;
+
+  // Ensure headers include Content-Type: application/json
+  Map<String, String> updatedHeaders = {
+    ...headers,
+    ApiConstants.kContentType: ApiConstants.kApplictionJson,
+  };
+
+  // Convert the body to a JSON string if it's a Map or other dynamic object
+  String? requestBody = request is String ? request : jsonEncode(request);
+
+  // Generate and print the cURL command for debugging
+  printCurlCommand(type, validUri, updatedHeaders, requestBody);
+
+  // Send the HTTP request based on the request type
+  try {
     switch (type) {
       case RequestType.GET:
-        response = await httpClient.get(validUri, headers: headers);
+        response = await httpClient.get(validUri, headers: updatedHeaders);
         break;
       case RequestType.POST:
         response =
-            await httpClient.post(validUri, headers: headers, body: request);
+            await httpClient.post(validUri, headers: updatedHeaders, body: requestBody);
         break;
       case RequestType.PUT:
         response =
-            await httpClient.put(validUri, headers: headers, body: request);
+            await httpClient.put(validUri, headers: updatedHeaders, body: requestBody);
         break;
       case RequestType.PATCH:
         response =
-            await httpClient.patch(validUri, headers: headers, body: request);
+            await httpClient.patch(validUri, headers: updatedHeaders, body: requestBody);
         break;
       case RequestType.DELETE:
-        response = await httpClient.delete(validUri, headers: headers);
+        response = await httpClient.delete(validUri, headers: updatedHeaders);
         break;
     }
+
+    // Handle non-200 responses
     if (response.statusCode != 200) {
-      defaultHandleResponse(request, response);
-      print("Failed request");
+      defaultHandleResponse(requestBody, response);
     }
     return response;
+  } catch (e) {
+    // Catch network or other exceptions
+    print("Error during HTTP request: $e");
+    rethrow;
   }
-void printCurlCommand(RequestType type, Uri uri, Map<String, String> headers, dynamic body) {
-  StringBuffer curlCmd = StringBuffer("curl -X ${type.toString().split('.').last}");
-  headers.forEach((key, value) {
-    curlCmd.write(' -H "$key: $value"');
-  });
-  if (body != null && (type == RequestType.POST || type == RequestType.PUT || type == RequestType.PATCH)) {
-    curlCmd.write(" -d '${jsonEncode(body)}'");
-  }
-  curlCmd.write(" '${uri.toString()}'");
-  print(" $curlCmd");
 }
+
+
+  void printCurlCommand(
+      RequestType type, Uri uri, Map<String, String> headers, dynamic body) {
+    StringBuffer curlCmd =
+        StringBuffer("curl -X ${type.toString().split('.').last}");
+
+    // Add headers
+    headers.forEach((key, value) {
+      curlCmd.write(' -H "$key: $value"');
+    });
+
+    // Add body if applicable
+    if (body != null &&
+        (type == RequestType.POST ||
+            type == RequestType.PUT ||
+            type == RequestType.PATCH)) {
+      if (body is String) {
+        curlCmd.write(" --data-raw '${body}'");
+      } else {
+        curlCmd.write(" --data-raw '${jsonEncode(body)}'");
+      }
+    }
+
+    // Add the URL
+    curlCmd.write(" '${uri.toString()}'");
+
+    // Print the cURL command
+    print("Generated cURL Command:\n$curlCmd");
+  }
 
   Future<http.Response> sendFile(
       String baseURL,
@@ -100,7 +141,34 @@ void printCurlCommand(RequestType type, Uri uri, Map<String, String> headers, dy
     }
   }
 
+  void printCurlCommand2({
+    required String url,
+    required String method,
+    required Map<String, String> headers,
+    required Map<String, dynamic>? body,
+  }) {
+    final buffer = StringBuffer("curl -X $method");
+
+    // Add headers
+    headers.forEach((key, value) {
+      buffer.write(" -H \"$key: $value\"");
+    });
+
+    // Add body if present
+    if (body != null && body.isNotEmpty) {
+      buffer.write(" --data-raw '${jsonEncode(body)}'");
+    }
+
+    // Add URL
+    buffer.write(" '$url'");
+
+    // Print the cURL command
+    print("Generated cURL Command:\n$buffer");
+  }
+
   defaultHandleResponse(dynamic request, http.Response response) {
+      print("Response Status Code: ${response.statusCode}");
+  print("Response Body: ${response.body}");
     if (response.statusCode >= 500) {
       throw ServerErrorException(response.body.toString());
     }

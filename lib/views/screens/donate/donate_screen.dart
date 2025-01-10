@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:dhenu_dharma/utils/constants/app_assets.dart';
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
 import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:dhenu_dharma/utils/providers/cow_shed_provider.dart';
@@ -12,7 +11,6 @@ import 'package:dhenu_dharma/views/screens/donate/components/donate_top_content_
 import 'package:dhenu_dharma/views/screens/donate/components/donation_form_component.dart';
 import 'package:dhenu_dharma/views/screens/donate/components/seva_selection_container.dart';
 import 'package:dhenu_dharma/views/widgets/custom_button.dart';
-import 'package:dhenu_dharma/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -92,7 +90,8 @@ class _DonateScreenState extends State<DonateScreen> {
         print("Quantity: ${cowShedProvider.quantity}");
         print("Amount: ${cowShedProvider.amount}");
         print("Name: ${cowShedProvider.name}");
- print("Dates: ${cowShedProvider.selectedDates}");
+        print("Dates: ${cowShedProvider.selectedDates}");
+        print("Frequency: ${cowShedProvider.donationFrequency}");
         String? dynamicErrorMessage;
 
         // Check if cow shed is not selected
@@ -145,7 +144,7 @@ class _DonateScreenState extends State<DonateScreen> {
           showConfirmation = true;
           print("Validation Passed: Proceeding to confirmation.");
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content:
                   Text("All details are valid. Proceeding to confirmation."),
               backgroundColor: Colors.green,
@@ -234,7 +233,7 @@ class _DonateScreenState extends State<DonateScreen> {
 
                               toggleExpandedIndex(3);
                             },
-                            amount:cowShedProvider.amount,
+                            amount: cowShedProvider.amount,
                             errorMessage: errorMessage,
                             localization: localization),
                         onToggle: () => toggleExpandedIndex(2),
@@ -256,12 +255,11 @@ class _DonateScreenState extends State<DonateScreen> {
                                 .updateDonationFrequency(selectedFilter);
                             cowShedProvider.updateSelectedDates(selectedDates);
 
-                            final donationDetails =
-                                cowShedProvider.getDonationDetails();
-
                             // validateAndConfirm();
                           },
+                          donationPerDay:cowShedProvider.amount,
                         ),
+                        
                         onToggle: () => toggleExpandedIndex(3),
                       ),
                       SizedBox(height: 30.h),
@@ -306,5 +304,4 @@ class _DonateScreenState extends State<DonateScreen> {
       ),
     );
   }
-
 }

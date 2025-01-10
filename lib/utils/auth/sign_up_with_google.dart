@@ -1,9 +1,10 @@
 import 'package:dhenu_dharma/api/base/base_repository.dart';
 import 'package:flutter/services.dart'; // For PlatformException
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:convert';
+import 'package:dhenu_dharma/data/models/login_response.dart';
+import 'package:dhenu_dharma/service/token_storage_service.dart';
 
 
 
@@ -67,6 +68,17 @@ Future<User?> signUpWithGoogle() async {
       // Handle the response
       if (response.statusCode == 200) {
         print("User registered in backend: ${response.body}");
+
+        final loginResponse = loginResponseFromJson(response.body);
+
+        // Check for auth token
+        if (loginResponse.data?.authToken == null) {
+          throw Exception("Auth token is null or missing");
+        }
+
+        // Store the auth token
+        await TokenStorageService.storeAuthToken(
+            loginResponse.data!.authToken!);
       } else {
         print("Failed to register user in backend: ${response.statusCode}");
         print("Response: ${response.body}");

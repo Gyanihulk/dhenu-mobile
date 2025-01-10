@@ -37,27 +37,27 @@ class CowShedSelectionContainer extends StatelessWidget {
       child: Column(
         children: [
           // Location Filter Tabs
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                buildLocationFilterTab(
-                  label: localization.translate('donate_screen.need_based'),
-                  isActive: true,
-                ),
-                buildLocationFilterTab(
-                  label: localization.translate('donate_screen.within_10_km'),
-                ),
-                buildLocationFilterTab(
-                  label: localization.translate('donate_screen.nearest'),
-                ),
-                buildLocationFilterTab(
-                  label: localization.translate('donate_screen.most_review'),
-                ),
-              ],
-            ),
-          ),
+          // SingleChildScrollView(
+          //   scrollDirection: Axis.horizontal,
+          //   child: Row(
+          //     crossAxisAlignment: CrossAxisAlignment.start,
+          //     children: [
+          //       buildLocationFilterTab(
+          //         label: localization.translate('donate_screen.need_based'),
+          //         isActive: true,
+          //       ),
+          //       buildLocationFilterTab(
+          //         label: localization.translate('donate_screen.within_10_km'),
+          //       ),
+          //       buildLocationFilterTab(
+          //         label: localization.translate('donate_screen.nearest'),
+          //       ),
+          //       buildLocationFilterTab(
+          //         label: localization.translate('donate_screen.most_review'),
+          //       ),
+          //     ],
+          //   ),
+          // ),
           SizedBox(height: 12.h),
           // Cow Shed Cards
           Expanded(

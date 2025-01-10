@@ -1,22 +1,21 @@
 import 'package:dhenu_dharma/data/repositories/auth/sign_up_repository.dart'; // Import for SignUpRepository
 import 'package:dhenu_dharma/utils/auth/sign_up_with_google.dart';
+import 'package:dhenu_dharma/utils/constants/app_assets.dart';
+import 'package:dhenu_dharma/utils/constants/app_colors.dart';
 import 'package:dhenu_dharma/views/screens/auth/login_screen.dart';
 import 'package:dhenu_dharma/views/screens/auth/otp_verification_screen.dart';
-import 'package:dhenu_dharma/views/screens/onboarding/onboarding_screen.dart';
 import 'package:dhenu_dharma/views/widgets/custom_button.dart';
+import 'package:dhenu_dharma/views/widgets/custom_input_field.dart';
+import 'package:dhenu_dharma/views/widgets/custom_navigator.dart';
+import 'package:dhenu_dharma/views/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:dhenu_dharma/api/base/resource.dart';
 import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
-import 'package:dhenu_dharma/utils/auth/sign_in_with_google.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../../utils/constants/app_assets.dart';
-import '../../../utils/constants/app_colors.dart';
-import '../../widgets/custom_input_field.dart';
-import '../../widgets/custom_navigator.dart';
-import '../../widgets/custom_text.dart';
+
 import 'package:dhenu_dharma/views/screens/initial/initial_screen.dart';
 
 class SignUpScreen extends StatefulWidget {

@@ -94,24 +94,43 @@ class CowShedRepository extends BaseRepository {
         'Content-Type': 'application/json',
       };
 
-      final body = jsonEncode({
+      final Map<String, dynamic> body = {
         'cow_sheds_id': cowShedId,
         'donation_type': mappedDonationType,
-        'amount': amount,
-        'quantity': quantity,
         'frequency': frequency.toLowerCase(),
         'name': name,
-        'period': formattedPeriod,
-      });
+        'period': frequency.toLowerCase() == 'custom'
+            ? formattedPeriod // Send the full array for 'custom'
+            : (period.isNotEmpty
+                ? period[0].toIso8601String().split('T')[0]
+                : null), // Send the first index for others
+      };
+
+// Include `quantity` if the donation type is `food`
+      if (mappedDonationType == FOOD_SEVA) {
+        body['quantity'] = quantity;
+      }
+
+// Include `amount` if the donation type is not `food`
+      if (mappedDonationType != FOOD_SEVA) {
+        body['amount'] = amount;
+      }
+
+      final jsonBody = jsonEncode(body);
 
       final Uri url =
           Uri.parse('${ApiConstants.baseUrl}${ApiConstants.donationEndpoint}');
-      logCurlCommand(url, 'POST', headers, body);
-
+      // logCurlCommand(url, 'POST', headers, body);
+      printCurlCommand2(
+        url: url.toString(),
+        method: "POST",
+        headers: headers,
+        body: body,
+      );
       final response = await http.post(
         url,
         headers: headers,
-        body: body,
+        body: jsonEncode(body),
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -155,8 +174,8 @@ class CowShedRepository extends BaseRepository {
         'Content-Type': 'application/json',
       };
 
-      final Uri url =
-          Uri.parse('${ApiConstants.baseUrl}${ApiConstants.paymentLinkEndpoint}');
+      final Uri url = Uri.parse(
+          '${ApiConstants.baseUrl}${ApiConstants.paymentLinkEndpoint}');
       logCurlCommand(url, 'POST', headers, jsonEncode(body));
 
       final response = await http.post(

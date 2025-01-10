@@ -88,7 +88,9 @@ class AppLocalizations {
         "languages": "Languages",
         "edit": "Edit",
         "phoneNumber": "9876543210",
-        "userName": "Akansha Singh"
+        "userName": "Akansha Singh",
+        "no_languages_available": "No languages available.",
+        "language_updated": "Language updated to English."
       },
       'main': {
         'welcome': 'Welcome to our website',
@@ -117,23 +119,28 @@ class AppLocalizations {
       },
       "forget_password": {
         "title": "Forgot Password",
-        "enter_email_or_phone":
-            "Enter your email or phone number to reset your password.",
-        "email_phone_hint": "Enter email or phone number",
-        "send_code": "Send Verification Code",
-        "empty_field_error": "Please enter a valid email or phone number.",
-        "code_sent": "Verification code sent!",
-        "enter_otp": "Enter the verification code sent to your email/phone.",
-        "otp_hint": "Enter verification code",
-        "verify_code": "Verify Code",
-        "invalid_otp": "Please enter a valid 6-digit OTP.",
-        "otp_verified": "OTP Verified!",
-        "enter_new_password": "Set your new password.",
-        "new_password_hint": "Enter new password",
-        "confirm_password_hint": "Confirm new password",
-        "reset_button": "Reset Password",
-        "password_mismatch": "Passwords do not match or are empty.",
-        "success": "Password reset successfully!"
+      "enter_email_or_phone":
+          "Enter your email or phone number to reset your password.",
+      "email_phone_hint": "Enter email or phone number",
+      "send_code": "Send Verification Code",
+      "sending_code": "Sending verification code...",
+      "empty_field_error": "Please enter a valid email or phone number.",
+      "error_occurred":
+          "An error occurred while sending the verification code.",
+      "code_sent": "Verification code sent!",
+      "error_sending_code":
+          "Failed to send the verification code. Please try again.",
+      "enter_new_password": "Set your new password.",
+      "otp_hint": "Enter verification code",
+      "new_password_hint": "Enter new password",
+      "confirm_password_hint": "Confirm new password",
+      "reset_button": "Reset Password",
+      "invalid_password":
+          "Password must be at least 8 characters long, contain a number, and a special character.",
+      "password_mismatch": "Passwords do not match.",
+      "resetting_password": "Resetting your password...",
+      "success": "Password reset successfully!",
+      "reset_failed": "Failed to reset password. Please try again."
       },
       "donate_screen": {
         "card1title": "Location",
@@ -161,6 +168,16 @@ class AppLocalizations {
         "cows": "cows",
         "complete_payment": "Pay",
         "complete_payment_details": "Confirm details and Pay",
+        "past_date_error": "Past dates cannot be selected.",
+        "single_date_error": "Only one date can be selected for {filter}.",
+        "donation_in_name_of": "Donation in the name of",
+        "total_donation": "Total Donation in this Month",
+        "filter_single": "Single",
+        "filter_daily": "Daily",
+        "filter_weekly": "Weekly",
+        "filter_monthly": "Monthly",
+        "filter_yearly": "Yearly",
+        "filter_custom": "Custom"
       },
       "mission": {
         "mission": "Mission",
@@ -265,15 +282,15 @@ class AppLocalizations {
         "donor": "Donor:",
         "date": "Date:",
         "time": "Time:",
-         "donation_amount": "Donation Amount",
-    "distance": "Distance",
-    "contact": "Contact",
-    "cancel_button": "Cancel",
-    "cancel_confirmation": "Are you sure you want to cancel?",
-     "receipts": "Receipts",
-    "caring_contributor_receipt": "Caring Contributor Receipt",
-    "donation_acknowledgment": "Donation Acknowledgment",
-    "philanthropy_proof": "Philanthropy Proof"
+        "donation_amount": "Donation Amount",
+        "distance": "Distance",
+        "contact": "Contact",
+        "cancel_button": "Cancel",
+        "cancel_confirmation": "Are you sure you want to cancel?",
+        "receipts": "Receipts",
+     "donation_receipt": "Donation Receipt",
+  "appreciation_certificate": "Appreciation Certificate",
+  "tax_exemption_certificate": "Tax Exemption Certificate"
       }
     },
     'hi': {
@@ -348,6 +365,8 @@ class AppLocalizations {
         "edit": "संपादित करें",
         "phoneNumber": "9876543210",
         "userName": "आकांक्षा सिंह",
+        "no_languages_available": "कोई भाषा उपलब्ध नहीं है।",
+        "language_updated": "भाषा हिंदी में अपडेट हो गई है।"
       },
       'main': {
         'welcome': 'हमारी वेबसाइट पर आपका स्वागत है',
@@ -376,23 +395,27 @@ class AppLocalizations {
       },
       "forget_password": {
         "title": "पासवर्ड भूल गए",
-        "enter_email_or_phone":
-            "अपना पासवर्ड रीसेट करने के लिए अपना ईमेल या फ़ोन नंबर दर्ज करें।",
-        "email_phone_hint": "ईमेल या फ़ोन नंबर दर्ज करें",
-        "send_code": "सत्यापन कोड भेजें",
-        "empty_field_error": "कृपया एक मान्य ईमेल या फ़ोन नंबर दर्ज करें।",
-        "code_sent": "सत्यापन कोड भेजा गया!",
-        "enter_otp": "अपना नया पासवर्ड सेट करें।",
-        "otp_hint": "सत्यापन कोड दर्ज करें",
-        "verify_code": "कोड सत्यापित करें",
-        "invalid_otp": "कृपया एक मान्य 6-अंकीय ओटीपी दर्ज करें।",
-        "otp_verified": "ओटीपी सत्यापित हुआ!",
-        "enter_new_password": "अपना नया पासवर्ड सेट करें।",
-        "new_password_hint": "नया पासवर्ड दर्ज करें",
-        "confirm_password_hint": "नया पासवर्ड पुष्टि करें",
-        "reset_button": "पासवर्ड रीसेट करें",
-        "password_mismatch": "पासवर्ड मेल नहीं खाता या खाली है।",
-        "success": "पासवर्ड सफलतापूर्वक रीसेट हो गया!",
+      "enter_email_or_phone":
+          "पासवर्ड रीसेट करने के लिए अपना ईमेल या फोन नंबर दर्ज करें।",
+      "email_phone_hint": "ईमेल या फोन नंबर दर्ज करें",
+      "send_code": "सत्यापन कोड भेजें",
+      "sending_code": "सत्यापन कोड भेजा जा रहा है...",
+      "empty_field_error": "कृपया एक मान्य ईमेल या फोन नंबर दर्ज करें।",
+      "error_occurred": "सत्यापन कोड भेजते समय एक त्रुटि हुई।",
+      "code_sent": "सत्यापन कोड भेज दिया गया है!",
+      "error_sending_code":
+          "सत्यापन कोड भेजने में विफल। कृपया पुनः प्रयास करें।",
+      "enter_new_password": "अपना नया पासवर्ड सेट करें।",
+      "otp_hint": "सत्यापन कोड दर्ज करें",
+      "new_password_hint": "नया पासवर्ड दर्ज करें",
+      "confirm_password_hint": "नया पासवर्ड कन्फर्म करें",
+      "reset_button": "पासवर्ड रीसेट करें",
+      "invalid_password":
+          "पासवर्ड कम से कम 8 वर्ण लंबा होना चाहिए, जिसमें एक संख्या और एक विशेष अक्षर होना चाहिए।",
+      "password_mismatch": "पासवर्ड मेल नहीं खाते।",
+      "resetting_password": "आपका पासवर्ड रीसेट किया जा रहा है...",
+      "success": "पासवर्ड सफलतापूर्वक रीसेट कर दिया गया है!",
+      "reset_failed": "पासवर्ड रीसेट करने में विफल। कृपया पुनः प्रयास करें।"
       },
       "donate_screen": {
         "card1title": "स्थान",
@@ -420,6 +443,17 @@ class AppLocalizations {
         "cows": "गायें",
         "complete_payment": "भुगतान करें",
         "complete_payment_details": "विवरण की पुष्टि करें और भुगतान करें",
+        "past_date_error": "पिछली तारीखें चयनित नहीं की जा सकतीं।",
+        "single_date_error":
+            "{filter} के लिए केवल एक तारीख का चयन किया जा सकता है।",
+        "donation_in_name_of": "दान का नाम",
+        "total_donation": "इस महीने का कुल दान",
+        "filter_single": "एकल",
+        "filter_daily": "दैनिक",
+        "filter_weekly": "साप्ताहिक",
+        "filter_monthly": "मासिक",
+        "filter_yearly": "वार्षिक",
+        "filter_custom": "कस्टम"
       },
       "mission": {
         "mission": "मिशन",
@@ -525,15 +559,15 @@ class AppLocalizations {
         "donor": "दाता:",
         "date": "तारीख:",
         "time": "समय:",
-         "donation_amount": "दान राशि",
-    "distance": "दूरी",
-    "contact": "संपर्क",
-    "cancel_button": "रद्द करें",
-    "cancel_confirmation": "क्या आप वाकई रद्द करना चाहते हैं?",
-    "receipts": "रसीदें",
-    "caring_contributor_receipt": "स्नेही योगदानकर्ता रसीद",
-    "donation_acknowledgment": "दान की स्वीकृति",
-    "philanthropy_proof": "परमार्थ प्रमाण"
+        "donation_amount": "दान राशि",
+        "distance": "दूरी",
+        "contact": "संपर्क",
+        "cancel_button": "रद्द करें",
+        "cancel_confirmation": "क्या आप वाकई रद्द करना चाहते हैं?",
+        "receipts": "रसीदें",
+       "donation_receipt": "दान रसीद",
+  "appreciation_certificate": "प्रशंसा प्रमाणपत्र",
+  "tax_exemption_certificate": "कर छूट प्रमाणपत्र"
       }
     }
   };

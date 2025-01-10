@@ -189,7 +189,7 @@ class PastDonationDetailScreen extends StatelessWidget {
           children: [
             CustomText(
               localization.translate(
-                  'my_donations_screen.caring_contributor_receipt'),
+                  'my_donations_screen.donation_receipt'),
               color: const Color(0xff3b3b3b),
             ),
             const Icon(
@@ -205,7 +205,7 @@ class PastDonationDetailScreen extends StatelessWidget {
           children: [
             CustomText(
               localization.translate(
-                  'my_donations_screen.donation_acknowledgment'),
+                  'my_donations_screen.appreciation_certificate'),
               color: const Color(0xff3b3b3b),
             ),
             const Icon(
@@ -220,7 +220,7 @@ class PastDonationDetailScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomText(
-              localization.translate('my_donations_screen.philanthropy_proof'),
+              localization.translate('my_donations_screen.tax_exemption_certificate'),
               color: const Color(0xff3b3b3b),
             ),
             const Icon(

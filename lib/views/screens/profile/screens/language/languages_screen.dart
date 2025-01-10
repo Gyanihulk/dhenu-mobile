@@ -12,8 +12,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-
-
 class LanguagesScreen extends StatefulWidget {
   const LanguagesScreen({super.key});
 
@@ -43,15 +41,15 @@ class _LanguagesScreen extends State<LanguagesScreen> {
 
   @override
   Widget build(BuildContext context) {
-     final localization = AppLocalizations.of(context); 
+    final localization = AppLocalizations.of(context);
     return Scaffold(
       body: Stack(
         children: [
           ProfileBackgroundComponent(bgImg: AssetsConstants.userProfileBgImg1),
-          buildLanguagesContent(context),
+          buildLanguagesContent(context, localization!),
           ScreenLabelComponent(
             // Removed const
-            label: localization!.translate('profile.languages'), 
+            label: localization!.translate('profile.languages'),
             icon: Icons.language,
           ),
         ],
@@ -61,7 +59,8 @@ class _LanguagesScreen extends State<LanguagesScreen> {
     );
   }
 
-  Widget buildLanguagesContent(BuildContext context) {
+  Widget buildLanguagesContent(
+      BuildContext context, AppLocalizations localization) {
     return Positioned(
       top: 150.h,
       left: 0,
@@ -94,9 +93,11 @@ class _LanguagesScreen extends State<LanguagesScreen> {
             }
 
             if (languageProvider.languages.isEmpty) {
-              return const Center(child: Text("No languages available."));
+              return Center(
+                child: Text(
+                    localization.translate('profile.no_languages_available')!),
+              );
             }
-
             return ListView.builder(
               itemCount: languageProvider.languages.length,
               itemBuilder: (context, index) {
@@ -120,10 +121,38 @@ class _LanguagesScreen extends State<LanguagesScreen> {
                         final localeProvider =
                             Provider.of<LocaleProvider>(context, listen: false);
                         localeProvider.setLocale(locale);
+
+                        // Navigate back after a slight delay to ensure the SnackBar is visible
+                        Future.delayed(const Duration(milliseconds: 100), () {
+                          if (context.mounted) {
+                            final localization = AppLocalizations.of(
+                                context)!; // Fetch updated localization
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  localization
+                                      .translate('profile.language_updated')!,
+                                  textAlign: TextAlign.center,
+                                ),
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
+
+                            // Navigate back after showing the SnackBar
+                            Future.delayed(const Duration(seconds: 1), () {
+                              if (context.mounted) {
+                                Navigator.of(context).pop();
+                              }
+                            });
+                          }
+                        });
+
+                        print("Locale change requested: $selectedLanguageCode");
                         print("Locale change requested: $selectedLanguageCode");
                       }
                     } catch (e) {
-                      print("Error fetching translations in langauge screen: $e");
+                      print(
+                          "Error fetching translations in langauge screen: $e");
                     }
                   },
                 );

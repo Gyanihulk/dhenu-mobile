@@ -13,6 +13,8 @@ class ApiConstants {
   static const String metricsEndpoint = "$version/metrics";
    static const String faqsEndpoint = "$version/faqs";
   static const String feedbacksEndpoint = "$version/feedbacks";
+ static const String sendOtpEndpoint = '$version/user/password/forgot';
+ static const String resetPasswordEndpoint = '$version/user/password/reset';
 
   static const String kContentType = "Content-Type";
   static const String kApplictionJson = "application/json";
