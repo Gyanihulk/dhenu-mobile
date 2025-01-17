@@ -14,10 +14,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:dhenu_dharma/api/base/resource.dart';
 import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:provider/provider.dart';
 import 'package:dhenu_dharma/views/screens/initial/initial_screen.dart';
-
+import 'package:dhenu_dharma/utils/providers/auth_provider.dart';
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -263,9 +262,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
         SizedBox(height: 16.h),
         GestureDetector(
         onTap: () async {
-          User? user = await signUpWithGoogle();
+          final user = await signUpWithGoogle();
           if (user != null) {
-            print('Google sign-in successful: ${user}');
+            print('Google sign-in successful: $user');
+             final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+        // Save user details and token to AuthProvider
+              await authProvider.login(user.authToken!, user);
            CustomNavigator(
               context: context,
               screen: const InitialScreen(pageIndex: 0),

@@ -19,7 +19,7 @@ import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:dhenu_dharma/utils/providers/locale_provider.dart';
 import 'package:dhenu_dharma/utils/auth/sign_in_with_google.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dhenu_dharma/utils/providers/auth_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -132,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
           SizedBox(height: 24.h),
           Center(
             child: Text(
-              localization.translate('login.welcome'), // Changed to nested key
+              localization.translate('login.login'), // Changed to nested key
               style: GoogleFonts.montserrat(
                 fontSize: 24.h,
                 color: Colors.black,
@@ -270,9 +270,13 @@ class _LoginScreenState extends State<LoginScreen> {
         SizedBox(height: 16.h),
         GestureDetector(
         onTap: () async {
-          User? user = await signInWithGoogle();
-          if (user != null) {
-            print('Google sign-in successful: ${user}');
+          final  userModel  = await signInWithGoogle();
+          if (userModel != null) {
+            print('Google sign-in successful: ${userModel}');
+            final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+        // Save user details and token to AuthProvider
+              await authProvider.login(userModel.authToken!, userModel);
               CustomNavigator(
               context: context,
               screen: const InitialScreen(pageIndex: 0),

@@ -79,4 +79,11 @@ class AppPreferences {
   bool isAuthenticated() {
     return preferences.getBool('is_authenticated') ?? false;
   }
+
+  Future<void> signOut() async {
+    // Remove authentication-related preferences
+    await removeToken();
+    await removeUserInfo();
+    await setAuthenticated(false);
+  }
 }

@@ -80,7 +80,7 @@ class AppLocalizations {
         "signOut": "Sign Out",
         "myDonations": "My Donations",
         "documents": "Documents",
-        "legal": "Legal",
+        "legal": "Privacy Policies",
         "helpFeedback": "Help & Feedback",
         "aboutUs": "About Us",
         "share": "Share",
@@ -90,7 +90,9 @@ class AppLocalizations {
         "phoneNumber": "9876543210",
         "userName": "Akansha Singh",
         "no_languages_available": "No languages available.",
-        "language_updated": "Language updated to English."
+        "language_updated": "Language updated to English.",
+        "terms_and_conditions": "Terms and Conditions",
+        "refund_policy": "Refund Policy",
       },
       'main': {
         'welcome': 'Welcome to our website',
@@ -353,10 +355,12 @@ class AppLocalizations {
         "profile": "प्रोफ़ाइल",
       },
       "profile": {
+        "terms_and_conditions": "नियम और शर्तें",
+        "refund_policy": "रिफंड नीति",
         "signOut": "साइन आउट",
         "myDonations": "मेरे दान",
         "documents": "दस्तावेज़",
-        "legal": "कानूनी",
+        "legal": "गोपनीयता नीति",
         "helpFeedback": "सहायता और प्रतिक्रिया",
         "aboutUs": "हमारे बारे में",
         "share": "साझा करें",

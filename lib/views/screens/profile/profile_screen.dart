@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dhenu_dharma/data/models/user_model.dart';
+import 'package:dhenu_dharma/service/app_preferences.dart';
 import 'package:dhenu_dharma/utils/common/url_launcher_util.dart';
 import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:dhenu_dharma/utils/providers/auth_provider.dart';
@@ -7,7 +8,6 @@ import 'package:dhenu_dharma/views/screens/auth/login_screen.dart';
 import 'package:dhenu_dharma/views/screens/profile/screens/about_us/about_us_screen.dart';
 import 'package:dhenu_dharma/views/screens/profile/screens/help_and_feedback/help_and_feedback_screen.dart';
 import 'package:dhenu_dharma/views/screens/profile/screens/language/languages_screen.dart';
-import 'package:dhenu_dharma/views/screens/profile/screens/legal/legal_screen.dart';
 import 'package:dhenu_dharma/views/screens/profile/screens/my_donations/my_donations_screen.dart';
 import 'package:dhenu_dharma/views/widgets/custom_button.dart';
 import 'package:dhenu_dharma/views/widgets/custom_navigator.dart';
@@ -98,9 +98,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
       padding: EdgeInsets.only(bottom: 4.h),
       child: CustomButton(
           text: localization.translate("profile.signOut"),
-          onPressed: () {
-            CustomNavigator(context: context, screen: const LoginScreen())
-                .pushAndRemoveUntil();
+          onPressed: () async {
+            await AppPreferences.instance.signOut();
+
+        // Use mounted check to ensure the widget is still active
+        if (!context.mounted) return;
+
+        // Navigate to the login screen and clear navigation stack
+        CustomNavigator(context: context, screen: const LoginScreen())
+            .pushAndRemoveUntil();
           }),
     );
   }
@@ -150,30 +156,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             //   screen: const DocumentsScreen(),
             // ),
 
-            GestureDetector(
-              onTap: () {
-                launchURL(context,
-                    "https://www.dhenudharmafoundation.org/privacy-policy");
-              },
-              child: Padding(
-                padding: EdgeInsets.only(bottom: 20.h),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.balance,
-                      size: 16.h,
-                    ),
-                    SizedBox(width: 20.w),
-                    CustomText(
-                      localization.translate("profile.legal"),
-                      fontSize: 14.h,
-                      fontWeight: FontWeight.w500,
-                    ),
-                    SizedBox(height: 8.h)
-                  ],
-                ),
-              ),
-            ),
+            
             buildProfileListItem(
               icon: Icons.help,
               label: localization.translate("profile.helpFeedback"),
@@ -198,6 +181,78 @@ class _ProfileScreenState extends State<ProfileScreen> {
               icon: Icons.language,
               label: localization.translate("profile.languages"),
               screen: const LanguagesScreen(),
+            ),
+            GestureDetector(
+              onTap: () {
+                launchURL(context,
+                    "https://www.dhenudharmafoundation.org/privacy-policy");
+              },
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 20.h),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.balance,
+                      size: 16.h,
+                    ),
+                    SizedBox(width: 20.w),
+                    CustomText(
+                      localization.translate("profile.legal"),
+                      fontSize: 14.h,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    SizedBox(height: 8.h)
+                  ],
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                launchURL(context,
+                    "https://www.dhenudharmafoundation.org/terms-and-condition");
+              },
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 20.h),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.gavel,
+                      size: 16.h,
+                    ),
+                    SizedBox(width: 20.w),
+                    CustomText(
+                      localization.translate("profile.terms_and_conditions"),
+                      fontSize: 14.h,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    SizedBox(height: 8.h)
+                  ],
+                ),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                launchURL(context,
+                    "https://www.dhenudharmafoundation.org/refund-policies");
+              },
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 20.h),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.receipt ,
+                      size: 16.h,
+                    ),
+                    SizedBox(width: 20.w),
+                    CustomText(
+                      localization.translate("profile.refund_policy"),
+                      fontSize: 14.h,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    SizedBox(height: 8.h)
+                  ],
+                ),
+              ),
             ),
           ],
         ),

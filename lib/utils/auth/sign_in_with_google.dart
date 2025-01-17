@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dhenu_dharma/api/base/base_repository.dart';
+import 'package:dhenu_dharma/data/models/user_model.dart';
 import 'package:dhenu_dharma/utils/constants/api_constants.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,7 +9,7 @@ import 'package:dhenu_dharma/data/models/login_response.dart';
 import 'package:dhenu_dharma/service/token_storage_service.dart';
 
 
-Future<User?> signInWithGoogle() async {
+Future<UserModel?> signInWithGoogle() async {
   try {
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -67,8 +68,8 @@ Future<User?> signInWithGoogle() async {
       );
 
       // Handle the response
-      if (response.statusCode == 200) {
-        print("User Loged in backend: ${response.body}");
+       if (response.statusCode == 200) {
+        print("User logged in backend: ${response.body}");
         final loginResponse = loginResponseFromJson(response.body);
 
         // Check for auth token
@@ -76,15 +77,24 @@ Future<User?> signInWithGoogle() async {
           throw Exception("Auth token is null or missing");
         }
 
+        // Parse user details from response
+        final Map<String, dynamic> responseBody = jsonDecode(response.body);
+
+// Parse user details from response
+        final userModel = UserModel.fromJson(responseBody['data']);
+        print("Parsed UserModel: $userModel");
+
         // Store the auth token
-        await TokenStorageService.storeAuthToken(
-            loginResponse.data!.authToken!);
+        await TokenStorageService.storeAuthToken(userModel.authToken!);
+
+        return userModel;
       } else {
         print("Failed to register user in backend: ${response.statusCode}");
         print("Response: ${response.body}");
+        return null;
       }
 
-      return user;
+      
     } else {
       print("Google sign-in failed: No user found.");
       return null;

@@ -1,4 +1,5 @@
 import 'package:dhenu_dharma/api/base/base_repository.dart';
+import 'package:dhenu_dharma/data/models/user_model.dart';
 import 'package:flutter/services.dart'; // For PlatformException
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -6,11 +7,9 @@ import 'dart:convert';
 import 'package:dhenu_dharma/data/models/login_response.dart';
 import 'package:dhenu_dharma/service/token_storage_service.dart';
 
-
-
 import 'package:dhenu_dharma/utils/constants/api_constants.dart';
 
-Future<User?> signUpWithGoogle() async {
+Future<UserModel?> signUpWithGoogle() async {
   try {
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -61,7 +60,7 @@ Future<User?> signUpWithGoogle() async {
         baseURL: ApiConstants.baseUrl,
         headers: {
           ApiConstants.kAccept: ApiConstants.kApplictionJson,
-          ApiConstants.kContentType:ApiConstants.kApplictionJson
+          ApiConstants.kContentType: ApiConstants.kApplictionJson
         },
       );
 
@@ -82,9 +81,59 @@ Future<User?> signUpWithGoogle() async {
       } else {
         print("Failed to register user in backend: ${response.statusCode}");
         print("Response: ${response.body}");
-      }
+        if (response.statusCode == 422) {
+          final Map<String, dynamic> requestBody = {
+            "username": user.email,
+            "is_mobile": true,
+            "device_uuid": "uniqueandroid",
+            "fcm_token": "fcm_1",
+            "device_info": "information",
+            "os_type": "android",
+            "app_version": "v.1.0.0.1",
+            "google_secret": "google-secret",
+            "google_login": true
+          };
 
-      return user;
+          // Call your custom requestHttps function
+          final baseRepository = BaseRepository();
+
+          // Call your custom requestHttps function
+          final response = await baseRepository.requestHttps(
+            RequestType.POST,
+            ApiConstants.loginEndpoint,
+            jsonEncode(requestBody), // Encode the body as JSON
+            baseURL: ApiConstants.baseUrl,
+            headers: {
+              ApiConstants.kAccept: ApiConstants.kApplictionJson,
+              ApiConstants.kContentType: ApiConstants.kApplictionJson
+            },
+          );
+
+          // Handle the response
+          if (response.statusCode == 200) {
+            print("User logged in backend: ${response.body}");
+            final loginResponse = loginResponseFromJson(response.body);
+
+            // Check for auth token
+            if (loginResponse.data?.authToken == null) {
+              throw Exception("Auth token is null or missing");
+            }
+
+            // Parse user details from response
+            final Map<String, dynamic> responseBody = jsonDecode(response.body);
+
+// Parse user details from response
+            final userModel = UserModel.fromJson(responseBody['data']);
+            print("Parsed UserModel: $userModel");
+
+            // Store the auth token
+            await TokenStorageService.storeAuthToken(userModel.authToken!);
+
+            return userModel;
+          }
+          return null;
+        }
+      }
     } else {
       print("Google sign-in failed: No user found.");
       return null;
