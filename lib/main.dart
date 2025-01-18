@@ -1,4 +1,5 @@
 import 'package:dhenu_dharma/data/repositories/language/language_repository.dart';
+import 'package:dhenu_dharma/service/app_info.dart';
 import 'package:dhenu_dharma/service/app_preferences.dart';
 import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:dhenu_dharma/utils/providers/auth_provider.dart';
@@ -44,6 +45,10 @@ void main() async {
   await languageProvider.fetchLanguages();
 
   initDeepLinkListener();
+
+  final appInfo = AppInfo();
+  await appInfo.initialize();
+
   runApp(AppLocalizationState(
     child:MultiProvider(
       providers: [
