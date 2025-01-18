@@ -270,7 +270,7 @@ class _LoginScreenState extends State<LoginScreen> {
         SizedBox(height: 16.h),
         GestureDetector(
         onTap: () async {
-          final  userModel  = await signInWithGoogle();
+          final  userModel  = await signInWithGoogle(context);
           if (userModel != null) {
             print('Google sign-in successful: ${userModel}');
             final authProvider = Provider.of<AuthProvider>(context, listen: false);

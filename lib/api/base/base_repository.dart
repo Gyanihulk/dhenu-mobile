@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:flutter/material.dart';
 
 import 'package:async/async.dart';
 import 'package:dhenu_dharma/api/exceptions/network_exception.dart';
@@ -114,7 +115,7 @@ Future<http.Response> requestHttps(
     curlCmd.write(" '${uri.toString()}'");
 
     // Print the cURL command
-    print("Generated cURL Command:\n$curlCmd");
+    debugPrint("Generated cURL Command:\n$curlCmd");
   }
 
   Future<http.Response> sendFile(

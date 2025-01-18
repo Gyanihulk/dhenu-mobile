@@ -262,7 +262,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         SizedBox(height: 16.h),
         GestureDetector(
         onTap: () async {
-          final user = await signUpWithGoogle();
+          final user = await signUpWithGoogle(context);
           if (user != null) {
             print('Google sign-in successful: $user');
              final authProvider = Provider.of<AuthProvider>(context, listen: false);

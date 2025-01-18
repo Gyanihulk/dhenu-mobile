@@ -6,10 +6,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'dart:convert';
 import 'package:dhenu_dharma/data/models/login_response.dart';
 import 'package:dhenu_dharma/service/token_storage_service.dart';
-
+import 'package:flutter/material.dart';
 import 'package:dhenu_dharma/utils/constants/api_constants.dart';
 
-Future<UserModel?> signUpWithGoogle() async {
+Future<UserModel?> signUpWithGoogle(BuildContext context) async {
   try {
     final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -82,6 +82,16 @@ Future<UserModel?> signUpWithGoogle() async {
         print("Failed to register user in backend: ${response.statusCode}");
         print("Response: ${response.body}");
         if (response.statusCode == 422) {
+           ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Email already registered. Please log in instead.',
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 3),
+            ),
+          );
           final Map<String, dynamic> requestBody = {
             "username": user.email,
             "is_mobile": true,
