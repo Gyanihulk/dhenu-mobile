@@ -1,5 +1,7 @@
 import 'package:dhenu_dharma/api/base/base_repository.dart';
 import 'package:dhenu_dharma/data/models/user_model.dart';
+import 'package:dhenu_dharma/service/app_info.dart';
+import 'package:dhenu_dharma/service/fmc_service.dart';
 import 'package:flutter/services.dart'; // For PlatformException
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -37,8 +39,24 @@ Future<UserModel?> signUpWithGoogle(BuildContext context) async {
         await FirebaseAuth.instance.signInWithCredential(credential);
     print("User google data: $userCredential");
     final User? user = userCredential.user;
-
+  final appInfo = AppInfo();
     if (user != null) {
+      print("[Firebase Auth] Firebase user signed in: ${user.email}");
+
+      // Retrieve ID token
+      print("[Firebase Auth] Retrieving Firebase ID token...");
+      final String? idToken = await user.getIdToken();
+      final String? fcmToken = await FcmService.getToken();
+
+      if (idToken == null) {
+        print("[Firebase Auth] Failed to retrieve ID token.");
+        throw Exception("Failed to retrieve ID token.");
+      }
+
+      // print("[Firebase Auth] ID Token retrieved: $idToken FcmToken :$fcmToken");
+      print("FcmToken :$fcmToken");
+      print("Version: ${appInfo.version}");
+      print("deviceUUID: ${appInfo.deviceUUID}");
       // Prepare request body for backend API
       final Map<String, dynamic> requestBody = {
         "first_name": user.displayName?.split(' ').first ?? "Unknown",
@@ -47,6 +65,10 @@ Future<UserModel?> signUpWithGoogle(BuildContext context) async {
         "phone": null,
         "google_secret": "google-secret", // Use the Google idToken as secret
         "google_login": true,
+        "is_mobile": true,
+        "device_uuid": appInfo.deviceUUID,
+        "fcm_token": fcmToken,
+         "app_version": appInfo.version,
       };
 
       // Call your custom requestHttps function
@@ -65,9 +87,18 @@ Future<UserModel?> signUpWithGoogle(BuildContext context) async {
       );
 
       // Handle the response
+      
       if (response.statusCode == 200) {
         print("User registered in backend: ${response.body}");
-
+ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'SuccessFully Registered. Please log in Now.',
+                style: TextStyle(color: Colors.white),
+              ),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 3),
+            ));
         final loginResponse = loginResponseFromJson(response.body);
 
         // Check for auth token
@@ -95,12 +126,12 @@ Future<UserModel?> signUpWithGoogle(BuildContext context) async {
           final Map<String, dynamic> requestBody = {
             "username": user.email,
             "is_mobile": true,
-            "device_uuid": "uniqueandroid",
-            "fcm_token": "fcm_1",
+            "device_uuid": appInfo.deviceUUID,
+        "fcm_token": fcmToken,
             "device_info": "information",
             "os_type": "android",
-            "app_version": "v.1.0.0.1",
-            "google_secret": "google-secret",
+            "app_version": appInfo.version,
+            "google_secret": idToken,
             "google_login": true
           };
 
