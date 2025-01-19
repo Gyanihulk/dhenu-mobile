@@ -1,6 +1,6 @@
 class ApiConstants {
-  // static const String baseUrl = "https://dhenu.chardhamstays.com";
-  static const String baseUrl = "http://192.168.1.13:8000";
+  static const String baseUrl = "https://dhenu.chardhamstays.com";
+  // static const String baseUrl = "http://192.168.1.13:8000";
   static const String version = "/api";
 
   static const String loginEndpoint = "$version/user/login";
@@ -15,6 +15,7 @@ class ApiConstants {
   static const String feedbacksEndpoint = "$version/feedbacks";
  static const String sendOtpEndpoint = '$version/user/password/forgot';
  static const String resetPasswordEndpoint = '$version/user/password/reset';
+  static const String notificationsEndpoint = '$version/user';
 
   static const String kContentType = "Content-Type";
   static const String kApplictionJson = "application/json";

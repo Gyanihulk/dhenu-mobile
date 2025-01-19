@@ -37,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // Fetch real-time metrics data when the screen loads
     final homeProvider = Provider.of<HomeProvider>(context, listen: false);
     homeProvider.fetchHomeData();
+    homeProvider.fetchNotifications();
   }
 
   TextEditingController searchController = TextEditingController();
@@ -45,17 +46,19 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final localization = AppLocalizations.of(context);
+    final notifications = Provider.of<HomeProvider>(context).notifications;
     return Scaffold(
       body: Stack(
         children: [
-          buildTopContainer(localization),
-          buildHomeContent(localization),
+          buildTopContainer(localization, notifications),
+          buildHomeContent(localization, notifications),
         ],
       ),
     );
   }
 
-  Positioned buildHomeContent(AppLocalizations? localization) {
+  Positioned buildHomeContent(
+      AppLocalizations? localization, List<dynamic> notifications) {
     return Positioned(
       top: 232.h,
       left: 0,
@@ -90,104 +93,105 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-Column buildWhatWeProvide(AppLocalizations? localization) {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Padding(
-        padding: EdgeInsets.only(top: 20.h, bottom: 8.h),
-        child: CustomText(
-          localization?.translate("main.provide_title") ?? "What we provide",
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
-          color: const Color(0xff3d3d3d),
+
+  Column buildWhatWeProvide(AppLocalizations? localization) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top: 20.h, bottom: 8.h),
+          child: CustomText(
+            localization?.translate("main.provide_title") ?? "What we provide",
+            fontSize: 20,
+            fontWeight: FontWeight.w700,
+            color: const Color(0xff3d3d3d),
+          ),
+        ),
+        SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              buildProvideCard(
+                title: "Cowshed Medicine",
+                description: "Support for medical needs",
+                image: AssetsConstants.galleryImg2,
+                link: "https://www.dhenudharmafoundation.org/medicine",
+              ),
+              buildProvideCard(
+                title: "Food and Shelter",
+                description: "Ensuring proper care for cows",
+                image: AssetsConstants.galleryImg3,
+                link: "https://www.dhenudharmafoundation.org/food-shelter",
+              ),
+              buildProvideCard(
+                title: "Veterinary Services",
+                description: "Expert veterinary care",
+                image: AssetsConstants.galleryImg4,
+                link: "https://www.dhenudharmafoundation.org/vet-services",
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Container buildProvideCard({
+    required String title,
+    required String description,
+    required String image,
+    required String link,
+  }) {
+    return Container(
+      width: 180.w,
+      height: 150.h,
+      margin: EdgeInsets.only(right: 6.w),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8.h),
+        image: DecorationImage(
+          image: AssetImage(image),
+          fit: BoxFit.fill,
         ),
       ),
-      SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
+      child: Container(
+        padding: EdgeInsets.all(8.h),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8.h),
+          color: Colors.black.withOpacity(0.6),
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            buildProvideCard(
-              title: "Cowshed Medicine",
-              description: "Support for medical needs",
-              image: AssetsConstants.galleryImg2,
-              link: "https://www.dhenudharmafoundation.org/medicine",
+            CustomText(
+              title,
+              color: Colors.white,
+              fontSize: 12.h,
             ),
-            buildProvideCard(
-              title: "Food and Shelter",
-              description: "Ensuring proper care for cows",
-              image: AssetsConstants.galleryImg3,
-              link: "https://www.dhenudharmafoundation.org/food-shelter",
+            CustomText(
+              description,
+              color: Colors.white,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
-            buildProvideCard(
-              title: "Veterinary Services",
-              description: "Expert veterinary care",
-              image: AssetsConstants.galleryImg4,
-              link: "https://www.dhenudharmafoundation.org/vet-services",
-            ),
+            SizedBox(height: 4.h),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
+              decoration: BoxDecoration(
+                  border: Border.all(color: AppColors.primary),
+                  borderRadius: BorderRadius.circular(12.h)),
+              child: CustomButton(
+                text: "Read More",
+                onPressed: () async {
+                  await launchURL(context, link);
+                },
+              ),
+            )
           ],
         ),
       ),
-    ],
-  );
-}
-
-Container buildProvideCard({
-  required String title,
-  required String description,
-  required String image,
-  required String link,
-}) {
-  return Container(
-    width: 180.w,
-    height: 150.h,
-    margin: EdgeInsets.only(right: 6.w),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(8.h),
-      image: DecorationImage(
-        image: AssetImage(image),
-        fit: BoxFit.fill,
-      ),
-    ),
-    child: Container(
-      padding: EdgeInsets.all(8.h),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8.h),
-        color: Colors.black.withOpacity(0.6),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CustomText(
-            title,
-            color: Colors.white,
-            fontSize: 12.h,
-          ),
-          CustomText(
-            description,
-            color: Colors.white,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          ),
-          SizedBox(height: 4.h),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 1.h),
-            decoration: BoxDecoration(
-                border: Border.all(color: AppColors.primary),
-                borderRadius: BorderRadius.circular(12.h)),
-            child: CustomButton(
-              text: "Read More",
-              onPressed: () async {
-                await launchURL(context, link);
-              },
-            ),
-          )
-        ],
-      ),
-    ),
-  );
-}
+    );
+  }
 
   Column buildAboutUs(AppLocalizations? localization) {
     return Column(
@@ -692,10 +696,8 @@ Container buildProvideCard({
             ).pushReplacement();
           },
         ),
-        
         buildActionBox(
-          title: localization?.translate("main.aboutUs") ??
-              "About Us",
+          title: localization?.translate("main.aboutUs") ?? "About Us",
           img: AssetsConstants.authenticationImg,
           onTap: () {
             CustomNavigator(
@@ -703,7 +705,8 @@ Container buildProvideCard({
               screen: const AboutUsScreen(),
             ).pushReplacement();
           },
-        ),buildActionBox(
+        ),
+        buildActionBox(
           title: localization?.translate("main.donate") ?? "Donate",
           img: AssetsConstants.donateImg,
           onTap: () {
@@ -756,7 +759,8 @@ Container buildProvideCard({
     );
   }
 
-  Positioned buildTopContainer(AppLocalizations? localization) {
+  Positioned buildTopContainer(
+      AppLocalizations? localization, List<dynamic> notifications) {
     return Positioned(
       top: 0,
       left: 0,
@@ -779,12 +783,44 @@ Container buildProvideCard({
                   children: [
                     buildSearch(),
                     SizedBox(width: 8.w),
-                    CircleAvatar(
-                      radius: 20.h,
-                      backgroundColor: const Color(0XFF353535),
-                      child: const Icon(
-                        Icons.notifications_outlined,
-                        color: Colors.white,
+                    GestureDetector(
+                      onTap: () {
+                        CustomNavigator(
+                          context: context,
+                          screen: const InitialScreen(pageIndex: 3),
+                        ).pushReplacement();
+                      },
+                      child: Stack(
+                        children: [
+                          CircleAvatar(
+                            radius: 20.h,
+                            backgroundColor: const Color(0XFF353535),
+                            child: const Icon(
+                              Icons.notifications_outlined,
+                              color: Colors.white,
+                            ),
+                          ),
+                          if (notifications.isNotEmpty)
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: Container(
+                                padding: EdgeInsets.all(4.h),
+                                decoration: const BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Text(
+                                  notifications.length.toString(),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                        ],
                       ),
                     )
                   ],

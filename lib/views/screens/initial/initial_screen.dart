@@ -1,6 +1,7 @@
 import 'package:dhenu_dharma/utils/constants/app_colors.dart';
 import 'package:dhenu_dharma/utils/localization/app_localizations.dart';
 import 'package:dhenu_dharma/views/screens/donate/donate_screen.dart';
+import 'package:dhenu_dharma/views/screens/notification/notification_screen.dart';
 import 'package:dhenu_dharma/views/screens/profile/profile_screen.dart';
 import 'package:dhenu_dharma/views/screens/profile/screens/language/languages_screen.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,8 @@ class _InitialScreenState extends State<InitialScreen> {
     const HomeScreen(),
     const DonateScreen(),
     const ProfileScreen(),
-    const LanguagesScreen(),
+
+    const NotificationsScreen(), //
   ];
 
   @override
@@ -45,7 +47,7 @@ class _InitialScreenState extends State<InitialScreen> {
       body: _widgetOptions[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: const Color(0XFFEAE5D8),
-        currentIndex: _selectedIndex,
+        currentIndex: _selectedIndex>2?2:_selectedIndex,
         onTap: _onItemTapped,
         items: [
           BottomNavigationBarItem(
@@ -55,8 +57,15 @@ class _InitialScreenState extends State<InitialScreen> {
               icon: const FaIcon(FontAwesomeIcons.handHoldingHeart),
               label: localization?.translate('navigation.donate')),
           BottomNavigationBarItem(
-              icon: const FaIcon(FontAwesomeIcons.user),
-              label: localization?.translate('navigation.profile'))
+              icon: const FaIcon(FontAwesomeIcons.solidUser),
+              label: localization?.translate('navigation.profile')),
+          // BottomNavigationBarItem(
+          //   icon: const FaIcon(
+          //     FontAwesomeIcons.solidBell,
+          //     key: Key('notificationIcon'), // Add a unique key
+          //   ),
+          //   label: localization?.translate('navigation.notifications'),
+          // ),
         ],
         elevation: 20,
         selectedIconTheme: const IconThemeData(color: Colors.black),

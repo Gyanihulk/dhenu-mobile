@@ -75,7 +75,7 @@ class AppLocalizations {
         "success": "OTP Verified Successfully!",
         "failure": "Failed to verify OTP. Please try again."
       },
-      "navigation": {"home": "Home", "donate": "Donate", "profile": "Profile"},
+      "navigation": {"home": "Home", "donate": "Donate", "profile": "Profile","notifications":"Notifications"},
       "profile": {
         "signOut": "Sign Out",
         "myDonations": "My Donations",
